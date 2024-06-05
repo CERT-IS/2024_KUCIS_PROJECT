@@ -1,14 +1,21 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '3.2.6'
-	id 'io.spring.dependency-management' version '1.1.5'
+	id 'org.springframework.boot' version '3.2.5'
+	id 'io.spring.dependency-management' version '1.1.4'
+	id 'com.palantir.docker' version '0.35.0'
 }
 
-group = 'org.certis'
-version = '0.0.1-SNAPSHOT'
+group = 'org.certis.siem'
+version = '1.0.0'
 
 java {
 	sourceCompatibility = '17'
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
 }
 
 repositories {
@@ -16,11 +23,30 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter'
+	implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'io.projectreactor:reactor-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+	implementation 'org.apache.commons:commons-csv:1.8'
+	implementation 'org.springdoc:springdoc-openapi-starter-webflux-ui:2.1.0'
+	//aws
+	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+docker {
+	println(tasks.bootJar.outputs.files)
+	name project.name+":"+version
+	dockerfile file('./Dockerfile')
+	files tasks.bootJar.outputs.files
+	buildArgs(['JAR_FILE':tasks.bootJar.outputs.files.singleFile.name])
 }
