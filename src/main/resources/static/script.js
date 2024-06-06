@@ -1,5 +1,6 @@
 // SIDEBAR DROPDOWN
 const allDropdown = document.querySelectorAll('#sidebar .side-dropdown');
+const sidebar = document.getElementById('sidebar');
 
 allDropdown.forEach(item=> {
     const a = item.parentElement.querySelector('a:first-child');
@@ -21,6 +22,83 @@ allDropdown.forEach(item=> {
 })
 
 
+// SIDEBAR COLLAPSE
+const toggleSidebar = document.querySelector('nav .material-symbols-outlined[data-icon="menu"]');
+const allSideDivider = document.querySelectorAll('#sidebar .divider');
+
+if (sidebar.classList.contains('hide')) {
+    allSideDivider.forEach(item => {
+        item.textContent = '-';
+    })
+
+    allDropdown.forEach(item=> {
+        const a = item.parentElement.querySelector('a:first-child');
+        a.classList.remove('active');
+        item.classList.remove('show');
+    })
+}
+else {
+    allSideDivider.forEach(item => {
+        item.textContent = item.dataset.text;
+    })
+}
+
+toggleSidebar.addEventListener('click', function() {
+    sidebar.classList.toggle('hide');
+
+    if (sidebar.classList.contains('hide')) {
+        allSideDivider.forEach(item => {
+            item.textContent = '-';
+        })
+
+        allDropdown.forEach(item=> {
+            const a = item.parentElement.querySelector('a:first-child');
+            a.classList.remove('active');
+            item.classList.remove('show');
+        })
+    }
+    else {
+        allSideDivider.forEach(item => {
+            item.textContent = item.dataset.text;
+        })
+    }
+})
+
+
+
+sidebar.addEventListener('mouseleave', function () {
+
+    if (this.classList.contains('hide')) {
+        allDropdown.forEach(item=> {
+            const a = item.parentElement.querySelector('a:first-child');    
+            a.classList.remove('active');
+            item.classList.remove('show');
+        })
+        allSideDivider.forEach(item => {
+            item.textContent = '-';
+        })
+    }
+})
+
+sidebar.addEventListener('mouseenter', function () {
+
+    if (this.classList.contains('hide')) {
+        allDropdown.forEach(item=> {
+            const a = item.parentElement.querySelector('a:first-child');    
+            a.classList.remove('active');
+            item.classList.remove('show');
+        })
+        allSideDivider.forEach(item => {
+            item.textContent = item.dataset.text;
+        })
+    }
+})
+
+
+
+
+
+
 // PROFILE DROPDOWN
 const profile = document.querySelector('nav .profile');
 const imgProfile = profile.querySelector('img');
@@ -30,6 +108,21 @@ imgProfile.addEventListener('click', function() {
     dropdownProfile.classList.toggle('show');
 })
 
+
+// MENU
+const allMenu = document.querySelectorAll('main .content-data .head .menu');
+
+allMenu.forEach(item => {
+    const icon = item.querySelector('.material-symbols-outlined[data-icon="more_horiz"]');
+    const menuLink = item.querySelector('.menu-link');
+
+    icon.addEventListener('click', function() {
+        menuLink.classList.toggle('show');
+    })
+})
+
+
+
 window.addEventListener('click', function(e) {
     if (e.target !== imgProfile) {
         if (e.target !== dropdownProfile) {
@@ -38,6 +131,19 @@ window.addEventListener('click', function(e) {
             }
         }
     }
+
+    allMenu.forEach(item => {
+        const icon = item.querySelector('.material-symbols-outlined[data-icon="more_horiz"]');
+        const menuLink = item.querySelector('.menu-link');
+    
+        if (e.target !== icon) {
+            if (e.target !== menuLink) {
+                if (menuLink.classList.contains('show')) {
+                    menuLink.classList.remove('show');
+                }
+            }
+        }
+    })
 })
 
 
@@ -47,5 +153,31 @@ window.addEventListener('click', function(e) {
 const allProgress = document.querySelectorAll('main .card .progress');
 
 allProgress.forEach(item=> {
-    item.style.setProperty('--value', item.dataset.value)
+    item.style.setProperty('--value', item.dataset.value);
 })
+
+
+
+
+
+// CHART
+const ctx = document.getElementById('myChart');
+
+new Chart(ctx, {
+type: 'bar',
+data: {
+    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+    datasets: [{
+    label: '# of Votes',
+    data: [12, 19, 3, 5, 2, 3],
+    borderWidth: 1
+    }]
+},
+options: {
+    scales: {
+    y: {
+        beginAtZero: true
+    }
+    }
+}
+});

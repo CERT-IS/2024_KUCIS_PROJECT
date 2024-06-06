@@ -15,7 +15,7 @@
 
     <ul class="side-menu">
         <li><a href="#" class="active"><span class="material-symbols-outlined">dashboard</span>Dashboard</a></li>
-        <li class="divider">Main</li>
+        <li class="divider" data-text="main">Main</li>
         <li>
             <a href="#"><span class="material-symbols-outlined">inventory_2</span>Elements<span class="material-symbols-outlined" data-icon="chevron_right">chevron_right</span></a>
             <ul class="side-dropdown">
@@ -29,7 +29,7 @@
         <li><a href="#"><span class="material-symbols-outlined">widgets</span>Widgets</a></li>
 
 
-        <li class="divider">Table and forms</li>
+        <li class="divider" data-text="table and forms">Table and forms</li>
         <li><a href="#"><span class="material-symbols-outlined">table</span>Tables</a></li>
         <li>
             <a href="#"><span class="material-symbols-outlined">event_note</span>Forms<span class="material-symbols-outlined" data-icon="chevron_right">chevron_right</span></a>
@@ -140,13 +140,16 @@
                 <div class="head">
                     <h3>Sales Report</h3>
                     <div class="menu">
-                        <span class="material-symbols-outlined">more_horiz</span>
+                        <span class="material-symbols-outlined" data-icon="more_horiz">more_horiz</span>
                         <ul class="menu-link">
                             <li><a href="#">Edit</a></li>
                             <li><a href="#">Save</a></li>
                             <li><a href="#">Remove</a></li>
                         </ul>
                     </div>
+                </div>
+                <div class="chart">
+                    <canvas id="myChart"></canvas>
                 </div>
             </div>
 
@@ -154,7 +157,7 @@
                 <div class="head">
                     <h3>Chatbox</h3>
                     <div class="menu">
-                        <span class="material-symbols-outlined">more_horiz</span>
+                        <span class="material-symbols-outlined" data-icon="more_horiz">more_horiz</span>
                         <ul class="menu-link">
                             <li><a href="#">Edit</a></li>
                             <li><a href="#">Save</a></li>
@@ -162,6 +165,53 @@
                         </ul>
                     </div>
                 </div>
+
+                <div class="chat-box">
+                    <p class="day"><span>Today</span></p>
+                    <div class="msg">
+                        <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8cGVvcGxlfGVufDB8fDB8fHww" alt="">
+                        <div class="chat">
+                            <div class="profile">
+                                <span class="username">Alan</span>
+                                <span class="time">18:30</span>
+                            </div>
+                            <p>Hello</p>
+                        </div>
+                    </div>
+
+                    <div class="msg me">
+                        <div class="chat">
+                            <div class="profile">
+                                <span class="time">18:30</span>
+                            </div>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus cumque consequuntur provident nostrum totam quae ipsam libero numquam dolores. Est expedita cum officia, ad aliquam natus fugiat molestias ea dolorem!</p>
+                        </div>
+                    </div>
+
+                    <div class="msg me">
+                        <div class="chat">
+                            <div class="profile">
+                                <span class="time">18:30</span>
+                            </div>
+                            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Earum enim, tempore delectus soluta vitae aspernatur pariatur, nostrum veniam sed dicta illo quaerat, aliquam culpa illum quisquam ullam unde accusantium maxime?</p>
+                        </div>
+                    </div>
+
+                    <div class="msg me">
+                        <div class="chat">
+                            <div class="profile">
+                                <span class="time">18:30</span>
+                            </div>
+                            <p>Lorem ipsum dolor sit amet.</p>
+                        </div>
+                    </div>
+                </div>
+                <form action="#">
+                    <div class="form-group">
+                        <input type="text" placeholder="Type...">
+                        <button type="submit" class="btn-send"><span class="material-symbols-outlined">send</span></button>
+                    </div>
+                </form>
             </div>
         </div>
     </main>
@@ -169,6 +219,7 @@
 </section>
 <!-- NAVBAR -->
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="/script.js"></script>
 </body>
 </html>
