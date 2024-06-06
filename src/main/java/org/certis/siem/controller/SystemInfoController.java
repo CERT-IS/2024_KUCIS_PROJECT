@@ -17,7 +17,7 @@ import java.util.Map;
 public class SystemInfoController {
 
     @GetMapping("/system-info")
-    public Mono<ServerResponse> getSystemInfo() {
+    public Mono<Map<String ,Object>> getSystemInfo() {
         return Mono.fromSupplier(() -> {
             Map<String, Object> systemInfo = new HashMap<>();
 
@@ -42,7 +42,7 @@ public class SystemInfoController {
             systemInfo.put("maxHeapMemory", heapMemoryUsage.getMax());
 
             return systemInfo;
-        }).flatMap(systemInfo -> ServerResponse.ok().bodyValue(systemInfo));
+        });
     }
 }
 

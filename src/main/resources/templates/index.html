@@ -214,6 +214,8 @@
                 </form>
             </div>
         </div>
+        <!-- System Info -->
+        <div id="system-info-container"></div>
     </main>
     <!-- MAIN -->
 </section>
@@ -221,5 +223,39 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="/script.js"></script>
+<script>
+    function fetchSystemInfo() {
+        fetch('/system-info')
+            .then(response => response.json())
+            .then(data => displaySystemInfo(data))
+            .catch(error => console.error('Error fetching system info:', error));
+    }
+
+    function displaySystemInfo(data) {
+        const systemInfoContainer = document.getElementById('system-info-container');
+
+        if (!systemInfoContainer) {
+            console.error('System info container not found');
+            return;
+        }
+
+        systemInfoContainer.innerHTML = `
+            <h3>System Information</h3>
+            <ul>
+                <li>Available Processors: ${data.availableProcessors}</li>
+                <li>System Load Average: ${data.systemLoadAverage}</li>
+                <li>Total Physical Memory: ${data.totalPhysicalMemory}</li>
+                <li>Free Physical Memory: ${data.freePhysicalMemory}</li>
+                <li>JVM Uptime: ${data.jvmUptime} ms</li>
+                <li>Used Heap Memory: ${data.usedHeapMemory}</li>
+                <li>Max Heap Memory: ${data.maxHeapMemory}</li>
+            </ul>
+        `;
+    }
+
+    // Call the function to fetch system info on page load
+    document.addEventListener("DOMContentLoaded", fetchSystemInfo);
+</script>
+
 </body>
 </html>
