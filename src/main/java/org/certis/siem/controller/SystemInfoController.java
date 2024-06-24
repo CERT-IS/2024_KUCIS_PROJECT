@@ -2,8 +2,8 @@ package org.certis.siem.controller;
 
 import com.sun.management.OperatingSystemMXBean;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
 import java.lang.management.ManagementFactory;
@@ -14,9 +14,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
+@RequestMapping("/system")
 public class SystemInfoController {
 
-    @GetMapping("/system-info")
+    @GetMapping("/info")
     public Mono<Map<String ,Object>> getSystemInfo() {
         return Mono.fromSupplier(() -> {
             Map<String, Object> systemInfo = new HashMap<>();

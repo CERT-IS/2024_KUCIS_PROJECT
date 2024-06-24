@@ -16,4 +16,5 @@ public class ElasticSearchConfig extends ElasticsearchConfiguration {
                 .connectedTo("elasticsearch:9200")
                 .build();
     }
+
 }

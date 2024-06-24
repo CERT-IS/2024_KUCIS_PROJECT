@@ -1,17 +1,15 @@
 package org.certis.siem.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.certis.siem.dto.RegionRequest;
 import org.certis.siem.entity.CloudTrail.CloudTrailEvent;
 import org.certis.siem.service.CloudTrailService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RestController
-@RequestMapping("/CloudTrail")
+@RequestMapping("/cloudTrail")
 @RequiredArgsConstructor
 public class CloudTrailController {
 
@@ -33,4 +31,14 @@ public class CloudTrailController {
         return cloudTrailService.getEventById(id);
     }
 
+
+    @GetMapping("/events/region/detect")
+    public Flux<CloudTrailEvent> getEventsByRegionNotIn(@RequestBody RegionRequest regionRequest) {
+        return cloudTrailService.getEventsByRegionNotIn(regionRequest);
+    }
+
+    @GetMapping("/events/logs/s3")
+    public Mono<?> saveEventsS3toElasticSearch(){
+        return cloudTrailService.saveLogsS3toElasticSearch();
+    }
 }

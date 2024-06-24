@@ -11,21 +11,30 @@ import org.springframework.context.annotation.Configuration;
 public class SwaggerConfig {
 
     @Bean
-    public GroupedOpenApi elasticOpenApi(@Value("${springdoc.version}") String appVersion) {
+    public GroupedOpenApi SystemOpenApi() {
+        String[] paths = { "/system/**" };
+        return GroupedOpenApi.builder().
+                group("system")
+                .addOpenApiCustomizer(openApi -> openApi.info(new Info().title("System API")))
+                .pathsToMatch(paths)
+                .build();
+    }
+    @Bean
+    public GroupedOpenApi elasticOpenApi() {
         String[] paths = { "/elastic-cluster/**" };
         return GroupedOpenApi.builder().
                 group("elasticsearch")
-                .addOpenApiCustomizer(openApi -> openApi.info(new Info().title("Elasticsearch API").version(appVersion)))
+                .addOpenApiCustomizer(openApi -> openApi.info(new Info().title("Elasticsearch API")))
                 .pathsToMatch(paths)
                 .build();
     }
 
     @Bean
-    public GroupedOpenApi movieOpenApi(@Value("${springdoc.version}") String appVersion) {
-        String[] paths = { "/movie/**" };
+    public GroupedOpenApi cloudTrailOpenApi() {
+        String[] paths = { "/cloudTrail/**" };
         return GroupedOpenApi.builder().
-                group("movies")
-                .addOpenApiCustomizer(openApi -> openApi.info(new Info().title("Movie API").version(appVersion)))
+                group("cloudTrail")
+                .addOpenApiCustomizer(openApi -> openApi.info(new Info().title("cloudTrail API")))
                 .pathsToMatch(paths)
                 .build();
     }
