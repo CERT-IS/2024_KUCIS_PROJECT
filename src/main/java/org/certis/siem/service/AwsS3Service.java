@@ -26,8 +26,16 @@ public class AwsS3Service {
     @Value("${cloud.aws.bucket.cloudtrail}")
     private String cloudTrailBucket;
 
+    @Value("${cloud.aws.bucket.waf}")
+    private String WAFBucket;
+
+    @Value("${cloud.aws.bucket.flowlog}")
+    private String flowLogBucket;
+
+
     @Value("${cloud.aws.bucket.certis}")
     private String certisBucket;
+
 
     public Mono<AwsS3> upload(String eventLog, String eventName) {
         String key = String.format(eventKey, eventName, Instant.now());
