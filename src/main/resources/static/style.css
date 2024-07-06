@@ -454,6 +454,28 @@ main .content-data .chart {
     overflow-x: auto;
     scrollbar-width: none;
 }
+
+main .content-data .dangerous-events {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+main .content-data .sys-info {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+main .content-data .event-streams {
+    width: 50%;
+    max-width: 50%;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
 main .content-data .chart::-webkit-scrollbar {
     display: none;
 }
@@ -574,5 +596,5 @@ main .btn-send:hover {
     nav .nav-link, nav.divider {
         display: none;
     }
-    
+
 }

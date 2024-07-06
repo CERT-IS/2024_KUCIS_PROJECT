@@ -150,37 +150,58 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
+    // fetchEventStreams 함수 수정
     async function fetchEventStreams() {
         try {
             const response = await axios.get('/detect');
             const eventStreams = response.data;
-            console.log('Fetching eventstreams data...');
+            console.log('Fetching event streams data...');
             const eventStreamsElement = document.getElementById('event-streams');
             eventStreamsElement.innerHTML = '';
-            eventStreams.forEach(event => {
-                const li = document.createElement('li');
-                li.textContent = `${event.timestamp}: ${event.description}`;
-                eventStreamsElement.appendChild(li);
+            eventStreams.forEach(eventStream => {
+                const streamLi = document.createElement('li');
+                streamLi.textContent = `ID: ${eventStream.id}, Type: ${eventStream.type}, Level: ${eventStream.level}`;
+                eventStreamsElement.appendChild(streamLi);
+
+                if (eventStream.queue) {
+                    eventStream.queue.forEach(eventLog => {
+                        const logLi = document.createElement('li');
+                        logLi.textContent = `EventLog Type: ${eventLog.type}, Details: ${eventLog.details}`;
+                        streamLi.appendChild(logLi);
+                    });
+                }
             });
         } catch (error) {
+            console.error('Error fetching event streams:', error);
         }
     }
 
+// fetchDangerousEvents 함수 수정
     async function fetchDangerousEvents() {
         try {
             const response = await axios.get('/detect/dangrous');
             const dangerousEvents = response.data;
-            console.log('Fetching dangrous data...');
+            console.log('Fetching dangerous data...');
             const dangerousEventsElement = document.getElementById('dangerous-events');
             dangerousEventsElement.innerHTML = '';
-            dangerousEvents.forEach(event => {
-                const li = document.createElement('li');
-                li.textContent = `${event.timestamp}: ${event.description}`;
-                dangerousEventsElement.appendChild(li);
+            dangerousEvents.forEach(eventStream => {
+                const streamLi = document.createElement('li');
+                streamLi.textContent = `ID: ${eventStream.id}, Type: ${eventStream.type}, Level: ${eventStream.level}`;
+                dangerousEventsElement.appendChild(streamLi);
+
+                if (eventStream.queue) {
+                    eventStream.queue.forEach(eventLog => {
+                        const logLi = document.createElement('li');
+                        logLi.textContent = `EventLog Type: ${eventLog.type}, Details: ${eventLog.details}`;
+                        streamLi.appendChild(logLi);
+                    });
+                }
             });
         } catch (error) {
+            console.error('Error fetching dangerous events:', error);
         }
     }
+
 
     function pollData() {
         fetchSystemInfo();

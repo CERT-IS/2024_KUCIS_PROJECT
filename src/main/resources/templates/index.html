@@ -135,10 +135,11 @@
                 <span class="label">55%</span>
             </div>
         </div>
+
         <div class="data">
             <div class="content-data">
                 <div class="head">
-                    <h3>Sales Report</h3>
+                    <h3>System info</h3>
                     <div class="menu">
                         <span class="material-symbols-outlined" data-icon="more_horiz">more_horiz</span>
                         <ul class="menu-link">
@@ -148,114 +149,172 @@
                         </ul>
                     </div>
                 </div>
-                <div class="chart">
-                    <canvas id="myChart"></canvas>
+                <div class="system-info">
+                    <ul id="sys-info">
+                        <p><strong>Operating System:</strong> <span id="os-info"> Loading...</span></p>
+                        <p><strong>CPU:</strong> <span id="cpu-info"> Loading...</span></p>
+                        <p><strong>Memory:</strong> <span id="memory-info"> Loading...</span></p>
+                        <p><strong>Disk:</strong> <span id="disk-info"> Loading...</span></p>
+                    </ul>
                 </div>
             </div>
 
-            <div class="content-data">
-                <div class="head">
-                    <h3>Chatbox</h3>
-                    <div class="menu">
-                        <span class="material-symbols-outlined" data-icon="more_horiz">more_horiz</span>
-                        <ul class="menu-link">
-                            <li><a href="#">Edit</a></li>
-                            <li><a href="#">Save</a></li>
-                            <li><a href="#">Remove</a></li>
+
+            <div class="data">
+                <div class="content-data">
+                    <div class="head">
+                        <h3>Event Streams</h3>
+                        <div class="menu">
+                            <span class="material-symbols-outlined" data-icon="more_horiz">more_horiz</span>
+                            <ul class="menu-link">
+                                <li><a href="#">Edit</a></li>
+                                <li><a href="#">Save</a></li>
+                                <li><a href="#">Remove</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="event-data">
+                        <ul id="event-streams">
                         </ul>
                     </div>
                 </div>
 
-                <div class="chat-box">
-                    <p class="day"><span>Today</span></p>
-                    <div class="msg">
-                        <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8cGVvcGxlfGVufDB8fDB8fHww" alt="">
-                        <div class="chat">
-                            <div class="profile">
-                                <span class="username">Alan</span>
-                                <span class="time">18:30</span>
+                <div class="data">
+                    <div class="content-data">
+                        <div class="head">
+                            <h3>Dangerous Events</h3>
+                            <div class="menu">
+                                <span class="material-symbols-outlined" data-icon="more_horiz">more_horiz</span>
+                                <ul class="menu-link">
+                                    <li><a href="#">Edit</a></li>
+                                    <li><a href="#">Save</a></li>
+                                    <li><a href="#">Remove</a></li>
+                                </ul>
                             </div>
-                            <p>Hello</p>
+                        </div>
+                        <div class="event-data">
+                            <ul id="dangerous-events">
+                            </ul>
                         </div>
                     </div>
 
-                    <div class="msg me">
-                        <div class="chat">
-                            <div class="profile">
-                                <span class="time">18:30</span>
-                            </div>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus cumque consequuntur provident nostrum totam quae ipsam libero numquam dolores. Est expedita cum officia, ad aliquam natus fugiat molestias ea dolorem!</p>
-                        </div>
-                    </div>
 
-                    <div class="msg me">
-                        <div class="chat">
-                            <div class="profile">
-                                <span class="time">18:30</span>
+                    <div class="data">
+                        <div class="content-data">
+                            <div class="head">
+                                <h3>Sales Report</h3>
+                                <div class="menu">
+                                    <span class="material-symbols-outlined" data-icon="more_horiz">more_horiz</span>
+                                    <ul class="menu-link">
+                                        <li><a href="#">Edit</a></li>
+                                        <li><a href="#">Save</a></li>
+                                        <li><a href="#">Remove</a></li>
+                                    </ul>
+                                </div>
                             </div>
-                            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Earum enim, tempore delectus soluta vitae aspernatur pariatur, nostrum veniam sed dicta illo quaerat, aliquam culpa illum quisquam ullam unde accusantium maxime?</p>
+                            <div class="chart">
+                                <canvas id="myChart"></canvas>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="msg me">
-                        <div class="chat">
-                            <div class="profile">
-                                <span class="time">18:30</span>
+                        <div class="content-data">
+                            <div class="head">
+                                <h3>Chatbox</h3>
+                                <div class="menu">
+                                    <span class="material-symbols-outlined" data-icon="more_horiz">more_horiz</span>
+                                    <ul class="menu-link">
+                                        <li><a href="#">Edit</a></li>
+                                        <li><a href="#">Save</a></li>
+                                        <li><a href="#">Remove</a></li>
+                                    </ul>
+                                </div>
                             </div>
-                            <p>Lorem ipsum dolor sit amet.</p>
+
+
+
+
+                            <div class="chat-box">
+                                <p class="day"><span>Today</span></p>
+                                <div class="msg">
+                                    <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8cGVvcGxlfGVufDB8fDB8fHww" alt="">
+                                    <div class="chat">
+                                        <div class="profile">
+                                            <span class="username">Alan</span>
+                                            <span class="time">18:30</span>
+                                        </div>
+                                        <p>Hello</p>
+                                    </div>
+                                </div>
+
+                                <div class="msg me">
+                                    <div class="chat">
+                                        <div class="profile">
+                                            <span class="time">18:30</span>
+                                        </div>
+                                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus cumque consequuntur provident nostrum totam quae ipsam libero numquam dolores. Est expedita cum officia, ad aliquam natus fugiat molestias ea dolorem!</p>
+                                    </div>
+                                </div>
+
+                                <div class="msg me">
+                                    <div class="chat">
+                                        <div class="profile">
+                                            <span class="time">18:30</span>
+                                        </div>
+                                        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Earum enim, tempore delectus soluta vitae aspernatur asperiores. Dolores fugit, neque reprehenderit praesentium natus, vero similique architecto tempora adipisci consequuntur voluptate expedita?</p>
+                                    </div>
+                                </div>
+
+                                <div class="msg">
+                                    <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8cGVvcGxlfGVufDB8fDB8fHww" alt="">
+                                    <div class="chat">
+                                        <div class="profile">
+                                            <span class="username">Alan</span>
+                                            <span class="time">18:30</span>
+                                        </div>
+                                        <p>Lorem ipsum dolor sit amet.</p>
+                                    </div>
+                                </div>
+
+                                <div class="msg me">
+                                    <div class="chat">
+                                        <div class="profile">
+                                            <span class="time">18:30</span>
+                                        </div>
+                                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Expedita, accusamus.</p>
+                                    </div>
+                                </div>
+
+                                <div class="msg">
+                                    <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8cGVvcGxlfGVufDB8fDB8fHww" alt="">
+                                    <div class="chat">
+                                        <div class="profile">
+                                            <span class="username">Alan</span>
+                                            <span class="time">18:30</span>
+                                        </div>
+                                        <p>Lorem, ipsum dolor.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <form action="#" class="chatbox-message">
+                                <textarea name="message" id="" placeholder="Type message..."></textarea>
+                                <button type="submit"><span class="material-symbols-outlined" data-icon="send">send</span></button>
+                            </form>
                         </div>
                     </div>
                 </div>
-                <form action="#">
-                    <div class="form-group">
-                        <input type="text" placeholder="Type...">
-                        <button type="submit" class="btn-send"><span class="material-symbols-outlined">send</span></button>
-                    </div>
-                </form>
+
+
+
+
             </div>
         </div>
-        <!-- System Info -->
-        <div id="system-info-container"></div>
     </main>
     <!-- MAIN -->
 </section>
 <!-- NAVBAR -->
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="/script.js"></script>
-<script>
-    function fetchSystemInfo() {
-        fetch('/system-info')
-            .then(response => response.json())
-            .then(data => displaySystemInfo(data))
-            .catch(error => console.error('Error fetching system info:', error));
-    }
-
-    function displaySystemInfo(data) {
-        const systemInfoContainer = document.getElementById('system-info-container');
-
-        if (!systemInfoContainer) {
-            console.error('System info container not found');
-            return;
-        }
-
-        systemInfoContainer.innerHTML = `
-            <h3>System Information</h3>
-            <ul>
-                <li>Available Processors: ${data.availableProcessors}</li>
-                <li>System Load Average: ${data.systemLoadAverage}</li>
-                <li>Total Physical Memory: ${data.totalPhysicalMemory}</li>
-                <li>Free Physical Memory: ${data.freePhysicalMemory}</li>
-                <li>JVM Uptime: ${data.jvmUptime} ms</li>
-                <li>Used Heap Memory: ${data.usedHeapMemory}</li>
-                <li>Max Heap Memory: ${data.maxHeapMemory}</li>
-            </ul>
-        `;
-    }
-
-    // Call the function to fetch system info on page load
-    document.addEventListener("DOMContentLoaded", fetchSystemInfo);
-</script>
-
 </body>
 </html>
