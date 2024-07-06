@@ -24,8 +24,6 @@ import java.util.stream.Collectors;
 @Slf4j
 public class WAFService {
     private final WAFRepository wafRepository;
-    private final AwsS3Service awsS3Service;
-
 
     public Flux<WAFEvent> findAll() {
         return wafRepository.findAll();

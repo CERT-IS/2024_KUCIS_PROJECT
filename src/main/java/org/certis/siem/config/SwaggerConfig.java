@@ -11,30 +11,11 @@ import org.springframework.context.annotation.Configuration;
 public class SwaggerConfig {
 
     @Bean
-    public GroupedOpenApi SystemOpenApi() {
-        String[] paths = { "/system/**" };
+    public GroupedOpenApi OpenApi() {
+        String[] paths = { "/**" };
         return GroupedOpenApi.builder().
-                group("system")
+                group("siem")
                 .addOpenApiCustomizer(openApi -> openApi.info(new Info().title("System API")))
-                .pathsToMatch(paths)
-                .build();
-    }
-    @Bean
-    public GroupedOpenApi elasticOpenApi() {
-        String[] paths = { "/elastic-cluster/**" };
-        return GroupedOpenApi.builder().
-                group("elasticsearch")
-                .addOpenApiCustomizer(openApi -> openApi.info(new Info().title("Elasticsearch API")))
-                .pathsToMatch(paths)
-                .build();
-    }
-
-    @Bean
-    public GroupedOpenApi cloudTrailOpenApi() {
-        String[] paths = { "/cloudTrail/**" };
-        return GroupedOpenApi.builder().
-                group("cloudTrail")
-                .addOpenApiCustomizer(openApi -> openApi.info(new Info().title("cloudTrail API")))
                 .pathsToMatch(paths)
                 .build();
     }

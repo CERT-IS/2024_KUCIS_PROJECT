@@ -10,9 +10,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class TlsDetails {
-    private String tlsVersion;
+    private String signatureVersion;
     private String cipherSuite;
-    private String clientProvidedHostHeader;
+    private String authenticationMethod;
+    private String xAmzId2;
+    private int bytesTransferredIn;
+    private int bytesTransferredOut;
+    private String sseApplied;
 }
 
 

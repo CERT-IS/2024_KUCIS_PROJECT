@@ -1,5 +1,6 @@
 package org.certis.siem.entity.CloudTrail;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,7 +10,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserIdentity {
+public class Resource {
     private String type;
-    private String invokedBy;
+
+    @JsonProperty("ARN")
+    private String ARN;
+    private String accountId;
 }

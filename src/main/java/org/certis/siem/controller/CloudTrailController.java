@@ -1,12 +1,14 @@
 package org.certis.siem.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.certis.siem.dto.RegionRequest;
 import org.certis.siem.entity.CloudTrail.CloudTrailEvent;
+import org.certis.siem.entity.EventLog;
 import org.certis.siem.service.CloudTrailService;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/cloudTrail")
@@ -33,8 +35,8 @@ public class CloudTrailController {
 
 
     @GetMapping("/events/region/detect")
-    public Flux<CloudTrailEvent> getEventsByRegionNotIn(@RequestBody RegionRequest regionRequest) {
-        return cloudTrailService.getEventsByRegionNotIn(regionRequest);
+    public Flux<EventLog> getEventsByRegionNotIn(@RequestParam List<String> regions) {
+        return cloudTrailService.getEventsByRegionNotIn(regions);
     }
 
     @GetMapping("/events/logs/s3")
