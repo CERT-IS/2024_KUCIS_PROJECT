@@ -33,7 +33,7 @@ public class SystemInfoController {
             systemInfo.put("freeMemory", formatMemory(freeMemory) + " / " + formatMemory(totalMemory) + String.format(" (%.2f%%)", freeMemoryPercentage));
 
             RuntimeMXBean runtimeMXBean = ManagementFactory.getRuntimeMXBean();
-            systemInfo.put("jvmUptime (ms)", runtimeMXBean.getUptime());
+            systemInfo.put("jvmUptime", runtimeMXBean.getUptime());
 
             MemoryMXBean memoryMXBean = ManagementFactory.getMemoryMXBean();
             MemoryUsage heapMemoryUsage = memoryMXBean.getHeapMemoryUsage();

@@ -115,49 +115,30 @@ document.addEventListener("DOMContentLoaded", function() {
         item.style.setProperty('--value', item.dataset.value);
     });
 
-    const ctx = document.getElementById('myChart');
-
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-            datasets: [{
-                label: '# of Votes',
-                data: [12, 19, 3, 5, 2, 3],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
-    });
 
     async function fetchSystemInfo() {
         try {
-            const response = await axios.get('/system/info');
-            const data = response.data;
+            const response = await fetch('/system/info');
+            const data = await response.json();
 
             document.getElementById('os-info').textContent = `Available Processors: ${data.availableProcessors}`;
-            document.getElementById('cpu-info').textContent = `System Load Average: ${data.systemLoadAverage}`;
+            document.getElementById('cpu-info').textContent = `Tasks awaiting Execution Average Count: ${data.systemLoadAverage}`;
+            document.getElementById('jvm-info').textContent = `JVM Uptime(ms): ${data.jvmUptime}`;
             document.getElementById('memory-info').textContent = `Free Memory: ${data.freeMemory}`;
             document.getElementById('disk-info').textContent = `Used Heap Memory: ${data.usedHeapMemory}`;
 
         } catch (error) {
+            console.error('Error fetching system info:', error);
         }
     }
 
-    // fetchEventStreams 함수 수정
     async function fetchEventStreams() {
         try {
-            const response = await axios.get('/detect');
-            const eventStreams = response.data;
-            console.log('Fetching event streams data...');
+            const response = await fetch('/detect');
+            const eventStreams = await response.json();
             const eventStreamsElement = document.getElementById('event-streams');
             eventStreamsElement.innerHTML = '';
+
             eventStreams.forEach(eventStream => {
                 const streamLi = document.createElement('li');
                 streamLi.textContent = `ID: ${eventStream.id}, Type: ${eventStream.type}, Level: ${eventStream.level}`;
@@ -166,8 +147,26 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (eventStream.queue) {
                     eventStream.queue.forEach(eventLog => {
                         const logLi = document.createElement('li');
-                        logLi.textContent = `EventLog Type: ${eventLog.type}, Details: ${eventLog.details}`;
+                        logLi.textContent = `EventLog Type: ${eventLog.type}`;
                         streamLi.appendChild(logLi);
+
+                        if (eventLog.cloudTrailEvent) {
+                            const cloudTrailLi = document.createElement('li');
+                            cloudTrailLi.textContent = `CloudTrailEvent: ${JSON.stringify(eventLog.cloudTrailEvent)}`;
+                            streamLi.appendChild(cloudTrailLi);
+                        }
+
+                        if (eventLog.wafEvent) {
+                            const wafLi = document.createElement('li');
+                            wafLi.textContent = `WAFEvent: ${JSON.stringify(eventLog.wafEvent)}`;
+                            streamLi.appendChild(wafLi);
+                        }
+
+                        if (eventLog.flowLogEvent) {
+                            const flowLogLi = document.createElement('li');
+                            flowLogLi.textContent = `FlowLogEvent: ${JSON.stringify(eventLog.flowLogEvent)}`;
+                            streamLi.appendChild(flowLogLi);
+                        }
                     });
                 }
             });
@@ -176,14 +175,13 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
-// fetchDangerousEvents 함수 수정
     async function fetchDangerousEvents() {
         try {
-            const response = await axios.get('/detect/dangrous');
-            const dangerousEvents = response.data;
-            console.log('Fetching dangerous data...');
+            const response = await fetch('/detect/dangrous');
+            const dangerousEvents = await response.json();
             const dangerousEventsElement = document.getElementById('dangerous-events');
             dangerousEventsElement.innerHTML = '';
+
             dangerousEvents.forEach(eventStream => {
                 const streamLi = document.createElement('li');
                 streamLi.textContent = `ID: ${eventStream.id}, Type: ${eventStream.type}, Level: ${eventStream.level}`;
@@ -192,24 +190,46 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (eventStream.queue) {
                     eventStream.queue.forEach(eventLog => {
                         const logLi = document.createElement('li');
-                        logLi.textContent = `EventLog Type: ${eventLog.type}, Details: ${eventLog.details}`;
+                        logLi.textContent = `EventLog Type: ${eventLog.type}`;
                         streamLi.appendChild(logLi);
+
+                        if (eventLog.cloudTrailEvent) {
+                            const cloudTrailLi = document.createElement('li');
+                            cloudTrailLi.textContent = `CloudTrailEvent: ${JSON.stringify(eventLog.cloudTrailEvent)}`;
+                            streamLi.appendChild(cloudTrailLi);
+                        }
+
+                        if (eventLog.wafEvent) {
+                            const wafLi = document.createElement('li');
+                            wafLi.textContent = `WAFEvent: ${JSON.stringify(eventLog.wafEvent)}`;
+                            streamLi.appendChild(wafLi);
+                        }
+
+                        if (eventLog.flowLogEvent) {
+                            const flowLogLi = document.createElement('li');
+                            flowLogLi.textContent = `FlowLogEvent: ${JSON.stringify(eventLog.flowLogEvent)}`;
+                            streamLi.appendChild(flowLogLi);
+                        }
                     });
                 }
             });
         } catch (error) {
-            console.error('Error fetching dangerous events:', error);
+            console.error('Error fetching event streams:', error);
         }
     }
 
 
-    function pollData() {
-        fetchSystemInfo();
 
-        fetchEventStreams();
-        fetchDangerousEvents();
-
-        setTimeout(pollData, 1000);
+    async function pollData() {
+        try {
+            await fetchSystemInfo();
+            await fetchEventStreams();
+            await fetchDangerousEvents();
+        } catch (error) {
+            console.error('Error in pollData:', error);
+        } finally {
+            setTimeout(pollData, 1000);
+        }
     }
 
     pollData();
