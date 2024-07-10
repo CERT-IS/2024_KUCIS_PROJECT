@@ -261,6 +261,7 @@ nav .profile img {
     border-radius: 50%;
     object-fit: cover;
     cursor: pointer;
+    border: 1.4px solid var(--dark-gray);
 }
 nav .profile .profile-link {
     position: absolute;
@@ -324,6 +325,18 @@ main .breadcrumbs li a.divider {
     pointer-events: none;
 }
 
+#trending-down-icon {
+    display: none;
+}
+
+#trending-up-icon {
+    display: none;
+}
+
+#trending-flat-icon {
+    display: none;
+}
+
 main .info-data {
     margin-top: 36px;
     display: grid;
@@ -347,7 +360,8 @@ main .card .head h2 {
     font-weight: 600;
 }
 main .card .head p {
-    font-size: 14px;
+    font-size: 16px;
+    font-weight: 500;
 }
 main .card .head .material-symbols-outlined[data-icon="trending_up"] {
     font-size: 20px;
@@ -356,6 +370,10 @@ main .card .head .material-symbols-outlined[data-icon="trending_up"] {
 main .card .head .material-symbols-outlined[data-icon="trending_down"] {
     font-size: 20px;
     color: var(--blue);
+}
+main .card .head .material-symbols-outlined[data-icon="trending_flat"] {
+    font-size: 20px;
+    color: var(--dark-gray);
 }
 
 main .card .progress {
