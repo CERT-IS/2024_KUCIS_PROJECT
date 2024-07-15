@@ -54,6 +54,7 @@ public class EventDetectService {
                     .build());
 
         eventStream.getQueue().add(event);
+        // 처음 감지된 보안 이벤트의 경우 - EventStream을 생성한 뒤, 이벤트 로그를 추가한다.
 
         return Mono.just(event);
     }

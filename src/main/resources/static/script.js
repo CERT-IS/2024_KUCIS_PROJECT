@@ -123,14 +123,15 @@ document.addEventListener("DOMContentLoaded", function() {
 
             document.getElementById('os-info').textContent = `Available Processors: ${data.availableProcessors}`;
             document.getElementById('cpu-info').textContent = `Tasks awaiting Execution Average Count: ${data.systemLoadAverage}`;
-            document.getElementById('jvm-info').textContent = `JVM Uptime(ms): ${data.jvmUptime}`;
-            document.getElementById('memory-info').textContent = `Free Memory: ${data.freeMemory}`;
-            document.getElementById('disk-info').textContent = `Used Heap Memory: ${data.usedHeapMemory}`;
+            document.getElementById('jvm-info').textContent = `JVM Uptime: ${data.jvmUptime} (ms)`;
+            document.getElementById('memory-info').textContent = `Free Memory: ${data.freeMemory} / ${data.totalMemory} ${data.freeMemoryPercentage}`;
+            document.getElementById('disk-info').textContent = `Used Heap Memory: ${data.usedHeapMemory} / ${data.maxHeapMemory} ${data.usedHeapPercentage}`;
 
         } catch (error) {
             console.error('Error fetching system info:', error);
         }
     }
+
 
     async function fetchEventStreams() {
         try {

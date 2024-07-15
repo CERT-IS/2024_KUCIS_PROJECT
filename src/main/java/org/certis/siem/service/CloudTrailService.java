@@ -71,6 +71,7 @@ public class CloudTrailService {
                         return cloudTrailRepository.saveAll(events);
 
                 })
+                .doOnError(e -> log.error("error : cant saving logs (S3 to Elasticsearch)", e))
                 .then();
     }
 

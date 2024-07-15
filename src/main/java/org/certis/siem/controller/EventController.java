@@ -37,16 +37,17 @@ public class EventController {
     @PostMapping("/dummy")
     public Mono<String> registerDummy() {
         EventLog eventLog1 = EventLog.builder()
-                .type("Type1:Event")
+                .type("Event-CloudTrail-ConsoleLogin")
                 .build();
 
         EventLog eventLog2 = EventLog.builder()
-                .type("Type2:Event")
+                .type("Event-VPC FlowLog-SQL Injection")
                 .build();
 
         EventLog eventLog3 = EventLog.builder()
-                .type("Type3:Event")
+                .type("Event-WAF-SQL Injection")
                 .build();
+
 
         eventDetectService.register(eventLog1).subscribe();
         eventDetectService.register(eventLog2).subscribe();
