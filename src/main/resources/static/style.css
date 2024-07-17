@@ -325,15 +325,51 @@ main .breadcrumbs li a.divider {
     pointer-events: none;
 }
 
-#trending-down-icon {
+#trending-down-os {
     display: none;
 }
 
-#trending-up-icon {
+#trending-up-os {
     display: none;
 }
 
-#trending-flat-icon {
+#trending-flat-os {
+    display: none;
+}
+
+#trending-down-cpu {
+    display: none;
+}
+
+#trending-up-cpu {
+    display: none;
+}
+
+#trending-flat-cpu {
+    display: none;
+}
+
+#trending-down-memory {
+    display: none;
+}
+
+#trending-up-memory {
+    display: none;
+}
+
+#trending-flat-memory {
+    display: none;
+}
+
+#trending-down-disk {
+    display: none;
+}
+
+#trending-up-disk {
+    display: none;
+}
+
+#trending-flat-disk {
     display: none;
 }
 
