@@ -325,6 +325,32 @@ main .breadcrumbs li a.divider {
     pointer-events: none;
 }
 
+main .submit button{
+    padding: 4px 20px;
+    background: var(--blue);
+    border-radius: 5px;
+    color: var(--light);
+    cursor: pointer;
+    border: none;
+    display: flex;
+    margin-left: auto;
+    justify-content: flex-end;
+    margin-top: -22px;
+    transition: all .3s ease;
+}
+main .submit button:hover {
+    background: var(--dark-blue);
+}
+main .submit button .material-symbols-outlined {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 6px;
+    font-size: 20px;
+    color: var(--light);
+}
+
+
 #trending-down-os {
     display: none;
 }
