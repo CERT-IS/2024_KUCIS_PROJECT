@@ -261,6 +261,7 @@ nav .profile img {
     border-radius: 50%;
     object-fit: cover;
     cursor: pointer;
+    border: 1.4px solid var(--dark-gray);
 }
 nav .profile .profile-link {
     position: absolute;
@@ -324,6 +325,80 @@ main .breadcrumbs li a.divider {
     pointer-events: none;
 }
 
+main .submit button{
+    padding: 4px 20px;
+    background: var(--blue);
+    border-radius: 5px;
+    color: var(--light);
+    cursor: pointer;
+    border: none;
+    display: flex;
+    margin-left: auto;
+    justify-content: flex-end;
+    margin-top: -22px;
+    transition: all .3s ease;
+}
+main .submit button:hover {
+    background: var(--dark-blue);
+}
+main .submit button .material-symbols-outlined {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 6px;
+    font-size: 20px;
+    color: var(--light);
+}
+
+
+#trending-down-os {
+    display: none;
+}
+
+#trending-up-os {
+    display: none;
+}
+
+#trending-flat-os {
+    display: none;
+}
+
+#trending-down-cpu {
+    display: none;
+}
+
+#trending-up-cpu {
+    display: none;
+}
+
+#trending-flat-cpu {
+    display: none;
+}
+
+#trending-down-memory {
+    display: none;
+}
+
+#trending-up-memory {
+    display: none;
+}
+
+#trending-flat-memory {
+    display: none;
+}
+
+#trending-down-disk {
+    display: none;
+}
+
+#trending-up-disk {
+    display: none;
+}
+
+#trending-flat-disk {
+    display: none;
+}
+
 main .info-data {
     margin-top: 36px;
     display: grid;
@@ -347,7 +422,8 @@ main .card .head h2 {
     font-weight: 600;
 }
 main .card .head p {
-    font-size: 14px;
+    font-size: 16px;
+    font-weight: 500;
 }
 main .card .head .material-symbols-outlined[data-icon="trending_up"] {
     font-size: 20px;
@@ -356,6 +432,10 @@ main .card .head .material-symbols-outlined[data-icon="trending_up"] {
 main .card .head .material-symbols-outlined[data-icon="trending_down"] {
     font-size: 20px;
     color: var(--blue);
+}
+main .card .head .material-symbols-outlined[data-icon="trending_flat"] {
+    font-size: 20px;
+    color: var(--dark-gray);
 }
 
 main .card .progress {
