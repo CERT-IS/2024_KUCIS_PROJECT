@@ -37,6 +37,15 @@ dependencies {
 	//aws
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 
+	// OpenHTMLtoPDF
+	implementation 'com.openhtmltopdf:openhtmltopdf-pdfbox:1.0.10'
+
+	// PDFBox Core Library
+	implementation 'org.apache.pdfbox:pdfbox:2.0.29'
+	// PDFBox FontBox
+	implementation 'org.apache.pdfbox:fontbox:2.0.29'
+	// PDFBox Tools (optional, for command line tools)
+	implementation 'org.apache.pdfbox:pdfbox-tools:2.0.29'
 }
 
 tasks.named('test') {

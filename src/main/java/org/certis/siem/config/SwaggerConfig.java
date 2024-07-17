@@ -11,21 +11,11 @@ import org.springframework.context.annotation.Configuration;
 public class SwaggerConfig {
 
     @Bean
-    public GroupedOpenApi elasticOpenApi(@Value("${springdoc.version}") String appVersion) {
-        String[] paths = { "/elastic-cluster/**" };
+    public GroupedOpenApi OpenApi() {
+        String[] paths = { "/**" };
         return GroupedOpenApi.builder().
-                group("elasticsearch")
-                .addOpenApiCustomizer(openApi -> openApi.info(new Info().title("Elasticsearch API").version(appVersion)))
-                .pathsToMatch(paths)
-                .build();
-    }
-
-    @Bean
-    public GroupedOpenApi movieOpenApi(@Value("${springdoc.version}") String appVersion) {
-        String[] paths = { "/movie/**" };
-        return GroupedOpenApi.builder().
-                group("movies")
-                .addOpenApiCustomizer(openApi -> openApi.info(new Info().title("Movie API").version(appVersion)))
+                group("siem")
+                .addOpenApiCustomizer(openApi -> openApi.info(new Info().title("System API")))
                 .pathsToMatch(paths)
                 .build();
     }

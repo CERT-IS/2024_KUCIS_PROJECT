@@ -2,8 +2,8 @@ package org.certis.siem.controller;
 
 import com.sun.management.OperatingSystemMXBean;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
 import java.lang.management.ManagementFactory;
@@ -14,35 +14,49 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
+@RequestMapping("/system")
 public class SystemInfoController {
 
-    @GetMapping("/system-info")
+    @GetMapping("/info")
     public Mono<Map<String ,Object>> getSystemInfo() {
         return Mono.fromSupplier(() -> {
             Map<String, Object> systemInfo = new HashMap<>();
-
             OperatingSystemMXBean osBean = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class);
 
-            // CPU - 가용 프로세서(코어)의 수와 평균 부하(실행 대기중인 Task의 평균 수)
             systemInfo.put("availableProcessors", osBean.getAvailableProcessors());
             systemInfo.put("systemLoadAverage", osBean.getSystemLoadAverage());
+            // 실행 대기중인 Task의 평균 수
 
-            // memory - 전체 물리 메모리와 가용 물리 메모리
-            systemInfo.put("totalPhysicalMemory", osBean.getTotalPhysicalMemorySize());
-            systemInfo.put("freePhysicalMemory", osBean.getFreePhysicalMemorySize());
-
-            // JVM 실행부터 현재까지 ms초, 현재 사용중인 힙 메모리의 양, 힙 메모리의 최대 크기
+            long freeMemory = osBean.getFreePhysicalMemorySize();
+            long totalMemory = osBean.getTotalPhysicalMemorySize();
+            double freeMemoryPercentage = ((double) freeMemory / totalMemory) * 100;
+            systemInfo.put("freeMemory", formatMemory(freeMemory));
+            systemInfo.put("totalMemory", formatMemory(totalMemory));
+            systemInfo.put("freeMemoryPercentage", String.format(" (%.2f%%)", freeMemoryPercentage));
 
             RuntimeMXBean runtimeMXBean = ManagementFactory.getRuntimeMXBean();
             systemInfo.put("jvmUptime", runtimeMXBean.getUptime());
 
             MemoryMXBean memoryMXBean = ManagementFactory.getMemoryMXBean();
             MemoryUsage heapMemoryUsage = memoryMXBean.getHeapMemoryUsage();
-            systemInfo.put("usedHeapMemory", heapMemoryUsage.getUsed());
-            systemInfo.put("maxHeapMemory", heapMemoryUsage.getMax());
+            long usedHeapMemory = heapMemoryUsage.getUsed();
+            long maxHeapMemory = heapMemoryUsage.getMax();
+            double usedHeapPercentage = ((double) usedHeapMemory / maxHeapMemory) * 100;
+            systemInfo.put("usedHeapMemory", formatMemory(usedHeapMemory));
+            systemInfo.put("maxHeapMemory",  formatMemory(maxHeapMemory));
+            systemInfo.put("usedHeapPercentage",  String.format(" (%.2f%%)", usedHeapPercentage));
+
 
             return systemInfo;
         });
     }
-}
 
+    private String formatMemory(long bytes) {
+        if (bytes < 1024) {
+            return bytes + " B";
+        }
+        int exp = (int) (Math.log(bytes) / Math.log(1024));
+        String pre = "KMGTPE".charAt(exp - 1) + "";
+        return String.format("%.1f %sB", bytes / Math.pow(1024, exp), pre);
+    }
+}

@@ -5,21 +5,19 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ResponseElements {
-    @JsonProperty("x-amz-server-side-encryption-aws-kms-key-id")
-    private String xAmzServerSideEncryptionAwsKmsKeyId;
+public class CloudTrailEventList {
 
-    @JsonProperty("x-amz-server-side-encryption")
-    private String xAmzServerSideEncryption;
-
-    @JsonProperty("x-amz-server-side-encryption-context")
-    private String xAmzServerSideEncryptionContext;
+    @JsonProperty("Records")
+    private List<CloudTrailEvent> Records;
 }

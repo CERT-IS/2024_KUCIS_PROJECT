@@ -1,4 +1,4 @@
-package org.certis.siem.entity.CloudTrail;
+package org.certis.siem.entity.WAF;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserIdentity {
-    private String type;
-    private String invokedBy;
+public class Header {
+
+    private String name;
+    private String value;
 }

@@ -115,56 +115,123 @@ document.addEventListener("DOMContentLoaded", function() {
         item.style.setProperty('--value', item.dataset.value);
     });
 
-    const ctx = document.getElementById('myChart');
 
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-            datasets: [{
-                label: '# of Votes',
-                data: [12, 19, 3, 5, 2, 3],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
+    async function fetchSystemInfo() {
+        try {
+            const response = await fetch('/system/info');
+            const data = await response.json();
+
+            document.getElementById('os-info').textContent = `Available Processors: ${data.availableProcessors}`;
+            document.getElementById('cpu-info').textContent = `Tasks awaiting Execution Average Count: ${data.systemLoadAverage}`;
+            document.getElementById('jvm-info').textContent = `JVM Uptime: ${data.jvmUptime} (ms)`;
+            document.getElementById('memory-info').textContent = `Free Memory: ${data.freeMemory} / ${data.totalMemory} ${data.freeMemoryPercentage}`;
+            document.getElementById('disk-info').textContent = `Used Heap Memory: ${data.usedHeapMemory} / ${data.maxHeapMemory} ${data.usedHeapPercentage}`;
+
+        } catch (error) {
+            console.error('Error fetching system info:', error);
+        }
+    }
+
+
+    async function fetchEventStreams() {
+        try {
+            const response = await fetch('/detect');
+            const eventStreams = await response.json();
+            const eventStreamsElement = document.getElementById('event-streams');
+            eventStreamsElement.innerHTML = '';
+
+            eventStreams.forEach(eventStream => {
+                const streamLi = document.createElement('li');
+                streamLi.textContent = `ID: ${eventStream.id}, Type: ${eventStream.type}, Level: ${eventStream.level}`;
+                eventStreamsElement.appendChild(streamLi);
+
+                if (eventStream.queue) {
+                    eventStream.queue.forEach(eventLog => {
+                        const logLi = document.createElement('li');
+                        logLi.textContent = `EventLog Type: ${eventLog.type}`;
+                        streamLi.appendChild(logLi);
+
+                        if (eventLog.cloudTrailEvent) {
+                            const cloudTrailLi = document.createElement('li');
+                            cloudTrailLi.textContent = `CloudTrailEvent: ${JSON.stringify(eventLog.cloudTrailEvent)}`;
+                            streamLi.appendChild(cloudTrailLi);
+                        }
+
+                        if (eventLog.wafEvent) {
+                            const wafLi = document.createElement('li');
+                            wafLi.textContent = `WAFEvent: ${JSON.stringify(eventLog.wafEvent)}`;
+                            streamLi.appendChild(wafLi);
+                        }
+
+                        if (eventLog.flowLogEvent) {
+                            const flowLogLi = document.createElement('li');
+                            flowLogLi.textContent = `FlowLogEvent: ${JSON.stringify(eventLog.flowLogEvent)}`;
+                            streamLi.appendChild(flowLogLi);
+                        }
+                    });
                 }
-            }
+            });
+        } catch (error) {
+            console.error('Error fetching event streams:', error);
         }
-    });
-
-    function fetchSystemInfo() {
-        fetch('/system-info')
-            .then(response => response.json())
-            .then(data => displaySystemInfo(data))
-            .catch(error => console.error('Error fetching system info:', error));
     }
 
-    function displaySystemInfo(data) {
-        const systemInfoContainer = document.getElementById('system-info-container');
+    async function fetchDangerousEvents() {
+        try {
+            const response = await fetch('/detect/dangrous');
+            const dangerousEvents = await response.json();
+            const dangerousEventsElement = document.getElementById('dangerous-events');
+            dangerousEventsElement.innerHTML = '';
 
-        if (!systemInfoContainer) {
-            console.error('System info container not found');
-            return;
+            dangerousEvents.forEach(eventStream => {
+                const streamLi = document.createElement('li');
+                streamLi.textContent = `ID: ${eventStream.id}, Type: ${eventStream.type}, Level: ${eventStream.level}`;
+                dangerousEventsElement.appendChild(streamLi);
+
+                if (eventStream.queue) {
+                    eventStream.queue.forEach(eventLog => {
+                        const logLi = document.createElement('li');
+                        logLi.textContent = `EventLog Type: ${eventLog.type}`;
+                        streamLi.appendChild(logLi);
+
+                        if (eventLog.cloudTrailEvent) {
+                            const cloudTrailLi = document.createElement('li');
+                            cloudTrailLi.textContent = `CloudTrailEvent: ${JSON.stringify(eventLog.cloudTrailEvent)}`;
+                            streamLi.appendChild(cloudTrailLi);
+                        }
+
+                        if (eventLog.wafEvent) {
+                            const wafLi = document.createElement('li');
+                            wafLi.textContent = `WAFEvent: ${JSON.stringify(eventLog.wafEvent)}`;
+                            streamLi.appendChild(wafLi);
+                        }
+
+                        if (eventLog.flowLogEvent) {
+                            const flowLogLi = document.createElement('li');
+                            flowLogLi.textContent = `FlowLogEvent: ${JSON.stringify(eventLog.flowLogEvent)}`;
+                            streamLi.appendChild(flowLogLi);
+                        }
+                    });
+                }
+            });
+        } catch (error) {
+            console.error('Error fetching event streams:', error);
         }
-
-        systemInfoContainer.innerHTML = `
-            <h3>System Information</h3>
-            <ul>
-                <li>Available Processors: ${data.availableProcessors}</li>
-                <li>System Load Average: ${data.systemLoadAverage}</li>
-                <li>Total Physical Memory: ${data.totalPhysicalMemory}</li>
-                <li>Free Physical Memory: ${data.freePhysicalMemory}</li>
-                <li>JVM Uptime: ${data.jvmUptime} ms</li>
-                <li>Used Heap Memory: ${data.usedHeapMemory}</li>
-                <li>Max Heap Memory: ${data.maxHeapMemory}</li>
-            </ul>
-        `;
     }
 
-    fetchSystemInfo();
-    setInterval(fetchSystemInfo, 1000);
+
+
+    async function pollData() {
+        try {
+            await fetchSystemInfo();
+            await fetchEventStreams();
+            await fetchDangerousEvents();
+        } catch (error) {
+            console.error('Error in pollData:', error);
+        } finally {
+            setTimeout(pollData, 1000);
+        }
+    }
+
+    pollData();
 });

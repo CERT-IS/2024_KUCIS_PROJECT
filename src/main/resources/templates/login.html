@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>침해사고보고서</h1>
+    <form>
+        <label for="incident-date">침해사고 발생일시:</label>
+        <input type="datetime-local" id="incident-date" name="incident-date" required>
+
+        <label for="reporter">보고자: </label>
+        <input type="text" id="reporter" name="reporter" required>
+
+        <label for="report-date">보고일시:</label>
+        <input type="datetime-local" id="report-date" name="report-date" required>
+
+        <label for="incident-details">사고내용 (발견사항, 피해내용 등):</label>
+        <textarea id="incident-details" name="incident-details" rows="5" required></textarea>
+
+        <label for="response-details">사고대응 경과 내용:</label>
+        <textarea id="response-details" name="response-details" rows="5" required></textarea>
+
+        <label for="response-time">사고대응까지의 소요시간:</label>
+        <input type="text" id="response-time" name="response-time" required>
+
+        <button type="submit">저장</button>
+    </form>
+</div>
+</body>
+</html>

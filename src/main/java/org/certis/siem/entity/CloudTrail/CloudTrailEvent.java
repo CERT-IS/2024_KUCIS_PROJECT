@@ -1,5 +1,6 @@
 package org.certis.siem.entity.CloudTrail;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,6 +9,9 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
+
+import java.util.List;
+import java.util.Map;
 
 @Data
 @NoArgsConstructor
@@ -57,4 +61,13 @@ public class CloudTrailEvent {
     private TlsDetails tlsDetails;
 
     private boolean sessionCredentialFromConsole;
+
+    @JsonProperty("additionalEventData")
+    private Map<String, Object> additionalEventData;
+
+    @JsonProperty("resources")
+    private List<Resource> resources;
+
+    private String sharedEventID;
+    private String vpcEndpointId;
 }
