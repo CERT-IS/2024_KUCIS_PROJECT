@@ -1,0 +1,89 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
+* {
+    font-family: "Open Sans", sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --gray: #F1F0F6;
+    --dark-gray: #8D8D8D;
+    --light: #fff;
+    --dark: #000;
+    --green: #81D43A;
+    --light-green: #E3FFCB;
+    --blue: #1775F1;
+    --light-blue: #D0E4FF;
+    --dark-blue: #0C5FCD;
+    --red: #FC3B56;
+}
+
+
+body {
+    background-color: var(--gray);
+    margin: 0;
+    padding: 0;
+}
+.container {
+    width: 60%;
+    margin: 50px auto;
+    background: var(--light);
+    padding: 30px;
+    box-shadow: 0, 0, 10px, var(--dark);
+}
+h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+input[type="text"], textarea, select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid var(--dark-gray);
+    border-radius: 4px;
+    font-size: 14px;
+}
+textarea {
+    resize: vertical;
+}
+.radio-group, .file-format, .trigger-group {
+    margin-bottom: 20px;
+}
+.radio-group label, .trigger-group label {
+    display: inline-block;
+    margin-right: 20px;
+    font-weight: normal;
+}
+.radio-group input, .trigger-group input {
+    margin-right: 10px;
+}
+
+
+button {
+    padding: 8px 18px;
+    background-color: var(--blue);
+    color: var(--light);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+button:hover {
+    background-color: var(--dark-blue);
+}
+.flex-row {
+    display: flex;
+    align-items: center;
+}
+.flex-row input[type="text"] {
+    margin-right: 10px;
+    width: auto;
+    flex-grow: 1;
+}
