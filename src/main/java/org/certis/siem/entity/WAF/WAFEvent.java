@@ -5,10 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.elasticsearch.annotations.Document;
-import org.springframework.data.elasticsearch.annotations.Field;
-import org.springframework.data.elasticsearch.annotations.FieldType;
+
 
 import java.util.List;
 
@@ -16,9 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Document(indexName = "waf-event-store")
 public class WAFEvent {
-    @Id
     private Long id;
 
     private long timestamp;
@@ -37,26 +32,20 @@ public class WAFEvent {
     private String httpVersion;
     private String httpMethod;
 
-    @Field(type = FieldType.Nested)
     private List<Header> headers;
 
     // RateBasedRuleLog fields
-    @Field(type = FieldType.Nested)
     private List<RateBasedRule> rateBasedRuleList;
 
 
     // SQLiDetectionLog fields
-    @Field(type = FieldType.Nested)
     private List<Label> labels;
 
-    @Field(type = FieldType.Nested)
     private List<Condition> terminatingRuleMatchDetails;
 
 
     // CaptchaLog fields
-    @Field(type = FieldType.Nested)
     private List<Header> requestHeadersInserted;
 
-    @Field(type = FieldType.Nested)
     private CaptchaResponse captchaResponse;
 }

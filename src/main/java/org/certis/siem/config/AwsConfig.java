@@ -1,5 +1,6 @@
 package org.certis.siem.config;
 
+import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
@@ -9,15 +10,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class AwsS3Config {
+public class AwsConfig {
 
-    @Value("${cloud.aws.s3.credentials.accessKey}")
+    @Value("${cloud.aws.credentials.accessKey}")
     private String accessKey;
 
-    @Value("${cloud.aws.s3.credentials.secretKey}")
+    @Value("${cloud.aws.credentials.secretKey}")
     private String secretKey;
 
-    @Value("${cloud.aws.s3.region.static}")
+    @Value("${cloud.aws.region}")
     private String region;
 
     @Bean
@@ -31,5 +32,11 @@ public class AwsS3Config {
                 .withRegion(region)
                 .withCredentials(new AWSStaticCredentialsProvider(basicAWSCredentials))
                 .build();
+    }
+
+    @Bean
+    public AWSCredentialsProvider customCredentialsProvider() {
+        System.out.println("Using AWS credentials for access.");
+        return new AWSStaticCredentialsProvider(new BasicAWSCredentials(accessKey, secretKey));
     }
 }

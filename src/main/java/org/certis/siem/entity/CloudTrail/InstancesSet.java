@@ -4,8 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.elasticsearch.annotations.Field;
-import org.springframework.data.elasticsearch.annotations.FieldType;
+
 
 import java.util.List;
 
@@ -14,6 +13,6 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class InstancesSet {
-    @Field(type = FieldType.Nested)
+
     private List<Item> items;
 }

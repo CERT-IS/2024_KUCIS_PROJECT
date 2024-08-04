@@ -4,8 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.elasticsearch.annotations.Field;
-import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import java.util.List;
 
@@ -20,6 +18,5 @@ class RateBasedRule {
     private int maxRateAllowed;
     private int evaluationWindowSec;
 
-    @Field(type = FieldType.Nested)
     private List<CustomValue> customValues;
 }

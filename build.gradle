@@ -23,7 +23,6 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 	compileOnly 'org.projectlombok:lombok'
@@ -36,6 +35,12 @@ dependencies {
 	implementation 'org.springdoc:springdoc-openapi-starter-webflux-ui:2.1.0'
 	//aws
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
+	// opensearch
+	implementation 'org.opensearch.client:opensearch-java:2.11.1'
+
+	// httpclient5
+	implementation 'org.apache.httpcomponents.client5:httpclient5:5.3.1'
 
 	// OpenHTMLtoPDF
 	implementation 'com.openhtmltopdf:openhtmltopdf-pdfbox:1.0.10'

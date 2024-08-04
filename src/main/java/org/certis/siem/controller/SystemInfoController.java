@@ -46,7 +46,6 @@ public class SystemInfoController {
             systemInfo.put("maxHeapMemory",  formatMemory(maxHeapMemory));
             systemInfo.put("usedHeapPercentage",  String.format(" (%.2f%%)", usedHeapPercentage));
 
-
             return systemInfo;
         });
     }
