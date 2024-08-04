@@ -23,4 +23,10 @@ public class DashBoardController {
     public String main(){
         return "index";
     }
+
+
+    @GetMapping("/report")
+    public String report(){
+        return "report";
+    }
 }

@@ -1,6 +1,6 @@
 package org.certis.siem.controller;
 
-import org.certis.siem.PdfRequest;
+import org.certis.siem.utils.PdfRequest;
 import org.certis.siem.service.PdfService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;

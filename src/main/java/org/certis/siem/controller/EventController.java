@@ -24,7 +24,6 @@ public class EventController {
 
     @GetMapping("/detect")
     public Mono<List<EventStream>> getEvents() {
-        System.out.println("getEvents");
         return eventDetectService.getEventStreams().collectList();
     }
 

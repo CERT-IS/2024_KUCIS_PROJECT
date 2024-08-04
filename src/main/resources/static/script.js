@@ -116,22 +116,144 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
 
+    var spanElments = document.querySelectorAll('.progress');
+
+    spanElments.forEach(function(spanElment) {
+        var spanText = spanElment.textContent;
+        spanElment.setAttribute('data-value', spanText);
+    });
+
+
+    let previousProcessors = 0;
+    let previousLoadAverage = 0;
+    let previousMemory = 0;
+    let previousHeapMemory = 0;
+
+    function updateDiskInfo(data) {
+        const currentProcessors = data.availableProcessors;
+        const currentLoadAverage = data.systemLoadAverage;
+        const currentMemory = data.freeMemory;
+        const currentHeapMemory = data.usedHeapMemory;
+
+        const trendingDownOs = document.getElementById('trending-down-os');
+        const trendingUpOs = docoument.getElementById('trending-up-os');
+        const trendingFlatOs = document.getElementById('trending-flat-os');
+
+        const trendingDownCpu = document.getElementById('trending-down-cpu');
+        const trendingUpCpu = docoument.getElementById('trending-up-cpu');
+        const trendingFlatCpu = document.getElementById('trending-flat-cpu');
+
+        const trendingDownMemory = document.getElementById('trending-down-memory');
+        const trendingUpMemory = docoument.getElementById('trending-up-memory');
+        const trendingFlatMemory = document.getElementById('trending-flat-memory');
+
+        const trendingDownDisk = document.getElementById('trending-down-disk');
+        const trendingUpDisk = docoument.getElementById('trending-up-disk');
+        const trendingFlatDisk = document.getElementById('trending-flat-disk');
+
+        if (previousProcessors > currentProcessors) {
+            trendingDownOs.classList.remove('hidden');
+            trendingUpOs.classList.add('hidden');
+            trendingFlatOs.classList.add('hidden');
+        }
+        else if (previousProcessors < currentProcessors) {
+            trendingDownOs.classList.add('hidden');
+            trendingUpOs.classList.remove('hidden');
+            trendingFlatOs.classList.add('hidden');
+        }
+        else {
+            trendingDownOs.classList.add('hidden');
+            trendingUpOs.classList.add('hidden');
+            trendingFlatOs.classList.remove('hidden');
+        }
+
+        if (previousLoadAverage > currentLoadAverage) {
+            trendingDownCpu.classList.remove('hidden');
+            trendingUpCpu.classList.add('hidden');
+            trendingFlatCpu.classList.add('hidden');
+        }
+        else if (previousLoadAverage < currentLoadAverage) {
+            trendingDownCpu.classList.add('hidden');
+            trendingUpCpu.classList.remove('hidden');
+            trendingFlatCpu.classList.add('hidden');
+        }
+        else {
+            trendingDownCpu.classList.add('hidden');
+            trendingUpCpu.classList.add('hidden');
+            trendingFlatCpu.classList.remove('hidden');
+        }
+
+        if (previousMemory > currentMemory) {
+            trendingDownMemory.classList.remove('hidden');
+            trendingUpMemory.classList.add('hidden');
+            trendingFlatMemory.classList.add('hidden');
+        }
+        else if (previousMemory < currentMemory) {
+            trendingDownMemory.classList.add('hidden');
+            trendingUpMemory.classList.remove('hidden');
+            trendingFlatMemory.classList.add('hidden');
+        }
+        else {
+            trendingDownMemory.classList.add('hidden');
+            trendingUpMemory.classList.add('hidden');
+            trendingFlatMemory.classList.remove('hidden');
+        }
+
+        if (previousHeapMemory > currentHeapMemory) {
+            trendingDownDisk.classList.remove('hidden');
+            trendingUpDisk.classList.add('hidden');
+            trendingFlatDisk.classList.add('hidden');
+        }
+        else if (previousHeapMemory < currentHeapMemory) {
+            trendingDownDisk.classList.add('hidden');
+            trendingUpDisk.classList.remove('hidden');
+            trendingFlatDisk.classList.add('hidden');
+        }
+        else {
+            trendingDownDisk.classList.add('hidden');
+            trendingUpDisk.classList.add('hidden');
+            trendingFlatDisk.classList.remove('hidden');
+        }
+
+        previousProcessors = currentProcessors;
+        previousLoadAverage = currentLoadAverage;
+        previousMemory = currentMemory;
+        previousHeapMemory = currentHeapMemory;
+    }
+
+
+
     async function fetchSystemInfo() {
         try {
             const response = await fetch('/system/info');
             const data = await response.json();
 
-            document.getElementById('os-info').textContent = `Available Processors: ${data.availableProcessors}`;
-            document.getElementById('cpu-info').textContent = `Tasks awaiting Execution Average Count: ${data.systemLoadAverage}`;
-            document.getElementById('jvm-info').textContent = `JVM Uptime: ${data.jvmUptime} (ms)`;
-            document.getElementById('memory-info').textContent = `Free Memory: ${data.freeMemory} / ${data.totalMemory} ${data.freeMemoryPercentage}`;
-            document.getElementById('disk-info').textContent = `Used Heap Memory: ${data.usedHeapMemory} / ${data.maxHeapMemory} ${data.usedHeapPercentage}`;
+            const osInfo = document.getElementById('os-info');
+            const cpuInfo = document.getElementById('cpu-info');
+            const memoryInfo = document.getElementById('memory-info');
+            const memoryInfoFree = document.getElementById('memory-info-free');
+            const memoryInfoTotal = document.getElementById('memory-info-total');
+            const memoryInfoPercentage = document.getElementById('memory-info-percentage');
+            const diskInfo = document.getElementById('disk-info');
+            const diskInfoUsed = document.getElementById('disk-info-used');
+            const diskInfoMax = document.getElementById('disk-info-max');
+            const diskInfoPercentage = document.getElementById('disk-info-percentage');
+
+            if (osInfo) osInfo.textContent = `Available Processors: ${data.availableProcessors}`;
+            if (cpuInfo) cpuInfo.textContent = `실행 대기중인 Task의 평균 수: ${data.systemLoadAverage}`;
+            if (memoryInfo) memoryInfo.textContent = `Free Memory: ${data.freeMemory} / ${data.totalMemory}`;
+            if (memoryInfoFree) memoryInfoFree.textContent = `${data.freeMemory}`;
+            if (memoryInfoTotal) memoryInfoTotal.textContent = `${data.totalMemory}`;
+            if (memoryInfoPercentage) memoryInfoPercentage.textContent = `${data.freeMemoryPercentage}`;
+            if (diskInfo) diskInfo.textContent = `Used Heap Memory: ${data.usedHeapMemory} / ${data.maxHeapMemory}`;
+            if (diskInfoUsed) diskInfoUsed.textContent = `${data.usedHeapMemory}`;
+            if (diskInfoMax) diskInfoMax.textContent = `${data.maxHeapMemory}`;
+            if (diskInfoPercentage) diskInfoPercentage.textContent = `${data.usedHeapPercentage}`;
 
         } catch (error) {
             console.error('Error fetching system info:', error);
         }
     }
-
 
     async function fetchEventStreams() {
         try {

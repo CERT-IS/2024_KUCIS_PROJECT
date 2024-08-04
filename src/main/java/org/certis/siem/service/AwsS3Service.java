@@ -26,17 +26,11 @@ public class AwsS3Service {
     private final AmazonS3 amazonS3;
     private final String eventKey ="events:%s:%s-%s";
 
-    @Value("${client.name}")
+    @Value("${client.name:default}")
     private String name;
 
     @Value("${cloud.aws.bucket.cloudtrail}")
     private String cloudTrailBucket;
-
-    @Value("${cloud.aws.bucket.waf}")
-    private String WAFBucket;
-
-    @Value("${cloud.aws.bucket.flowlog}")
-    private String flowLogBucket;
 
 
     @Value("${cloud.aws.bucket.certis}")
@@ -72,7 +66,6 @@ public class AwsS3Service {
             S3Object s3object = amazonS3.getObject(cloudTrailBucket, key);
             S3ObjectInputStream objectInputStream = s3object.getObjectContent();
 
-            // Check if the object is gzipped
             boolean isGzipped = s3object.getObjectMetadata().getContentEncoding() != null
                     && s3object.getObjectMetadata().getContentEncoding().contains("gzip");
 
