@@ -531,14 +531,12 @@ main .content-data .dangerous-events {
     overflow-x: auto;
     scrollbar-width: none;
 }
-
 main .content-data .sys-info {
     width: 100%;
     max-width: 100%;
     overflow-x: auto;
     scrollbar-width: none;
 }
-
 main .content-data .event-streams {
     width: 50%;
     max-width: 50%;
@@ -546,6 +544,46 @@ main .content-data .event-streams {
     scrollbar-width: none;
 }
 
+main .event-data {
+    max-height: 500px;
+    overflow-y: auto;
+}
+main .event-data ul {
+    list-style: none;
+    padding-left: 0;
+}
+main .event-data ul li {
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: var(--gray);
+    border-left: 5px solid var(--blue);
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+main .event-data ul li ul {
+    padding-left: 20px;
+    margin-top: 10px;
+}
+main .event-data ul li ul li {
+    background-color: var(--light);
+    border-left: none;
+    box-shadow: none;
+    padding: 5px 10px;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+main .event-data .level-high {
+    border-left: 5px solid #ff4d4d;
+    background-color: #ffe5e5;
+}
+main .event-data .level-medium {
+    border-left: 5px solid #ffa500;
+    background-color: #fff4e5;
+}
+main .event-data .level-low {
+    border-left: 5px solid #4caf50;
+    background-color: #e5ffe5;
+}
 
 main form {
     margin-top: 10px;

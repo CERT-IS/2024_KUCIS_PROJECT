@@ -265,6 +265,15 @@ document.addEventListener("DOMContentLoaded", function() {
             eventStreams.forEach(eventStream => {
                 const streamLi = document.createElement('li');
                 streamLi.textContent = `ID: ${eventStream.id}, Type: ${eventStream.type}, Level: ${eventStream.level}`;
+
+                if (eventStream.level === '3') {
+                    streamLi.classList.add('level-high');
+                } else if (eventStream.level === '2') {
+                    streamLi.classList.add('level-medium');
+                } else if (eventStream.level === '1') {
+                    streamLi.classList.add('level-low');
+                }
+
                 eventStreamsElement.appendChild(streamLi);
 
                 if (eventStream.queue) {
@@ -308,6 +317,15 @@ document.addEventListener("DOMContentLoaded", function() {
             dangerousEvents.forEach(eventStream => {
                 const streamLi = document.createElement('li');
                 streamLi.textContent = `ID: ${eventStream.id}, Type: ${eventStream.type}, Level: ${eventStream.level}`;
+
+                if (eventStream.level === '3') {
+                    streamLi.classList.add('level-high');
+                } else if (eventStream.level === '2') {
+                    streamLi.classList.add('level-medium');
+                } else if (eventStream.level === '1') {
+                    streamLi.classList.add('level-low');
+                }
+
                 dangerousEventsElement.appendChild(streamLi);
 
                 if (eventStream.queue) {
