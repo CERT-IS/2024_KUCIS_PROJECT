@@ -7,81 +7,81 @@
     <title>Report PDF</title>
 </head>
 <body>
-    <div class="container">
-        <h1>Create Report Definition</h1>
-        <form>
-            <div>
-                <label for="name">Name</label>
-                <input type="text" id="name" name="name" value="주간보고서">
-                <small>Valid characters are a-z, A-Z, 0-9, (), [], _, -, and space.</small>
-            </div>
+<div class="container">
+    <h1>Create Report Definition</h1>
+    <form>
+        <div>
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" value="주간보고서">
+            <small>Valid characters are a-z, A-Z, 0-9, (), [], _, -, and space.</small>
+        </div>
 
-            <div>
-                <label for="description">Description (optional)</label>
-                <textarea id="description" name="description" rows="4" placeholder="Describe this report (e.g Morning daily reports for log traffic)"></textarea>
-            </div>
+        <div>
+            <label for="description">Description (optional)</label>
+            <textarea id="description" name="description" rows="4" placeholder="Describe this report (e.g Morning daily reports for log traffic)"></textarea>
+        </div>
 
-            <div class="radio-group">
-                <label>Report source</label>
-                <label><input type="radio" name="report_source" value="dashboard"> Dashboard</label>
-                <label><input type="radio" name="report_source" value="visualization"> Visualization</label>
-                <label><input type="radio" name="report_source" value="saved_search"> Saved search</label>
-                <label><input type="radio" name="report_source" value="notebook" checked> Notebook</label>
-            </div>
+        <div class="radio-group">
+            <label>Report source</label>
+            <label><input type="radio" name="report_source" value="dashboard"> Dashboard</label>
+            <label><input type="radio" name="report_source" value="visualization"> Visualization</label>
+            <label><input type="radio" name="report_source" value="saved_search"> Saved search</label>
+            <label><input type="radio" name="report_source" value="notebook" checked> Notebook</label>
+        </div>
 
+        <div>
+            <label for="notebook">Select notebook</label>
+            <select id="notebook" name="notebook">
+                <option value="security_report">Security Report</option>
+            </select>
+        </div>
+
+        <div class="file-format">
+            <label>File format</label>
+            <label><input type="radio" name="file_format" value="pdf" checked> PDF</label>
+            <label><input type="radio" name="file_format" value="png"> PNG</label>
+        </div>
+
+        <div class="trigger-group">
+            <label>Report trigger</label>
+            <label><input type="radio" name="report_trigger" value="on_demand"> On demand</label>
+            <label><input type="radio" name="report_trigger" value="schedule" checked> Schedule</label>
+        </div>
+
+        <div class="trigger-group">
+            <label>Request time</label>
+            <label><input type="radio" name="request_time" value="recurring" checked> Recurring</label>
+            <label><input type="radio" name="request_time" value="cron_based"> Cron based</label>
+        </div>
+
+        <div>
+            <label for="frequency">Frequency</label>
+            <select id="frequency" name="frequency">
+                <option value="by_interval">By interval</option>
+            </select>
+        </div>
+
+        <div class="flex-row">
             <div>
-                <label for="notebook">Select notebook</label>
-                <select id="notebook" name="notebook">
-                    <option value="security_report">Security Report</option>
+                <label for="every">Every</label>
+                <input type="text" id="every" name="every" value="7">
+            </div>
+            <div>
+                <label for="time_unit">Days</label>
+                <select id="time_unit" name="time_unit">
+                    <option value="days">Days</option>
+                    <option value="hours">Hours</option>
                 </select>
             </div>
+        </div>
 
-            <div class="file-format">
-                <label>File format</label>
-                <label><input type="radio" name="file_format" value="pdf" checked> PDF</label>
-                <label><input type="radio" name="file_format" value="png"> PNG</label>
-            </div>
+        <div>
+            <label for="start_time">Start time</label>
+            <input type="text" id="start_time" name="start_time" value="17:00">
+        </div>
 
-            <div class="trigger-group">
-                <label>Report trigger</label>
-                <label><input type="radio" name="report_trigger" value="on_demand"> On demand</label>
-                <label><input type="radio" name="report_trigger" value="schedule" checked> Schedule</label>
-            </div>
-
-            <div class="trigger-group">
-                <label>Request time</label>
-                <label><input type="radio" name="request_time" value="recurring" checked> Recurring</label>
-                <label><input type="radio" name="request_time" value="cron_based"> Cron based</label>
-            </div>
-
-            <div>
-                <label for="frequency">Frequency</label>
-                <select id="frequency" name="frequency">
-                    <option value="by_interval">By interval</option>
-                </select>
-            </div>
-
-            <div class="flex-row">
-                <div>
-                    <label for="every">Every</label>
-                    <input type="text" id="every" name="every" value="7">
-                </div>
-                <div>
-                    <label for="time_unit">Days</label>
-                    <select id="time_unit" name="time_unit">
-                        <option value="days">Days</option>
-                        <option value="hours">Hours</option>
-                    </select>
-                </div>
-            </div>
-
-            <div>
-                <label for="start_time">Start time</label>
-                <input type="text" id="start_time" name="start_time" value="17:00">
-            </div>
-
-            <button type="submit">Create Report</button>
-        </form>
-    </div>
+        <button type="submit">Create Report</button>
+    </form>
+</div>
 </body>
 </html>

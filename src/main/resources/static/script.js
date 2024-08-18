@@ -228,17 +228,27 @@ document.addEventListener("DOMContentLoaded", function() {
             const response = await fetch('/system/info');
             const data = await response.json();
 
-            document.getElementById('os-info').textContent = `Available Processors: ${data.availableProcessors}`;
-            document.getElementById('cpu-info').textContent = `Tasks awaiting Execution Average Count: ${data.systemLoadAverage}`;
-            document.getElementById('jvm-info').textContent = `JVM Uptime(ms): ${data.jvmUptime}`;
-            document.getElementById('memory-info').textContent = `Free Memory: ${data.freeMemory} / ${data.totalMemory} ${data.freeMemoryPercentage}`;
-            document.getElementById('memory-info-free').textContent = `${data.freeMemory}`;
-            document.getElementById('memory-info-total').textContent = `${data.totalMemory}`;
-            document.getElementById('memory-info-percentage').textContent = `${data.freeMemoryPercentage}`;
-            document.getElementById('disk-info').textContent = `Used Heap Memory: ${data.usedHeapMemory} / ${data.maxHeapMemory} ${data.usedHeapPercentage}`;
-            document.getElementById('disk-info-used').textContent = `${data.usedHeapMemory}`;
-            document.getElementById('disk-info-max').textContent = `${data.maxHeapMemory}`;
-            document.getElementById('disk-info-percentage').textContent = `${data.usedHeapPercentage}`;
+            const osInfo = document.getElementById('os-info');
+            const cpuInfo = document.getElementById('cpu-info');
+            const memoryInfo = document.getElementById('memory-info');
+            const memoryInfoFree = document.getElementById('memory-info-free');
+            const memoryInfoTotal = document.getElementById('memory-info-total');
+            const memoryInfoPercentage = document.getElementById('memory-info-percentage');
+            const diskInfo = document.getElementById('disk-info');
+            const diskInfoUsed = document.getElementById('disk-info-used');
+            const diskInfoMax = document.getElementById('disk-info-max');
+            const diskInfoPercentage = document.getElementById('disk-info-percentage');
+
+            if (osInfo) osInfo.textContent = `Available Processors: ${data.availableProcessors}`;
+            if (cpuInfo) cpuInfo.textContent = `실행 대기중인 Task의 평균 수: ${data.systemLoadAverage}`;
+            if (memoryInfo) memoryInfo.textContent = `Free Memory: ${data.freeMemory} / ${data.totalMemory}`;
+            if (memoryInfoFree) memoryInfoFree.textContent = `${data.freeMemory}`;
+            if (memoryInfoTotal) memoryInfoTotal.textContent = `${data.totalMemory}`;
+            if (memoryInfoPercentage) memoryInfoPercentage.textContent = `${data.freeMemoryPercentage}`;
+            if (diskInfo) diskInfo.textContent = `Used Heap Memory: ${data.usedHeapMemory} / ${data.maxHeapMemory}`;
+            if (diskInfoUsed) diskInfoUsed.textContent = `${data.usedHeapMemory}`;
+            if (diskInfoMax) diskInfoMax.textContent = `${data.maxHeapMemory}`;
+            if (diskInfoPercentage) diskInfoPercentage.textContent = `${data.usedHeapPercentage}`;
 
         } catch (error) {
             console.error('Error fetching system info:', error);
