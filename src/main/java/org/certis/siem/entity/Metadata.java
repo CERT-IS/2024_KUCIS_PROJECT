@@ -1,21 +1,21 @@
 package org.certis.siem.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.LocalDateTime;
 
-@AllArgsConstructor
-@NoArgsConstructor
 @Data
 @Builder
-@Table("eventStream")
-public class EventStream {
+@AllArgsConstructor
+@NoArgsConstructor
+@Table("metadata")
+public class Metadata {
     @Id
-    private Long id;
-    private String eventName; //
-    private String eventType; // cloud, web, waf
+    private String logGroup;
     private LocalDateTime timestamp;
-    private String logs;
 }

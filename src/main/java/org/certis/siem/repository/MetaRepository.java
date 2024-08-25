@@ -1,0 +1,12 @@
+package org.certis.siem.repository;
+
+import org.certis.siem.entity.Metadata;
+import org.springframework.data.r2dbc.repository.Query;
+import org.springframework.data.repository.reactive.ReactiveCrudRepository;
+import reactor.core.publisher.Mono;
+
+public interface MetaRepository extends ReactiveCrudRepository<Metadata, String> {
+
+    @Query("SELECT * FROM metadata WHERE LOG_GROUP = $1 LIMIT 2")
+    Mono<Metadata> findByLogGroup(String logGroup);
+}
