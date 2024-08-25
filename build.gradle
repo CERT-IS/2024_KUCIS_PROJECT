@@ -33,6 +33,7 @@ dependencies {
 
 	implementation 'org.apache.commons:commons-csv:1.8'
 	implementation 'org.springdoc:springdoc-openapi-starter-webflux-ui:2.1.0'
+
 	//aws
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 
@@ -51,6 +52,10 @@ dependencies {
 	implementation 'org.apache.pdfbox:fontbox:2.0.29'
 	// PDFBox Tools (optional, for command line tools)
 	implementation 'org.apache.pdfbox:pdfbox-tools:2.0.29'
+
+	implementation 'org.springframework.boot:spring-boot-starter-data-r2dbc'
+	implementation 'io.r2dbc:r2dbc-h2'
+	runtimeOnly 'com.h2database:h2'
 }
 
 tasks.named('test') {
