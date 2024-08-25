@@ -1,7 +1,6 @@
 package org.certis.siem.controller;
 
-import org.certis.siem.entity.dto.PdfRequest;
-import org.certis.siem.entity.dto.ReportRequest;
+import org.certis.siem.utils.PdfRequest;
 import org.certis.siem.service.PdfService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
@@ -27,15 +26,6 @@ public class PdfController {
     @Autowired
     private PdfService pdfService;
     private static final String TEMPLATE_DIR = "src/main/resources/templates/pdf/";
-
-
-    @PostMapping("/report")
-    public String createReport(@RequestBody ReportRequest reportRequest) {
-        System.out.println("Report Name: " + reportRequest.getName());
-        System.out.println("Description: " + reportRequest.getDescription());
-
-        return "Report created successfully!";
-    }
 
     @PostMapping("/template")
     public Mono<ResponseEntity<ByteArrayResource>> previewPdf(@RequestBody PdfRequest request) {

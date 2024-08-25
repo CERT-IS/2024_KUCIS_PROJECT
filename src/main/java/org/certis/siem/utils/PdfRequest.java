@@ -1,4 +1,4 @@
-package org.certis.siem.entity.dto;
+package org.certis.siem.utils;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
