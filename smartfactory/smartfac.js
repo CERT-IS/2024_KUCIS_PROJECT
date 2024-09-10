@@ -56,27 +56,6 @@ document.addEventListener('DOMContentLoaded', function() {
     setInterval(updatePercentages, 2000);
 
 
-    // list
-    // function getRandomValue() {
-    //     return Math.floor(Math.random() * (1500 - 800 + 1)) + 800;
-    // }
-
-    // function updateTotal() {
-    //     let aLine = getRandomValue();
-    //     let bLine = getRandomValue();
-    //     let cLine = getRandomValue();
-    //     let total = aLine + bLine + cLine;
-    
-    //     document.getElementById('a-line').innerText = aLine;
-    //     document.getElementById('b-line').innerText = bLine;
-    //     document.getElementById('c-line').innerText = cLine;
-    //     document.getElementById('lineTotal').innerText = total;
-    // }
-
-    // updateTotal();
-    // setInterval(updateTotal, 2000);
-
-
     // barChart
     const ctx2 = [
         document.getElementById('barChart1').getContext('2d'),
@@ -277,10 +256,17 @@ document.addEventListener('DOMContentLoaded', function() {
     
     setInterval(updateChart, 2000);
     
-    
-    
-
-
-
 
 });
+
+// login
+function login() {
+    var email = document.getElementById('email').value;
+    var password = document.getElementById('password').value;
+
+    if (email === 'admin' && password === 'admin') {
+        alert("Your right!!");
+    } else {
+        alert("Invalid Email ID or Password!");
+    }
+}
