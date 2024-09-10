@@ -11,6 +11,7 @@ body, html {
 
 /* header */
 .header {
+    position: relative;
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
@@ -22,8 +23,10 @@ body, html {
 }
 
 .header h1 {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
     margin: 0;
-    text-align: center;
     font-size: 24px;
 }
 
@@ -32,6 +35,7 @@ body, html {
     font-size: 14px;
     color: #888;
 }
+
 
 
 /* divs */
@@ -98,7 +102,76 @@ body, html {
 }
 
 
-/* div1-1 : Output Rate */
+/* div1-1 : login */
+.login-box {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.login-box img {
+    position: block;
+    width: 40px;
+    border-radius: 50%;
+    margin: 10px 100px 0px;
+}
+
+.login-box input[type="text"] {
+    margin-top: 10px;
+}
+
+.login-box input[type="text"],
+.login-box input[type="password"] {
+    position: block;
+    width: 300px;
+    padding: 12px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f4f4f4;
+    color: #3e2d29;
+    font-size: 12px;
+}
+
+.login-box input[type="text"]::placeholder,
+.login-box input[type="password"]::placeholder {
+    color: #3e2d29;
+}
+
+.login-box .remember-me {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: #3e2d29;
+    margin-bottom: 15px;
+    margin-left: 40px;
+    margin-right: 40px;
+}
+
+.login-box .remember-me input[type="checkbox"] {
+    margin-right: 5px;
+    transform: translate(0, 2px);
+}
+
+.login-box button {
+    width: 140px;
+    padding: 12px;
+    border: none;
+    background-color: #3e2d29;
+    color: white;
+    font-size: 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.login-box button:hover {
+    background-color: #2c1d18;
+}
+
+
+/* div1-2 : Output Rate */
 #circleChart {
     padding: 20px 20px;
     width: 10px;
@@ -114,31 +187,6 @@ body, html {
     font-size: 20px;
 }
 
-
-/* div1-2 : Indicated Output */
-.div1 table {
-    position: absolute;
-    bottom: -8px;
-    left: 15px;
-    margin: 20px auto;
-    border-collapse: collapse;
-    width: 60%;
-}
-
-.div1 td {
-    border: 2px solid white;
-    padding: 5px;
-    text-align: center;
-    background-color: #e0e0e0;
-}
-
-.div1 tr:nth-child(1) td:first-child,
-.div1 tr:nth-child(2) td:first-child,
-.div1 tr:nth-child(3) td:first-child,
-.div1 tr:nth-child(4) td:first-child {
-    background-color: #007BFF;
-    color: white;
-}
 
 
 /* div1-3 : Total output, div1-4 : Goals */

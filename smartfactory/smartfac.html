@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Monitoring System</title>
-    <link rel="stylesheet" href="/smartfac.css">
+    <link rel="stylesheet" href="smartfac.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
@@ -17,33 +17,24 @@
     <div class="grid-container">
         <!-- -------------------- -->
         <div class="div1">
+            <div class="login-box">
+                <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="User Icon">
+                <input type="text" id="email" placeholder="Email ID">
+                <input type="password" id="password" placeholder="Password">
+                <div class="remember-me">
+                    <label><input type="checkbox"> Remember me</label>
+                    <a href="#" style="color: #3e2d29; text-decoration: none;">Forgot Password?</a>
+                </div>
+                <button onclick="login()">LOGIN</button>
+                <p class="error" id="error-message"></p>
+            </div>
+        </div>
+
+        <div class="div1">
             <h1 class="title1">Output Rate</h1>
             <canvas id="circleChart" width="200px" height="200px"></canvas>
             <h2 class="percent total"></h2>
             <h3 class="percent"></h3>
-        </div>
-
-        <div class="div1">
-            <h1 class="title2">Indicated Output</h1>
-            <table width="100" height="100">
-                <tr>
-                    <td>Line</td>
-                    <td>Output</td>
-                </tr>
-                <tr>
-                    <td>A Line</td>
-                    <td id="a-line"></td>
-                </tr>
-                <tr>
-                    <td>B Line</td>
-                    <td id="b-line"></td>
-                </tr>
-                <tr>
-                    <td>C Line</td>
-                    <td id="c-line"></td>
-                </tr>
-            </table>
-            <h2 class="total" id="lineTotal"></h2>
         </div>
 
         <div class="div1">
@@ -83,7 +74,7 @@
         <!-- -------------------- -->
         <div class="div2">
             <span>REC</span>
-            <img src="/cctv1.png" alt="cctv" class="cctvImage">
+            <img src="cctv1.png" alt="cctv" class="cctvImage">
             <span class="cameraText">Camera 1</span>
         </div>
 
@@ -143,7 +134,7 @@
                 </div>
             </div>
             
-            <img src="/machine.png">
+            <img src="machine.png">
         </div>
         <!-- -------------------- -->
 
@@ -155,6 +146,6 @@
         <!-- -------------------- -->
     </div>
 
-    <script src="/smartfac.js"></script>
+    <script src="smartfac.js"></script>
 </body>
 </html>

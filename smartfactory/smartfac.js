@@ -57,24 +57,24 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     // list
-    function getRandomValue() {
-        return Math.floor(Math.random() * (1500 - 800 + 1)) + 800;
-    }
+    // function getRandomValue() {
+    //     return Math.floor(Math.random() * (1500 - 800 + 1)) + 800;
+    // }
 
-    function updateTotal() {
-        let aLine = getRandomValue();
-        let bLine = getRandomValue();
-        let cLine = getRandomValue();
-        let total = aLine + bLine + cLine;
+    // function updateTotal() {
+    //     let aLine = getRandomValue();
+    //     let bLine = getRandomValue();
+    //     let cLine = getRandomValue();
+    //     let total = aLine + bLine + cLine;
     
-        document.getElementById('a-line').innerText = aLine;
-        document.getElementById('b-line').innerText = bLine;
-        document.getElementById('c-line').innerText = cLine;
-        document.getElementById('lineTotal').innerText = total;
-    }
+    //     document.getElementById('a-line').innerText = aLine;
+    //     document.getElementById('b-line').innerText = bLine;
+    //     document.getElementById('c-line').innerText = cLine;
+    //     document.getElementById('lineTotal').innerText = total;
+    // }
 
-    updateTotal();
-    setInterval(updateTotal, 2000);
+    // updateTotal();
+    // setInterval(updateTotal, 2000);
 
 
     // barChart
@@ -172,7 +172,7 @@ document.addEventListener('DOMContentLoaded', function() {
         currentIndex = (currentIndex % totalImages) + 1;
     
         cctvImages.forEach((image) => {
-            image.src = `/cctv${currentIndex}.png`;
+            image.src = `cctv${currentIndex}.png`;
         });
     
         cameraTexts.forEach((text) => {
