@@ -4,41 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/style.css"> <!-- /style.css -->
     <title>DashBoard</title>
 </head>
 <body>
 <!-- SIDEBAR -->
 <section id="sidebar">
-    <a href="#" class="brand"><span class="material-symbols-outlined">sentiment_satisfied</span> AdminSite</a>
+    <a href="" class="brand"><span class="material-symbols-outlined">deployed_code</span> SIEMple</a>   <!-- /index.html -->
+
 
     <ul class="side-menu">
-        <li><a href="#" class="active"><span class="material-symbols-outlined">dashboard</span>Dashboard</a></li>
+        <li class="divider" data-text="dashboard">DashBoard</li>
+        <li><a href="" class="active"><span class="material-symbols-outlined">dashboard</span>Dashboard</a></li>   <!-- /index.html -->
         <li class="divider" data-text="main">Main</li>
-        <li>
-            <a href="#"><span class="material-symbols-outlined">inventory_2</span>Elements<span class="material-symbols-outlined" data-icon="chevron_right">chevron_right</span></a>
-            <ul class="side-dropdown">
-                <li><a href="#">Alert</a></li>
-                <li><a href="#">Badges</a></li>
-                <li><a href="#">Breadcrumbs</a></li>
-                <li><a href="#">Button</a></li>
-            </ul>
-        </li>
-        <li><a href="#"><span class="material-symbols-outlined">bar_chart</span>Charts</a></li>
-        <li><a href="#"><span class="material-symbols-outlined">widgets</span>Widgets</a></li>
+        <li><a href="/waf"><span class="material-symbols-outlined">bar_chart</span>WAF</a></li>   <!-- /waf.html -->
+        <li><a href="/handmade"><span class="material-symbols-outlined">widgets</span>HandMade</a></li>   <!-- /handmade.html -->
 
 
-        <li class="divider" data-text="table and forms">Table and forms</li>
-        <li><a href="#"><span class="material-symbols-outlined">table</span>Tables</a></li>
-        <li>
-            <a href="#"><span class="material-symbols-outlined">event_note</span>Forms<span class="material-symbols-outlined" data-icon="chevron_right">chevron_right</span></a>
-            <ul class="side-dropdown">
-                <li><a href="#">Basic</a></li>
-                <li><a href="#">Select</a></li>
-                <li><a href="#">Checkbox</a></li>
-                <li><a href="#">Radio</a></li>
-            </ul>
-        </li>
+        <li class="divider" data-text="search">Search</li>
+        <li><a href="/search1"><span class="material-symbols-outlined">search</span>Search1</a></li>   <!-- /search1.html -->
+        <li><a href="/search2"><span class="material-symbols-outlined">manage_search</span>Search2</a></li>   <!-- /search2.html -->
     </ul>
 </section>
 <!-- SIDEBAR -->
@@ -85,70 +70,63 @@
             <li class="divider">/</li>
             <li><a href="#" class="active">Dashboard</a></li>
         </ul>
-        <div class="submit">
-            <button class="submit-button" onclick="location.href='/report'"><span class="material-symbols-outlined" data-icon="picture_as_pdf">picture_as_pdf</span>Reporting to PDF</button>
-        </div>
-
+        <button class="submit-button" onclick="location.href='/report'"><span class="material-symbols-outlined" data-icon="picture_as_pdf">download</span>Generate Report</button> <!-- /report.html -->
 
         <div class="info-data">
             <div class="card">
                 <div class="head">
                     <div>
                         <h2>Operating System</h2>
-                        <p><span id="os-info">Loading...</span></p>
+                        <p><span id="os-info">Available Processors: 16</span></p>
                     </div>
                     <!-- <span class="material-symbols-outlined" data-icon="trending_up">trending_up</span> -->
                     <span id="trending-down-os" class="material-symbols-outlined hidden" data-icon="trending_down">trending_down</span>
                     <span id="trending-up-os" class="material-symbols-outlined hidden" data-icon="trending_up">trending_up</span>
                     <span id="trending-flat-os" class="material-symbols-outlined" data-icon="trending_flat">trending_flat</span>
                 </div>
-                <!-- <span class="progress" data-value="20%"></span>
-                <span class="label">20%</span> -->
             </div>
 
             <div class="card">
                 <div class="head">
                     <div>
                         <h2>CPU</h2>
-                        <p><span id="cpu-info">Loading...</span></p>
+                        <p><span id="cpu-info">실행 대기중인 Task의 평균 수: 0.94</span></p>
                     </div>
                     <!-- <span class="material-symbols-outlined" data-icon="trending_down">trending_down</span> -->
                     <span id="trending-down-cpu" class="material-symbols-outlined hidden" data-icon="trending_down">trending_down</span>
                     <span id="trending-up-cpu" class="material-symbols-outlined hidden" data-icon="trending_up">trending_up</span>
                     <span id="trending-flat-cpu" class="material-symbols-outlined" data-icon="trending_flat">trending_flat</span>
                 </div>
-                <!-- <span class="progress" data-value="66%"></span>
-                <span class="label">66%</span> -->
             </div>
 
             <div class="card">
                 <div class="head">
                     <div>
                         <h2>Memory</h2>
-                        <p><span id="memory-info">Loading...</span></p>
+                        <p><span id="memory-info">Free Memory: 2.6GB / 7.6GB</span></p>
                     </div>
                     <!-- <span class="material-symbols-outlined" data-icon="trending_up">trending_up</span> -->
                     <span id="trending-down-memory" class="material-symbols-outlined hidden" data-icon="trending_down">trending_down</span>
                     <span id="trending-up-memory" class="material-symbols-outlined hidden" data-icon="trending_up">trending_up</span>
                     <span id="trending-flat-memory" class="material-symbols-outlined" data-icon="trending_flat">trending_flat</span>
                 </div>
-                <span class="progress"></span>
-                <span class="label"><span id="memory-info-percentage">Loading...</span></span>
+                <span class="progress" data-value="33.69%"></span>
+                <span class="label"><span id="memory-info-percentage">33.69%</span></span>
             </div>
 
             <div class="card">
                 <div class="head">
                     <div>
                         <h2>Disk</h2>
-                        <p><span id="disk-info">Loading...</span></p>
+                        <p><span id="disk-info">Used Heap Memory: 110.4MB / 1.9GB</span></p>
                     </div>
                     <!-- <span class="material-symbols-outlined" data-icon="trending_down">trending_down</span> -->
                     <span id="trending-down-disk" class="material-symbols-outlined hidden" data-icon="trending_down">trending_down</span>
                     <span id="trending-up-disk" class="material-symbols-outlined hidden" data-icon="trending_up">trending_up</span>
                     <span id="trending-flat-disk" class="material-symbols-outlined" data-icon="trending_flat">trending_flat</span>
                 </div>
-                <span class="progress"></span>
-                <span class="label"><span id="disk-info-percentage">Loading...</span></span>
+                <span class="progress" data-value="5.64%"></span>
+                <span class="label"><span id="disk-info-percentage">5.64%</span></span>
             </div>
         </div>
 
@@ -165,37 +143,14 @@
                         </ul>
                     </div>
                 </div>
-                <div class="event-streams">
-                    <ul id="event-streams">
-                    </ul>
-                </div>
             </div>
         </div>
 
-        <div class="data">
-            <div class="content-data">
-                <div class="head">
-                    <h3>WAF Events</h3>
-                    <div class="menu">
-                        <span class="material-symbols-outlined" data-icon="more_horiz">more_horiz</span>
-                        <ul class="menu-link">
-                            <li><a href="#">Edit</a></li>
-                            <li><a href="#">Save</a></li>
-                            <li><a href="#">Remove</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="waf-events">
-                    <ul id="waf-events">
-                    </ul>
-                </div>
-            </div>
-        </div>
     </main>
     <!-- MAIN -->
 </section>
 <!-- NAVBAR -->
 
-<script src="/script.js"></script>
+<script src="/script.js"></script> <!-- /script.js -->
 </body>
 </html>

@@ -8,6 +8,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.time.LocalDateTime;
 
@@ -15,33 +16,58 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class BatchService {
 
+    private int count=0;
+    private final LocalDateTime defaultDate = LocalDateTime.of(2000, 11, 16, 0, 0);
     private final MetadataService metadataService;
-    private final EventRepository eventRepository;
 
     private final AccessLogsService accessLogsService;
     private final OpenSearchService openSearchService;
+    private final EventRepository eventRepository;
 
-    @Scheduled(fixedRate = 60 * 1000)  // 1min
+    @Scheduled(fixedRate = 5 * 1000)  // 5s
     public void checkForNewLogs() {
-        getLastProcessedTimestamp()
-                .flatMapMany(lastProcessedTimestamp ->
-                        Flux.concat(
-                                accessLogsService.processAccessLogs(lastProcessedTimestamp),
-                                openSearchService.processWAFLogs()
-                        )
-                )
-                .flatMap(event -> eventRepository.save(event))
-                .then(metadataService.updateTimestamp("aws-access-logs-groups", LocalDateTime.now()))
-                .then(metadataService.updateTimestamp("aws-waf-logs-groups", LocalDateTime.now()))
+        Mono<LocalDateTime> accessLogsTimestampMono = getLastProcessedTimestamp("aws-access-logs-groups")
+                .flatMap(accessLogsService::processAccessLogs)
+                .filter(latestTimestamp -> latestTimestamp != null)
+                .defaultIfEmpty(defaultDate);
 
-                .subscribe();
+        Mono<LocalDateTime> wafLogsTimestampMono = getLastProcessedTimestamp("aws-waf-logs-groups")
+                .flatMap(openSearchService::processWAFLogs)
+                .filter(latestTimestamp -> latestTimestamp != null)
+                .defaultIfEmpty(defaultDate);
+
+        Mono.zip(accessLogsTimestampMono, wafLogsTimestampMono)
+                .flatMap(tuple -> {
+                    LocalDateTime accessLogsTimestamp = tuple.getT1();
+                    LocalDateTime wafLogsTimestamp = tuple.getT2();
+                    System.out.println("배치 작업 - (" + (++count) + ") accessLogs:" + accessLogsTimestamp + " (2) WAF:" + wafLogsTimestamp);
+
+                    return countAndLogEventCounts()
+                            .then(metadataService.updateTimestamp("aws-access-logs-groups", accessLogsTimestamp)
+                                    .then(metadataService.updateTimestamp("aws-waf-logs-groups", wafLogsTimestamp)));
+                })
+                .subscribeOn(Schedulers.boundedElastic())
+                .block();
     }
 
-    private Mono<LocalDateTime> getLastProcessedTimestamp() {
-        return metadataService.getLastTimestampForLogGroup("aws-access-logs-groups")
+
+
+    private Mono<LocalDateTime> getLastProcessedTimestamp(String logGroup) {
+        return metadataService.getLastTimestampForLogGroup(logGroup)
                 .map(Metadata::getTimestamp)
-                .defaultIfEmpty(LocalDateTime.now().minusDays(1));
+                .defaultIfEmpty(defaultDate);
     }
 
+    private Mono<Void> countAndLogEventCounts() {
+        String[] eventTypes = {"Cloud","Web", "WAF"};
+
+        for (String eventType : eventTypes) {
+            eventRepository.countByEventType(eventType)
+                    .doOnNext(count -> System.out.println("Total count for eventType " + eventType + ": " + count))
+                    .subscribe();
+        }
+
+        return Mono.empty();
+    }
 
 }

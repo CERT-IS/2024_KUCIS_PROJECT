@@ -7,6 +7,6 @@ import reactor.core.publisher.Mono;
 
 public interface MetaRepository extends ReactiveCrudRepository<Metadata, String> {
 
-    @Query("SELECT * FROM metadata WHERE LOG_GROUP = $1 LIMIT 2")
+    @Query("SELECT * FROM metadata WHERE log_group = :logGroup LIMIT 2")
     Mono<Metadata> findByLogGroup(String logGroup);
 }

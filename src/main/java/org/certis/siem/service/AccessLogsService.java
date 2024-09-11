@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import lombok.RequiredArgsConstructor;
 import org.certis.siem.entity.AccessLog;
 import org.certis.siem.entity.EventStream;
+import org.certis.siem.repository.EventRepository;
 import org.certis.siem.utils.AccessLogsMapper;
 import org.opensearch.client.json.JsonData;
 import org.opensearch.client.opensearch.OpenSearchClient;
@@ -20,8 +21,12 @@ import reactor.core.publisher.Mono;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static org.certis.siem.utils.EventMapper.mapAccessLogsToEvent;
 
@@ -30,9 +35,10 @@ import static org.certis.siem.utils.EventMapper.mapAccessLogsToEvent;
 public class AccessLogsService {
 
     private final OpenSearchClient openSearchClient;
+    private final EventRepository eventRepository;
 
     private final String indexName = "cwl-*";
-    private final String logGroup = "aws-access-logs-groups";
+    private final String logGroup = "aws-access-logs-groups"; //"/aws/lambda/http-gateway";
 
     private static final Pattern URL_PATTERN = Pattern.compile("\"(GET|POST|PUT|DELETE|HEAD|OPTIONS|PATCH)\\s+(http[^\"]+)\\s+HTTP/1\\.1\"");
 
@@ -86,7 +92,7 @@ public class AccessLogsService {
                 String decodedUrl = decodeUrl(url);
                 for (String pattern : SQL_INJECTION_PATTERNS) {
                     if (Pattern.compile(pattern, Pattern.CASE_INSENSITIVE).matcher(decodedUrl).find()) {
-                        System.out.println("SQL Injection Detected: " + message);
+                        // System.out.println("SQL Injection Detected: " + message);
                         return true;
                     }
                 }
@@ -102,7 +108,7 @@ public class AccessLogsService {
                 String decodedUrl = decodeUrl(url);
                 for (String pattern : XSS_PATTERNS) {
                     if (Pattern.compile(pattern, Pattern.CASE_INSENSITIVE).matcher(decodedUrl).find()) {
-                        System.out.println("XSS Injection Detected: " + message);
+                        // System.out.println("XSS Injection Detected: " + message);
                         return true;
                     }
                 }
@@ -118,7 +124,7 @@ public class AccessLogsService {
                 String decodedUrl = decodeUrl(url);
                 for (String pattern : ADMIN_PAGE_PATTERNS) {
                     if (Pattern.compile(pattern, Pattern.CASE_INSENSITIVE).matcher(decodedUrl).find()) {
-                        System.out.println("Admin Page Detected: " + message);
+                        // System.out.println("Admin Page Detected: " + message);
                         return true;
                     }
                 }
@@ -136,13 +142,13 @@ public class AccessLogsService {
 
                 if (decodedUrl.endsWith("/")) {
                     if (!message.contains("404")) {
-                        System.out.println("Directory Index Access Detected without 404: " + message);
+                        // System.out.println("Directory Index Access Detected without 404: " + message);
                         return true;
                     }
                 }
 
                 if (decodedUrl.endsWith("/%00") || decodedUrl.endsWith("/%20")) {
-                    System.out.println("Suspicious URL Access Detected (%00 or %20 in URL): " + message);
+                    // System.out.println("Suspicious URL Access Detected (%00 or %20 in URL): " + message);
                     return true;
                 }
             }
@@ -150,56 +156,74 @@ public class AccessLogsService {
             return false;
         });
     }
-    public Flux<EventStream> processAccessLogs(LocalDateTime lastProcessedTimestamp) {
+
+    public Mono<LocalDateTime> processAccessLogs(LocalDateTime lastProcessedTimestamp) {
+        System.out.println("AccessLogs execute Search " + lastProcessedTimestamp);
         return executeSearch(lastProcessedTimestamp)
                 .collectList()
-                .flatMapMany(logs -> {
-                    Flux<AccessLog> accessLogs = Flux.fromIterable(logs)
-                            .map(AccessLogsMapper::mapJsonNodeToAccessLogsEvent);
+                .doOnNext(waf -> System.out.println("AccessLogs: " + waf))
+                .flatMap(logs -> {
+                    // Convert JSON logs to AccessLog objects
+                    List<AccessLog> accessLogList = logs.stream()
+                            .map(AccessLogsMapper::mapJsonNodeToAccessLogsEvent)
+                            .collect(Collectors.toList());
 
-                    Flux<EventStream> sqlInjectionResults = checkSQLInjection(accessLogs)
+                    // Determine the latest timestamp from the list of AccessLog objects
+                    LocalDateTime latestTimestamp = accessLogList.stream()
+                            .map(AccessLog::getTimestamp)
+                            .max(Comparator.naturalOrder())
+                            .orElse(lastProcessedTimestamp);
+
+                    System.out.println("timestamp last : "+latestTimestamp);
+                    // Create Flux from the list for further processing
+                    Flux<AccessLog> accessLogsFlux = Flux.fromIterable(accessLogList);
+
+                    // Perform security checks on the list of AccessLog objects
+                    Flux<EventStream> sqlInjectionResults = checkSQLInjection(accessLogsFlux)
                             .map(accessLog -> mapAccessLogsToEvent("SQL Injection", "Web", accessLog));
-                    Flux<EventStream> xssResults = checkXSS(accessLogs)
+
+                    Flux<EventStream> xssResults = checkXSS(accessLogsFlux)
                             .map(accessLog -> mapAccessLogsToEvent("XSS", "Web", accessLog));
-                    Flux<EventStream> adminResults = checkAdminPage(accessLogs)
+
+                    Flux<EventStream> adminResults = checkAdminPage(accessLogsFlux)
                             .map(accessLog -> mapAccessLogsToEvent("Admin Page Exposure", "Web", accessLog));
-                    Flux<EventStream> directoryResults = checkDirectoryIndex(accessLogs)
+
+                    Flux<EventStream> directoryResults = checkDirectoryIndex(accessLogsFlux)
                             .map(accessLog -> mapAccessLogsToEvent("Directory Indexing", "Web", accessLog));
 
-                    return Flux.merge(sqlInjectionResults, xssResults, adminResults, directoryResults);
+                    // Merge results and save them
+                    return Flux.merge(sqlInjectionResults, xssResults, adminResults, directoryResults)
+                            .collectList()
+                            .flatMap(eventStreams -> eventRepository.saveAll(eventStreams)
+                                    .then(Mono.just(latestTimestamp))
+                                    .onErrorMap(e -> new RuntimeException("Error processing Accesslogs: " + e.getMessage(), e))
+                            );
                 });
     }
+
+
     private Flux<JsonNode> executeSearch(LocalDateTime lastProcessedTimestamp) {
-        Query query = Query.of(q -> q
-                .bool(b -> b
-                        .filter(f -> f
-                                .range(r -> r
-                                        .field("@timestamp")
-                                        .gte(JsonData.of(lastProcessedTimestamp.toString()))
-                                )
-                        )
-                        .filter(f -> f
-                                .match(t -> t
-                                        .field("@log_group")
-                                        .query(FieldValue.of(logGroup))
-                                )
-                        )
-                )
-        );
+        Query query = Query.of(q -> q.bool(b -> b
+                .must(m -> m.match(t -> t
+                        .field("@log_group")
+                        .query(FieldValue.of(logGroup))))
+                .filter(f -> f.range(r -> r
+                        .field("@timestamp")
+                        .gte(JsonData.of(lastProcessedTimestamp.toString()))))));
 
         SourceFilter sourceFilter = SourceFilter.of(s -> s
                 .includes("@id", "@log_group", "@timestamp", "@message")
         );
 
-        SourceConfig sourceConfig = SourceConfig.of(src -> src
-                .filter(sourceFilter)
-        );
+        SourceConfig sourceConfig = SourceConfig.of(src -> src.filter(sourceFilter));
 
         SearchRequest searchRequest = SearchRequest.of(s -> s
                 .index(indexName)
                 .source(sourceConfig)
                 .query(query)
-                .size(100)
+                .sort(sort-> sort.field(f -> f.field("@timestamp")
+                        .order(SortOrder.Desc)))
+                .size(30)
         );
 
         return Mono.fromCallable(() -> openSearchClient.search(searchRequest, JsonNode.class))
@@ -207,4 +231,5 @@ public class AccessLogsService {
                         .map(hit -> hit.source()))
                 .onErrorMap(e -> new RuntimeException("Error retrieving documents from OpenSearch: " + e.getMessage(), e));
     }
+
 }

@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 @RestController
@@ -23,8 +26,19 @@ public class OpenSearchController {
     private final CloudTrailService cloudTrailService;
 
     @GetMapping("/documents/waf-logs")
-    public Flux<EventStream> getDocumentsByWAF() {
-        return openSearchService.processWAFLogs();
+    public Flux<JsonNode> getDocumentsByWAF(@RequestParam String timestamp) {
+        LocalDateTime lastProcessedTimestamp;
+
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+            lastProcessedTimestamp = LocalDateTime.parse(timestamp, formatter);
+        } catch (DateTimeParseException e) {
+            System.err.println("Invalid timestamp format: " + timestamp);
+            return Flux.empty();
+        }
+
+        return openSearchService.execeSearch(lastProcessedTimestamp);
+
         // indexName = cwl-*
         // @log_group = 'aws-cloudtrail-logs-058264524253-eba56a76', 'aws-access-logs-groups', 'aws-waf-logs-groups'
     }

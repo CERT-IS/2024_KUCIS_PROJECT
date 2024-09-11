@@ -54,8 +54,7 @@ dependencies {
 	implementation 'org.apache.pdfbox:pdfbox-tools:2.0.29'
 
 	implementation 'org.springframework.boot:spring-boot-starter-data-r2dbc'
-	implementation 'io.r2dbc:r2dbc-h2'
-	runtimeOnly 'com.h2database:h2'
+	implementation 'io.asyncer:r2dbc-mysql'
 }
 
 tasks.named('test') {

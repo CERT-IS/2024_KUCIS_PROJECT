@@ -1,0 +1,38 @@
+version: '3'
+services:
+
+  mysql:
+    image: mysql:8.0
+    networks:
+      - kucis_network
+    volumes:
+      - ./db/conf.d:/etc/mysql/conf.d
+      - ./db/data:/var/lib/mysql
+      - ./db/initdb.d:/docker-entrypoint-initdb.d
+    ports:
+      - "3306:3306"
+    environment:
+      - TZ=Asia/Seoul
+      - MYSQL_HOST=localhost
+      - MYSQL_PORT=3306
+      - MYSQL_ROOT_PASSWORD=rootpassword
+      - MYSQL_USER=mysqluser
+      - MYSQL_PASSWORD=mysqlpw
+      - MYSQL_DATABASE=kucis
+
+  kucis-service:
+    image: siem:1.0.0
+    networks:
+      - kucis_network
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+    environment:
+      - SPRING_R2DBC_URL=r2dbc:mysql://mysql:3306/kucis
+      - SPRING_R2DBC_USERNAME=mysqluser
+      - SPRING_R2DBC_PASSWORD=mysqlpw
+
+networks:
+  kucis_network:
+    driver: bridge
