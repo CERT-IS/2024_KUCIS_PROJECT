@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-    <link rel="stylesheet" href="style.css"> <!-- /style.css -->
+    <link rel="stylesheet" href="/style.css"> <!-- /style.css -->
     <title>DashBoard</title>
     <style>
         .filter-box {
@@ -74,19 +74,19 @@
 <body>
 <!-- SIDEBAR -->
 <section id="sidebar">
-    <a href="index.html" class="brand"><span class="material-symbols-outlined">deployed_code</span> SIEMple</a>   <!-- /index.html -->
+    <a href="/" class="brand"><span class="material-symbols-outlined">deployed_code</span> SIEMple</a>   <!-- /index.html -->
 
     <ul class="side-menu">
         <li class="divider" data-text="dashboard">DashBoard</li>
-        <li><a href="index.html"><span class="material-symbols-outlined">dashboard</span>Dashboard</a></li>   <!-- /index.html -->
+        <li><a href="/"><span class="material-symbols-outlined">dashboard</span>Dashboard</a></li>   <!-- /index.html -->
         <li class="divider" data-text="main">Main</li>
-        <li><a href="waf.html"><span class="material-symbols-outlined">bar_chart</span>WAF</a></li>   <!-- /waf.html -->
-        <li><a href="handmade.html" class="active"><span class="material-symbols-outlined">widgets</span>HandMade</a></li>   <!-- /handmade.html -->
+        <li><a href="/waf"><span class="material-symbols-outlined">bar_chart</span>WAF</a></li>   <!-- /waf.html -->
+        <li><a href="/handmade" class="active"><span class="material-symbols-outlined">widgets</span>HandMade</a></li>   <!-- /handmade.html -->
 
 
         <li class="divider" data-text="search">Search</li>
-        <li><a href="search1.html"><span class="material-symbols-outlined">search</span>Search1</a></li>   <!-- /search1.html -->
-        <li><a href="search2.html"><span class="material-symbols-outlined">manage_search</span>Search2</a></li>   <!-- /search2.html -->
+        <li><a href="/search1"><span class="material-symbols-outlined">search</span>Search1</a></li>   <!-- /search1.html -->
+        <li><a href="/search2"><span class="material-symbols-outlined">manage_search</span>Search2</a></li>   <!-- /search2.html -->
     </ul>
 </section>
 <!-- SIDEBAR -->
@@ -153,29 +153,29 @@
                                         <option value="@service_name">@service_name</option>
                                         <option value="@user">@user</option>
                                     </select>
-                            
+
                                     <label for="operatorSelect">Operator</label>
                                     <select id="operatorSelect">
                                         <option value="is">is</option>
                                         <option value="is_not">is not</option>
                                         <option value="contains">contains</option>
                                     </select>
-                            
+
                                     <label for="valueInput">Value</label>
                                     <input type="text" id="valueInput" placeholder="Enter a value">
-                            
+
                                     <div class="custom-label">
                                         <input type="checkbox" id="customLabelCheckbox">
                                         <label for="customLabelCheckbox">Create custom label?</label>
                                     </div>
                                 </div>
-                            
+
                                 <div class="filter-footer">
                                     <button class="btn-cancel">Cancel</button>
                                     <button class="btn-save">Save</button>
                                 </div>
                             </div>
-                        </div>                        
+                        </div>
                     </div>
                 </div>
                 <div class="graph">
@@ -200,29 +200,29 @@
                                         <option value="@service_name">@service_name</option>
                                         <option value="@user">@user</option>
                                     </select>
-                            
+
                                     <label for="operatorSelect">Operator</label>
                                     <select id="operatorSelect">
                                         <option value="is">is</option>
                                         <option value="is_not">is not</option>
                                         <option value="contains">contains</option>
                                     </select>
-                            
+
                                     <label for="valueInput">Value</label>
                                     <input type="text" id="valueInput" placeholder="Enter a value">
-                            
+
                                     <div class="custom-label">
                                         <input type="checkbox" id="customLabelCheckbox">
                                         <label for="customLabelCheckbox">Create custom label?</label>
                                     </div>
                                 </div>
-                            
+
                                 <div class="filter-footer">
                                     <button class="btn-cancel">Cancel</button>
                                     <button class="btn-save">Save</button>
                                 </div>
                             </div>
-                        </div>                        
+                        </div>
                     </div>
                 </div><br><br>
                 <div class="graph">
@@ -247,29 +247,29 @@
                                         <option value="@service_name">@service_name</option>
                                         <option value="@user">@user</option>
                                     </select>
-                            
+
                                     <label for="operatorSelect">Operator</label>
                                     <select id="operatorSelect">
                                         <option value="is">is</option>
                                         <option value="is_not">is not</option>
                                         <option value="contains">contains</option>
                                     </select>
-                            
+
                                     <label for="valueInput">Value</label>
                                     <input type="text" id="valueInput" placeholder="Enter a value">
-                            
+
                                     <div class="custom-label">
                                         <input type="checkbox" id="customLabelCheckbox">
                                         <label for="customLabelCheckbox">Create custom label?</label>
                                     </div>
                                 </div>
-                            
+
                                 <div class="filter-footer">
                                     <button class="btn-cancel">Cancel</button>
                                     <button class="btn-save">Save</button>
                                 </div>
                             </div>
-                        </div>                        
+                        </div>
                     </div>
                 </div><br><br>
                 <div class="graph">
@@ -281,7 +281,7 @@
         <div class="data">
             <div class="content-data">
                 <div class="head">
-                    <h3>WAF Events</h3>
+                    <h3>Event Streams</h3>
                     <div class="menu">
                         <span class="material-symbols-outlined" data-icon="more_horiz">more_horiz</span>
                         <ul class="menu-link">
@@ -291,58 +291,8 @@
                         </ul>
                     </div>
                 </div>
-                <div class="waf-events">
-                    <ul id="waf-events">
-                        <div class="event-container" onclick="toggleLogs(this)">
-                            <div class="event-header">
-                                <strong>index:</strong> ${event.id || 'N/A'} <br>
-                                <strong>name:</strong> ${event.eventName || 'N/A'} <br>
-                                <strong>type:</strong> ${event.eventType || 'N/A'} <br>
-                                <strong>timestamp:</strong> ${event.timestamp} <br>
-                                <span class="logs-toggle" style="cursor: pointer;" onclick="toggleLogs(this)">▶</span>
-                            </div>
-                            <pre class="logs-content" style="display: none;">${logsContent}</pre>
-                        </div>
-                        <div class="event-container" onclick="toggleLogs(this)">
-                            <div class="event-header">
-                                <strong>index:</strong> ${event.id || 'N/A'} <br>
-                                <strong>name:</strong> ${event.eventName || 'N/A'} <br>
-                                <strong>type:</strong> ${event.eventType || 'N/A'} <br>
-                                <strong>timestamp:</strong> ${event.timestamp} <br>
-                                <span class="logs-toggle" style="cursor: pointer;" onclick="toggleLogs(this)">▶</span>
-                            </div>
-                            <pre class="logs-content" style="display: none;">${logsContent}</pre>
-                        </div>
-                        <div class="event-container" onclick="toggleLogs(this)">
-                            <div class="event-header">
-                                <strong>index:</strong> ${event.id || 'N/A'} <br>
-                                <strong>name:</strong> ${event.eventName || 'N/A'} <br>
-                                <strong>type:</strong> ${event.eventType || 'N/A'} <br>
-                                <strong>timestamp:</strong> ${event.timestamp} <br>
-                                <span class="logs-toggle" style="cursor: pointer;" onclick="toggleLogs(this)">▶</span>
-                            </div>
-                            <pre class="logs-content" style="display: none;">${logsContent}</pre>
-                        </div>
-                        <div class="event-container" onclick="toggleLogs(this)">
-                            <div class="event-header">
-                                <strong>index:</strong> ${event.id || 'N/A'} <br>
-                                <strong>name:</strong> ${event.eventName || 'N/A'} <br>
-                                <strong>type:</strong> ${event.eventType || 'N/A'} <br>
-                                <strong>timestamp:</strong> ${event.timestamp} <br>
-                                <span class="logs-toggle" style="cursor: pointer;" onclick="toggleLogs(this)">▶</span>
-                            </div>
-                            <pre class="logs-content" style="display: none;">${logsContent}</pre>
-                        </div>
-                        <div class="event-container" onclick="toggleLogs(this)">
-                            <div class="event-header">
-                                <strong>index:</strong> ${event.id || 'N/A'} <br>
-                                <strong>name:</strong> ${event.eventName || 'N/A'} <br>
-                                <strong>type:</strong> ${event.eventType || 'N/A'} <br>
-                                <strong>timestamp:</strong> ${event.timestamp} <br>
-                                <span class="logs-toggle" style="cursor: pointer;" onclick="toggleLogs(this)">▶</span>
-                            </div>
-                            <pre class="logs-content" style="display: none;">${logsContent}</pre>
-                        </div>
+                <div class="event-streams">
+                    <ul id="event-streams">
                     </ul>
                 </div>
             </div>
@@ -352,11 +302,10 @@
 </section>
 <!-- NAVBAR -->
 
-<script src="script.js"></script> <!-- /script.js -->
 <script>
-    const labels = ['02:43:00', '02:44:00', '02:45:00', '02:46:00', '02:47:00', '02:48:00', 
-                    '02:49:00', '02:50:00', '02:51:00', '02:52:00', '02:53:00', '02:54:00',
-                    '02:55:00', '02:56:00', '02:57:00'];
+    const labels = ['02:43:00', '02:44:00', '02:45:00', '02:46:00', '02:47:00', '02:48:00',
+        '02:49:00', '02:50:00', '02:51:00', '02:52:00', '02:53:00', '02:54:00',
+        '02:55:00', '02:56:00', '02:57:00'];
 
     const dataValues = [5, 0, 2, 10, 1, 0, 5, 0, 35, 10, 0, 5, 5, 15, 1];
 
@@ -438,40 +387,41 @@
 
 
     const data3 = {
-            labels: ['02:50:00', '02:51:00', '02:52:00', '02:53:00'],
-            datasets: [{
-                label: 'Count',
-                data: [35, 10, 15, 5],  // 4개의 데이터
-                backgroundColor: [
-                    'rgba(23, 117, 241, 0.4)',
-                    'rgba(255, 99, 132, 0.4)',
-                    'rgba(54, 162, 235, 0.4)',
-                    'rgba(255, 206, 86, 0.4)'
-                ],
-                borderColor: 'rgba(23, 117, 241, 1)',
-                borderWidth: 1
-            }]
-        };
+        labels: ['02:50:00', '02:51:00', '02:52:00', '02:53:00'],
+        datasets: [{
+            label: 'Count',
+            data: [35, 10, 15, 5],  // 4개의 데이터
+            backgroundColor: [
+                'rgba(23, 117, 241, 0.4)',
+                'rgba(255, 99, 132, 0.4)',
+                'rgba(54, 162, 235, 0.4)',
+                'rgba(255, 206, 86, 0.4)'
+            ],
+            borderColor: 'rgba(23, 117, 241, 1)',
+            borderWidth: 1
+        }]
+    };
 
-        const config3 = {
-            type: 'pie',  // 원형 그래프
-            data: data3,
-            options: {
-                responsive: false,
-                cutout: '60%',
-                plugins: {
-                    legend: { display: true }
-                }
+    const config3 = {
+        type: 'pie',  // 원형 그래프
+        data: data3,
+        options: {
+            responsive: false,
+            cutout: '60%',
+            plugins: {
+                legend: { display: true }
             }
-        };
+        }
+    };
 
-        var myChart = new Chart(
-            document.getElementById('circleChart'),
-            config3
-        );
+    var myChart = new Chart(
+        document.getElementById('circleChart'),
+        config3
+    );
 
 
 
 </script>
+<script src="/handmade.js"></script> <!-- /script.js -->
 </body>
 </html>
