@@ -7,12 +7,6 @@
     <link rel="stylesheet" href="style.css"> <!-- /style.css -->
     <title>DashBoard</title>
     <style>
-        p {
-            font-size: 16px;
-            font-weight: bold;
-            text-align: center;
-        }
-
         .filter-box {
             width: 300px;
             padding: 20px;
@@ -68,12 +62,12 @@
             background-color: #28a745;
             color: white;
         }
-        .bar-chart {
-            width: 100%;
-            max-width: 600px;
-            margin-top: 20px;
-        }
 
+        .card .graph {
+            display: flex;
+            margin-top: 10px;
+            margin-bottom: 5px;
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -141,10 +135,12 @@
         </ul>
 
 
-        <div class="data">
-            <div class="content-data">
+        <div class="info-data">
+            <div class="card">
                 <div class="head">
-                    <h3>Tables</h3>
+                    <div>
+                        <h2>취약점 종류</h2>
+                    </div>
                     <div class="menu2">
                         <span class="material-symbols-outlined" data-icon="more_horiz">more_horiz</span>
                         <div class="menu-link2">
@@ -182,19 +178,110 @@
                         </div>                        
                     </div>
                 </div>
-
-                <div style="width: 55%; margin: 0px auto 20px;">
-                    <canvas id="myChart"></canvas>
+                <div class="graph">
+                    <canvas id="circleChart" style="width: 240px; margin-left: auto; margin-right: auto;"></canvas>
                 </div>
-                <p>@timestamp per 30 seconds</p>
+            </div>
+
+            <div class="card">
+                <div class="head">
+                    <div>
+                        <h2>수집된 로그 데이터 수</h2>
+                    </div>
+                    <div class="menu2">
+                        <span class="material-symbols-outlined" data-icon="more_horiz">more_horiz</span>
+                        <div class="menu-link2">
+                            <div class="filter-box">
+                                <div class="filter-header">EDIT FILTER</div>
+                                <div class="filter-body">
+                                    <label for="fieldSelect">Field</label>
+                                    <select id="fieldSelect">
+                                        <option value="@log_group">@log_group</option>
+                                        <option value="@service_name">@service_name</option>
+                                        <option value="@user">@user</option>
+                                    </select>
+                            
+                                    <label for="operatorSelect">Operator</label>
+                                    <select id="operatorSelect">
+                                        <option value="is">is</option>
+                                        <option value="is_not">is not</option>
+                                        <option value="contains">contains</option>
+                                    </select>
+                            
+                                    <label for="valueInput">Value</label>
+                                    <input type="text" id="valueInput" placeholder="Enter a value">
+                            
+                                    <div class="custom-label">
+                                        <input type="checkbox" id="customLabelCheckbox">
+                                        <label for="customLabelCheckbox">Create custom label?</label>
+                                    </div>
+                                </div>
+                            
+                                <div class="filter-footer">
+                                    <button class="btn-cancel">Cancel</button>
+                                    <button class="btn-save">Save</button>
+                                </div>
+                            </div>
+                        </div>                        
+                    </div>
+                </div><br><br>
+                <div class="graph">
+                    <canvas id="barChart" style="width: fit-content;"></canvas>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="head">
+                    <div>
+                        <h2>로그 그룹별 취약점 수</h2>
+                    </div>
+                    <div class="menu2">
+                        <span class="material-symbols-outlined" data-icon="more_horiz">more_horiz</span>
+                        <div class="menu-link2">
+                            <div class="filter-box">
+                                <div class="filter-header">EDIT FILTER</div>
+                                <div class="filter-body">
+                                    <label for="fieldSelect">Field</label>
+                                    <select id="fieldSelect">
+                                        <option value="@log_group">@log_group</option>
+                                        <option value="@service_name">@service_name</option>
+                                        <option value="@user">@user</option>
+                                    </select>
+                            
+                                    <label for="operatorSelect">Operator</label>
+                                    <select id="operatorSelect">
+                                        <option value="is">is</option>
+                                        <option value="is_not">is not</option>
+                                        <option value="contains">contains</option>
+                                    </select>
+                            
+                                    <label for="valueInput">Value</label>
+                                    <input type="text" id="valueInput" placeholder="Enter a value">
+                            
+                                    <div class="custom-label">
+                                        <input type="checkbox" id="customLabelCheckbox">
+                                        <label for="customLabelCheckbox">Create custom label?</label>
+                                    </div>
+                                </div>
+                            
+                                <div class="filter-footer">
+                                    <button class="btn-cancel">Cancel</button>
+                                    <button class="btn-save">Save</button>
+                                </div>
+                            </div>
+                        </div>                        
+                    </div>
+                </div><br><br>
+                <div class="graph">
+                    <canvas id="lineChart" style="width: fit-content;"></canvas>
+                </div>
             </div>
         </div>
-        
 
         <div class="data">
             <div class="content-data">
                 <div class="head">
-                    <h3>Event Streams</h3>
+                    <h3>WAF Events</h3>
                     <div class="menu">
                         <span class="material-symbols-outlined" data-icon="more_horiz">more_horiz</span>
                         <ul class="menu-link">
@@ -204,8 +291,48 @@
                         </ul>
                     </div>
                 </div>
-                <div class="event-streams">
-                    <ul id="event-streams">
+                <div class="waf-events">
+                    <ul id="waf-events">
+                        <div class="event-container" onclick="toggleLogs(this)">
+                            <div class="event-header">
+                                <strong>index:</strong> ${event.id || 'N/A'} <br>
+                                <strong>name:</strong> ${event.eventName || 'N/A'} <br>
+                                <strong>type:</strong> ${event.eventType || 'N/A'} <br>
+                                <strong>timestamp:</strong> ${event.timestamp} <br>
+                                <span class="logs-toggle" style="cursor: pointer;" onclick="toggleLogs(this)">▶</span>
+                            </div>
+                            <pre class="logs-content" style="display: none;">${logsContent}</pre>
+                        </div>
+                        <div class="event-container" onclick="toggleLogs(this)">
+                            <div class="event-header">
+                                <strong>index:</strong> ${event.id || 'N/A'} <br>
+                                <strong>name:</strong> ${event.eventName || 'N/A'} <br>
+                                <strong>type:</strong> ${event.eventType || 'N/A'} <br>
+                                <strong>timestamp:</strong> ${event.timestamp} <br>
+                                <span class="logs-toggle" style="cursor: pointer;" onclick="toggleLogs(this)">▶</span>
+                            </div>
+                            <pre class="logs-content" style="display: none;">${logsContent}</pre>
+                        </div>
+                        <div class="event-container" onclick="toggleLogs(this)">
+                            <div class="event-header">
+                                <strong>index:</strong> ${event.id || 'N/A'} <br>
+                                <strong>name:</strong> ${event.eventName || 'N/A'} <br>
+                                <strong>type:</strong> ${event.eventType || 'N/A'} <br>
+                                <strong>timestamp:</strong> ${event.timestamp} <br>
+                                <span class="logs-toggle" style="cursor: pointer;" onclick="toggleLogs(this)">▶</span>
+                            </div>
+                            <pre class="logs-content" style="display: none;">${logsContent}</pre>
+                        </div>
+                        <div class="event-container" onclick="toggleLogs(this)">
+                            <div class="event-header">
+                                <strong>index:</strong> ${event.id || 'N/A'} <br>
+                                <strong>name:</strong> ${event.eventName || 'N/A'} <br>
+                                <strong>type:</strong> ${event.eventType || 'N/A'} <br>
+                                <strong>timestamp:</strong> ${event.timestamp} <br>
+                                <span class="logs-toggle" style="cursor: pointer;" onclick="toggleLogs(this)">▶</span>
+                            </div>
+                            <pre class="logs-content" style="display: none;">${logsContent}</pre>
+                        </div>
                         <div class="event-container" onclick="toggleLogs(this)">
                             <div class="event-header">
                                 <strong>index:</strong> ${event.id || 'N/A'} <br>
@@ -227,22 +354,28 @@
 
 <script src="script.js"></script> <!-- /script.js -->
 <script>
-    const data = {
-        labels: ['02:43:00', '02:44:00', '02:45:00', '02:46:00', '02:47:00', '02:48:00', 
-                 '02:49:00', '02:50:00', '02:51:00', '02:52:00', '02:53:00', '02:54:00',
-                 '02:55:00', '02:56:00', '02:57:00'],
+    const labels = ['02:43:00', '02:44:00', '02:45:00', '02:46:00', '02:47:00', '02:48:00', 
+                    '02:49:00', '02:50:00', '02:51:00', '02:52:00', '02:53:00', '02:54:00',
+                    '02:55:00', '02:56:00', '02:57:00'];
+
+    const dataValues = [5, 0, 2, 10, 1, 0, 5, 0, 35, 10, 0, 5, 5, 15, 1];
+
+    // Bar 차트 데이터
+    const data1 = {
+        labels: labels,
         datasets: [{
             label: 'Count',
-            data: [5, 0, 2, 10, 1, 0, 5, 0, 35, 10, 0, 5, 5, 15, 1],
+            data: dataValues,
             backgroundColor: 'rgba(23, 117, 241, 0.4)',
             borderColor: 'rgba(23, 117, 241, 1)',
             borderWidth: 1
         }]
     };
 
-    const config = {
+    // Bar 차트 설정
+    const config1 = {
         type: 'bar',
-        data: data,
+        data: data1,
         options: {
             scales: {
                 y: { beginAtZero: true }
@@ -253,10 +386,92 @@
         }
     };
 
-    var myChart = new Chart(
-        document.getElementById('myChart'),
-        config
+    // Bar 차트 생성
+    var myBarChart = new Chart(
+        document.getElementById('barChart'),
+        config1
     );
+
+
+    const dataValues1 = [5, 0, 2, 10, 1, 0, 5, 0, 35, 10, 0, 5, 5, 15, 1];
+    const dataValues2 = [3, 1, 0, 5, 2, 1, 4, 1, 20, 5, 1, 2, 3, 10, 0]; // 두 번째 데이터셋
+
+    // Line 차트 데이터
+    const data2 = {
+        labels: labels,
+        datasets: [{
+            label: 'Count 1',
+            data: dataValues1,
+            backgroundColor: 'rgba(23, 117, 241, 0.4)',
+            borderColor: 'rgba(23, 117, 241, 1)',
+            borderWidth: 2,
+            fill: true
+        }, {
+            label: 'Count 2',
+            data: dataValues2,
+            backgroundColor: 'rgba(252, 59, 86, 0.4)', // 두 번째 데이터셋 배경색
+            borderColor: 'rgba(252, 59, 86, 1)', // 두 번째 데이터셋 선 색상
+            borderWidth: 2,
+            fill: true
+        }]
+    };
+
+    // Line 차트 설정
+    const config2 = {
+        type: 'line',
+        data: data2,
+        options: {
+            scales: {
+                y: { beginAtZero: true }
+            },
+            plugins: {
+                legend: { display: true } // 범례 표시
+            }
+        }
+    };
+
+    // Line 차트 생성
+    var myLineChart = new Chart(
+        document.getElementById('lineChart'),
+        config2
+    );
+
+
+    const data3 = {
+            labels: ['02:50:00', '02:51:00', '02:52:00', '02:53:00'],
+            datasets: [{
+                label: 'Count',
+                data: [35, 10, 15, 5],  // 4개의 데이터
+                backgroundColor: [
+                    'rgba(23, 117, 241, 0.4)',
+                    'rgba(255, 99, 132, 0.4)',
+                    'rgba(54, 162, 235, 0.4)',
+                    'rgba(255, 206, 86, 0.4)'
+                ],
+                borderColor: 'rgba(23, 117, 241, 1)',
+                borderWidth: 1
+            }]
+        };
+
+        const config3 = {
+            type: 'pie',  // 원형 그래프
+            data: data3,
+            options: {
+                responsive: false,
+                cutout: '60%',
+                plugins: {
+                    legend: { display: true }
+                }
+            }
+        };
+
+        var myChart = new Chart(
+            document.getElementById('circleChart'),
+            config3
+        );
+
+
+
 </script>
 </body>
 </html>
