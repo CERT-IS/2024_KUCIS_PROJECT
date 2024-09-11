@@ -405,7 +405,7 @@ main .info-data {
 }
 main .info-data .card {
     padding: 20px;
-    border-radius: 10px;
+    border-radius: 8px;
     background: var(--light);
     box-shadow: 4px 4px 16px rgba(0, 0, 0, .05);
 }
@@ -473,7 +473,7 @@ main .data .content-data {
     flex-basis: 400px;
     padding: 20px;
     background: var(--light);
-    border-radius: 10px;
+    border-radius: 8px;
     box-shadow: 4px 4px 16px rgba(0, 0, 0, .1);
 }
 
@@ -497,13 +497,13 @@ main .content-data .head .menu .material-symbols-outlined[data-icon="more_horiz"
     cursor: pointer;
 }
 
-main .content-data .head .menu2 {
+main .head .menu2 {
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
 }
-main .content-data .head .menu2 .material-symbols-outlined[data-icon="more_horiz"] {
+main .head .menu2 .material-symbols-outlined[data-icon="more_horiz"] {
     cursor: pointer;
 }
 
@@ -539,7 +539,7 @@ main .content-data .head .menu-link a:hover {
 }
 
 
-main .content-data .head .menu-link2 {
+main .head .menu-link2 {
     position: absolute;
     top: calc(100% + 10px);
     right: 0;
@@ -551,12 +551,12 @@ main .content-data .head .menu-link2 {
     pointer-events: none;
     transition: all .3s ease;
 }
-main .content-data .head .menu-link2.show {
+main .head .menu-link2.show {
     top: 100%;
     opacity: 1;
     pointer-events: visible;
 }
-main .content-data .head .menu-link2 .filter-box {
+main .head .menu-link2 .filter-box {
     display: block;
     padding: 6px 16px;
     font-size: 14px;

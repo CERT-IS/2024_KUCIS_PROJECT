@@ -156,7 +156,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
 
-    const allMenu2 = document.querySelectorAll('main .content-data .head .menu2');
+    const allMenu2 = document.querySelectorAll('main .head .menu2');
 
     allMenu2.forEach(item => {
         const icon = item.querySelector('.material-symbols-outlined[data-icon="more_horiz"]');
