@@ -2,17 +2,14 @@ package org.certis.siem.utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import org.certis.siem.entity.AccessLog;
-import org.certis.siem.entity.CloudTrailLog;
-import org.certis.siem.entity.EventStream;
-import org.certis.siem.entity.WAFLog;
+import org.certis.siem.entity.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class EventMapper {
-    private static final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());;
+    private static final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
     private static String convertToJson(Object log) {
         try {
@@ -64,6 +61,21 @@ public class EventMapper {
         LocalDateTime createdAt = cloudTrailLog.getTimestamp();
         List<String> logs = new ArrayList<>();
         logs.add(convertToJson(cloudTrailLog));
+
+        String logsAsJson = convertListToJson(logs);
+
+        return EventStream.builder()
+                .eventName(eventName)
+                .eventType(eventType)
+                .timestamp(createdAt)
+                .logs(logsAsJson)
+                .build();
+    }
+
+    public static EventStream mapHttpLogsToEvent(String eventName, String eventType, HttpLog httpLog) {
+        LocalDateTime createdAt = httpLog.getTimestamp();
+        List<String> logs = new ArrayList<>();
+        logs.add(convertToJson(httpLog));
 
         String logsAsJson = convertListToJson(logs);
 

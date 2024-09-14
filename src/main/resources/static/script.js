@@ -142,6 +142,60 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
+    const allMenu3 = document.querySelectorAll('main .info-data2 .card .head .menu');
+
+    allMenu3.forEach(item => {
+        const icon = item.querySelector('.material-symbols-outlined[data-icon="more_horiz"]');
+        const menuLink = item.querySelector('.menu-link3');
+
+        icon.addEventListener('click', function() {
+            menuLink.classList.toggle('show');
+        });
+    });
+
+    window.addEventListener('click', function(e) {
+        if (e.target !== imgProfile && e.target !== dropdownProfile) {
+            dropdownProfile.classList.remove('show');
+        }
+
+        allMenu3.forEach(item => {
+            const icon = item.querySelector('.material-symbols-outlined[data-icon="more_horiz"]');
+            const menuLink = item.querySelector('.menu-link3');
+
+            if (e.target !== icon && e.target !== menuLink) {
+                menuLink.classList.remove('show');
+            }
+        });
+    });
+
+
+
+    const successBox = document.querySelector('.safty');
+    let direction = 1;
+    let position = 0;
+    const speed = 1;
+
+    function moveBox() {
+        position += speed * direction;
+
+        if (position >= 20 || position <= -20) {
+            direction *= -1;
+        }
+
+        successBox.style.transform = `translateY(${position}px)`;
+
+        requestAnimationFrame(moveBox);
+    }
+
+    requestAnimationFrame(moveBox);
+
+
+
+
+
+
+
+
     const memoryInfoPercentage = document.getElementById('memory-info-percentage').textContent;
     const diskInfoPercentage = document.getElementById('disk-info-percentage').textContent;
 

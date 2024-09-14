@@ -228,3 +228,7 @@ db/data/\#innodb_temp/temp_8.ibt
 db/data/\#innodb_temp/temp_9.ibt
 db/data/ibtmp1
 db/data/\#innodb_redo/\#ib_redo10
+db/data/\#innodb_redo/\#ib_redo47_tmp
+db/data/\#innodb_redo/\#ib_redo46_tmp
+db/data/\#innodb_redo/\#ib_redo45_tmp
+db/data/\#innodb_redo/\#ib_redo16

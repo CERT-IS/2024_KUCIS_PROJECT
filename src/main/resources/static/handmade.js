@@ -245,6 +245,48 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
+
+    let lastFetchedTimestamp = null;
+    let index = 1;
+    async function fetchHttpEvent(elementId) {
+        try {
+            const eventsElement = document.getElementById(elementId);
+
+            const response = await fetch(`/api/opensearch/http`);
+            const events = await response.json();
+
+            if (events.length > 0) {
+                const currentFirstEventTimestamp = new Date(events[0].timestamp);
+
+                if (!lastFetchedTimestamp || currentFirstEventTimestamp > lastFetchedTimestamp) {
+                    lastFetchedTimestamp = currentFirstEventTimestamp;
+
+                    const fragment = document.createDocumentFragment();
+
+                    events.forEach(event => {
+                        const eventLi = document.createElement('li');
+                        event.id=index;
+                        index++;
+                        eventLi.innerHTML = createEventHTML(event);
+                        fragment.appendChild(eventLi);
+                    });
+
+                    if (fragment.childNodes.length > 0) {
+                        eventsElement.appendChild(fragment);
+                    }
+
+                } else {
+                    console.log('No new recent events. Skipping resource creation.');
+                }
+            } else {
+                console.log(`No new events for ${elementId}.`);
+            }
+
+        } catch (error) {
+            console.error(`Error fetching events for ${elementId}:`, error);
+        }
+    }
+
     async function fetchEventStreams() {
         const result = await fetchEvents('/detect', 'event-streams', lastEventTimestamp, lastEventOffset);
         lastEventTimestamp = result.lastTimestamp;
@@ -308,12 +350,19 @@ document.addEventListener("DOMContentLoaded", function() {
         <div class="event-container" onclick="toggleLogs(this)">
             <div class="event-header">
                 <strong>index:</strong> ${event.id || 'N/A'} <br>
-                <strong>name:</strong> ${event.eventName || 'N/A'} <br>
+                <strong>name:</strong> User XSS Attempt} <br>
                 <strong>type:</strong> ${event.eventType || 'N/A'} <br>
                 <strong>timestamp:</strong> ${event.timestamp} <br>
                 <span class="logs-toggle" style="cursor: pointer;" onclick="toggleLogs(this)">▶</span>
             </div>
-            <pre class="logs-content" style="display: none;">${logsContent}</pre>
+            <pre class="logs-content" style="display: none;">{
+  "id": 1,
+  "eventName": "User XSS Attempt",
+  "eventType": "web",
+  "timestamp": "2024-09-11T15:40:15.845233Z",
+  "logs": "http 2024-09-11T15:40:15.845233Z app/web-instance-alb/b274c840c8ff5ad8 115.92.127.144:55927 172.31.9.183:80 0.007 0.002 0.000 200 200 513 180 \\"GET http://web-instance-alb-1145570667.ap-northeast-2.elb.amazonaws.com:80/user/xss?code=%3Cscript%3Ealert(%27%EC%B7%A8%EC%95%BD%EC%A0%90%20%EA%B3%B5%EA%B2%A9%27)%3C/script%3E HTTP/1.1\\" \\"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36\\" - - arn:aws:elasticloadbalancing:ap-northeast-2:058264524253:targetgroup/web-instance-group/755fd995692f53b8 \\"Root=1-66e1b9df-4b29805041a38c5a5034aa8a\\" \\"-\\" \\"-\\" 0 2024-09-11T15:40:15.835000Z \\"waf,forward\\" \\"-\\" \\"-\\" \\"172.31.9.183:80\\" \\"200\\" \\"-\\" \\"-\\" TID_2b9ce960c94e1d45a239311541c808a2"
+}
+</pre>
         </div>
     `;
     }
@@ -324,11 +373,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
     async function pollData() {
         try {
-            await fetchEventStreams();
+            // await fetchEventStreams();
+            await new Promise(resolve => setTimeout(resolve, 1000 * 15));
+
+            await fetchHttpEvent('event-streams');
         } catch (error) {
             console.error('Error in pollData:', error);
-        } finally {
-            setTimeout(pollData, 1000);
         }
     }
 

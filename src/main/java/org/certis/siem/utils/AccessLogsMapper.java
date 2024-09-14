@@ -5,8 +5,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.certis.siem.entity.AccessLog;
 
 import java.time.LocalDateTime;
-        import java.time.format.DateTimeFormatter;
-        import java.time.format.DateTimeParseException;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 public class AccessLogsMapper {
 

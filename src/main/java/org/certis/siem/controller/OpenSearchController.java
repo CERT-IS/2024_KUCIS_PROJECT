@@ -1,10 +1,11 @@
 package org.certis.siem.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import jdk.jfr.Event;
 import lombok.RequiredArgsConstructor;
 import org.certis.siem.entity.EventStream;
 import org.certis.siem.entity.dto.SearchRequest;
-import org.certis.siem.repository.EventRepository;
+import org.certis.siem.service.AccessLogsService;
 import org.certis.siem.service.CloudTrailService;
 import org.certis.siem.service.OpenSearchService;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,7 @@ import java.util.List;
 public class OpenSearchController {
 
     private final OpenSearchService openSearchService;
+    private final AccessLogsService accessLogsService;
     private final CloudTrailService cloudTrailService;
 
     @GetMapping("/documents/waf-logs")
@@ -37,7 +39,7 @@ public class OpenSearchController {
             return Flux.empty();
         }
 
-        return openSearchService.execeSearch(lastProcessedTimestamp);
+        return openSearchService.executeSearch(lastProcessedTimestamp);
 
         // indexName = cwl-*
         // @log_group = 'aws-cloudtrail-logs-058264524253-eba56a76', 'aws-access-logs-groups', 'aws-waf-logs-groups'
@@ -92,5 +94,4 @@ public class OpenSearchController {
 
         return ResponseEntity.ok(results);
     }
-
 }

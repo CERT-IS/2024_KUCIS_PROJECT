@@ -34,7 +34,7 @@ public class MetadataService {
                     if (metadata == null) {
                         System.out.println("No metadata found for logGroup: " + logGroup);
                     } else {
-                        //System.out.println("Found metadata: " + metadata);
+                        System.out.println("Found metadata: " + metadata.getLogGroup() + " "+ metadata.getTimestamp());
                     }
                 });
     }

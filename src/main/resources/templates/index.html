@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
     <link rel="stylesheet" href="/style.css"> <!-- /style.css -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <title>DashBoard</title>
 </head>
 <body>
@@ -79,10 +80,6 @@
                         <h2>Operating System</h2>
                         <p><span id="os-info">Available Processors: 16</span></p>
                     </div>
-                    <!-- <span class="material-symbols-outlined" data-icon="trending_up">trending_up</span> -->
-                    <span id="trending-down-os" class="material-symbols-outlined hidden" data-icon="trending_down">trending_down</span>
-                    <span id="trending-up-os" class="material-symbols-outlined hidden" data-icon="trending_up">trending_up</span>
-                    <span id="trending-flat-os" class="material-symbols-outlined" data-icon="trending_flat">trending_flat</span>
                 </div>
             </div>
 
@@ -92,10 +89,6 @@
                         <h2>CPU</h2>
                         <p><span id="cpu-info">실행 대기중인 Task의 평균 수: 0.94</span></p>
                     </div>
-                    <!-- <span class="material-symbols-outlined" data-icon="trending_down">trending_down</span> -->
-                    <span id="trending-down-cpu" class="material-symbols-outlined hidden" data-icon="trending_down">trending_down</span>
-                    <span id="trending-up-cpu" class="material-symbols-outlined hidden" data-icon="trending_up">trending_up</span>
-                    <span id="trending-flat-cpu" class="material-symbols-outlined" data-icon="trending_flat">trending_flat</span>
                 </div>
             </div>
 
@@ -105,10 +98,6 @@
                         <h2>Memory</h2>
                         <p><span id="memory-info">Free Memory: 2.6GB / 7.6GB</span></p>
                     </div>
-                    <!-- <span class="material-symbols-outlined" data-icon="trending_up">trending_up</span> -->
-                    <span id="trending-down-memory" class="material-symbols-outlined hidden" data-icon="trending_down">trending_down</span>
-                    <span id="trending-up-memory" class="material-symbols-outlined hidden" data-icon="trending_up">trending_up</span>
-                    <span id="trending-flat-memory" class="material-symbols-outlined" data-icon="trending_flat">trending_flat</span>
                 </div>
                 <span class="progress" data-value="33.69%"></span>
                 <span class="label"><span id="memory-info-percentage">33.69%</span></span>
@@ -120,27 +109,42 @@
                         <h2>Disk</h2>
                         <p><span id="disk-info">Used Heap Memory: 110.4MB / 1.9GB</span></p>
                     </div>
-                    <!-- <span class="material-symbols-outlined" data-icon="trending_down">trending_down</span> -->
-                    <span id="trending-down-disk" class="material-symbols-outlined hidden" data-icon="trending_down">trending_down</span>
-                    <span id="trending-up-disk" class="material-symbols-outlined hidden" data-icon="trending_up">trending_up</span>
-                    <span id="trending-flat-disk" class="material-symbols-outlined" data-icon="trending_flat">trending_flat</span>
                 </div>
                 <span class="progress" data-value="5.64%"></span>
                 <span class="label"><span id="disk-info-percentage">5.64%</span></span>
             </div>
         </div>
 
-        <div class="data">
-            <div class="content-data">
+        <div class="info-data2">
+            <div class="card">
                 <div class="head">
-                    <h3>Event Streams</h3>
+                    <h3>Traffic</h3>
                     <div class="menu">
                         <span class="material-symbols-outlined" data-icon="more_horiz">more_horiz</span>
-                        <ul class="menu-link">
-                            <li><a href="#">Edit</a></li>
-                            <li><a href="#">Save</a></li>
-                            <li><a href="#">Remove</a></li>
-                        </ul>
+                    </div>
+                </div>
+                <div class="graphSite">
+                    <canvas id="lineGraph" width="300px"></canvas>
+                </div>
+            </div>
+            <div class="card">
+                <div class="head">
+                    <h3>Degree of Risk</h3>
+                    <div class="menu">
+                        <span class="material-symbols-outlined" data-icon="more_horiz">more_horiz</span>
+                    </div>
+                </div>
+                <div class="label-boxs">
+                    <div class="label-box safty">
+                        <h2>Safty</h2>
+                    </div>
+
+                    <div class="label-box warning">
+                        <h2>Warning</h2>
+                    </div>
+
+                    <div class="label-box danger">
+                        <h2>Danger</h2>
                     </div>
                 </div>
             </div>
@@ -152,5 +156,80 @@
 <!-- NAVBAR -->
 
 <script src="/script.js"></script> <!-- /script.js -->
+<script>
+    const lineGraphCtx = document.getElementById('lineGraph').getContext('2d');
+
+    let labels = ['16:00', '16:05', '16:10', '16:15', '16:20', '16:25', '16:30', '16:35', '16:40', '16:45'];
+    let dataS1 = [45, 50, 55, 60, 65, 70, 75, 80, 85, 90];
+
+    const lineGraph = new Chart(lineGraphCtx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'S1',
+                    data: dataS1,
+                    borderColor: '#007BFF',
+                    fill: false
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                x: {
+                    title: {
+                        display: false
+                    }
+                },
+                y: {
+                    title: {
+                        display: false
+                    },
+                    min: 0,
+                    max: 3000
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                }
+            }
+        }
+    });
+
+    function getNextTime(currentTime) {
+        const [hours, minutes] = currentTime.split(':').map(Number);
+        let newMinutes = minutes + 5;
+        let newHours = hours;
+
+        if (newMinutes >= 60) {
+            newMinutes -= 60;
+            newHours = (hours + 1) % 24;
+        }
+
+        return `${newHours < 10 ? '0' : ''}${newHours}:${newMinutes < 10 ? '0' : ''}${newMinutes}`;
+    }
+
+    function updateChart() {
+        const lastTime = labels[labels.length - 1];
+        const newTime = getNextTime(lastTime);
+        const newValue = Math.floor(Math.random() * (2700 - 100 + 1)) + 100;
+
+        labels.push(newTime);
+        labels.shift();
+
+        dataS1.push(newValue);
+        dataS1.shift();
+
+        lineGraph.data.labels = labels;
+        lineGraph.data.datasets[0].data = dataS1;
+
+        lineGraph.update();
+    }
+
+    setInterval(updateChart, 2000);
+</script>
 </body>
 </html>

@@ -55,6 +55,11 @@ dependencies {
 
 	implementation 'org.springframework.boot:spring-boot-starter-data-r2dbc'
 	implementation 'io.asyncer:r2dbc-mysql'
+
+
+	// jackson LocalDateTime Serializer
+	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.4'
+
 }
 
 tasks.named('test') {
