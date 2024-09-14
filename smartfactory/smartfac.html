@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitoring System</title>
+    <link rel="stylesheet" href="smartfac.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="header">
+        <p>(주) OO 산업</p>
+        <h1>Monitoring System</h1>
+        <p id="current-time"></p>
+    </div>
+
+    <div class="grid-container">
+        <!-- -------------------- -->
+        <div class="div1">
+            <div class="login-box">
+                <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="User Icon">
+                <input type="text" id="email" placeholder="Email ID">
+                <input type="password" id="password" placeholder="Password">
+                <div class="remember-me">
+                    <label><input type="checkbox"> Remember me</label>
+                    <a href="#" style="color: #3e2d29; text-decoration: none;">Forgot Password?</a>
+                </div>
+                <button onclick="login()">LOGIN</button>
+                <p class="error" id="error-message"></p>
+            </div>
+        </div>
+
+        <div class="div1">
+            <h1 class="title1">Output Rate</h1>
+            <canvas id="circleChart" width="200px" height="200px"></canvas>
+            <h2 class="percent total"></h2>
+            <h3 class="percent"></h3>
+        </div>
+
+        <div class="div1">
+            <h1 class="title2">Total Output</h1>
+
+            <h2 class="lineHigh">A line</h2>
+            <h2 class="progress1" id="progress1"></h2>
+            <canvas class="barchart1" id="barChart1" width="200" height="200"></canvas>
+
+            <h2 class="lineMiddle">B line</h2>
+            <h2 class="progress2" id="progress2"></h2>
+            <canvas class="barchart2" id="barChart2" width="200" height="200"></canvas>
+            
+            <h2 class="lineLow">C line</h2>
+            <h2 class="progress3" id="progress3"></h2>
+            <canvas class="barchart3" id="barChart3" width="200" height="200"></canvas>
+            <h2 class="total" id="barTotal"></h2>
+        </div>
+
+        <div class="div1">
+            <h1 class="title2">Goals</h1>
+
+            <h2 class="lineHigh">Annual goal : 201600</h2>
+            <h2 class="progress4" id="progress4"></h2>
+            <canvas class="barchart4" id="barChart4" width="300" height="200"></canvas>
+
+            <h2 class="lineMiddle">Monthly goal : 16800</h2>
+            <h2 class="progress5" id="progress5"></h2>
+            <canvas class="barchart5" id="barChart5" width="300" height="200"></canvas>
+
+            <h2 class="lineLow">Weekly goal : 4200</h2>
+            <h2 class="progress6" id="progress6"></h2>
+            <canvas class="barchart6" id="barChart6" width="300" height="200"></canvas>
+        </div>
+        <!-- -------------------- -->
+
+        <!-- -------------------- -->
+        <div class="div2">
+            <span>REC</span>
+            <img src="cctv1.png" alt="cctv" class="cctvImage">
+            <span class="cameraText">Camera 1</span>
+        </div>
+
+        <div class="div3">
+            <div class="statusBox statusBox1">
+                <div class="statusHeader">
+                    <span>Storage_1</span>
+                    <h2 class="statusButton">Operation</h2>
+                </div>
+                <div class="statusContent">
+                    <span>Capacity</span>
+                    <span class="capacityValue" id="capacityValue1">48%</span>
+                </div>
+            </div>
+
+            <div class="statusBox statusBox2">
+                <div class="statusHeader">
+                    <span>Storage_2</span>
+                    <h2 class="statusButton">Operation</h2>
+                </div>
+                <div class="statusContent">
+                    <span>Capacity</span>
+                    <span class="capacityValue" id="capacityValue2">17%</span>
+                </div>
+            </div>
+
+            <div class="statusBox statusBox3">
+                <div class="statusHeader">
+                    <span>Cooling Water</span>
+                    <h2 class="statusButton">Operation</h2>
+                </div>
+                <div class="statusContent">
+                    <span>Capacity</span>
+                    <span class="capacityValue" id="capacityValue3">-54.7℃</span>
+                </div>
+            </div>
+
+            <div class="statusBox statusBox4">
+                <div class="statusHeader">
+                    <span>Welding_1</span>
+                    <h2 class="statusButton">Operation</h2>
+                </div>
+                <div class="statusContent">
+                    <span>Temperature</span>
+                    <span class="capacityValue" id="capacityValue4">152℃</span>
+                </div>
+            </div>
+
+            <div class="statusBox statusBox5">
+                <div class="statusHeader">
+                    <span>Welding_2</span>
+                    <h2 class="statusButton">Operation</h2>
+                </div>
+                <div class="statusContent">
+                    <span>Temperature</span>
+                    <span class="capacityValue" id="capacityValue5">146℃</span>
+                </div>
+            </div>
+            
+            <img src="machine.png">
+        </div>
+        <!-- -------------------- -->
+
+        <!-- -------------------- -->
+        <div class="div4">
+            <h1 class="title1">Vibration Load</h1>
+            <canvas id="lineGraph" width="240" height="110"></canvas>
+        </div>
+        <!-- -------------------- -->
+    </div>
+
+    <script src="smartfac.js"></script>
+</body>
+</html>

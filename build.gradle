@@ -33,6 +33,7 @@ dependencies {
 
 	implementation 'org.apache.commons:commons-csv:1.8'
 	implementation 'org.springdoc:springdoc-openapi-starter-webflux-ui:2.1.0'
+
 	//aws
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 
@@ -51,6 +52,14 @@ dependencies {
 	implementation 'org.apache.pdfbox:fontbox:2.0.29'
 	// PDFBox Tools (optional, for command line tools)
 	implementation 'org.apache.pdfbox:pdfbox-tools:2.0.29'
+
+	implementation 'org.springframework.boot:spring-boot-starter-data-r2dbc'
+	implementation 'io.asyncer:r2dbc-mysql'
+
+
+	// jackson LocalDateTime Serializer
+	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.4'
+
 }
 
 tasks.named('test') {

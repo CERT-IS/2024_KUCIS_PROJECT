@@ -1,0 +1,375 @@
+/* body and html */
+body, html {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 10px 10px;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+
+/* header */
+.header {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    grid-column: span 3;
+    margin-bottom: 20px;
+    height: 40px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #ccc;
+}
+
+.header h1 {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
+    font-size: 24px;
+}
+
+.header p {
+    margin: 0;
+    font-size: 14px;
+    color: #888;
+}
+
+
+
+/* divs */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    grid-gap: 20px;
+    height: calc(100vh - 120px);
+    padding: 10px;
+}
+
+.div1, .div2, .div3, .div4 {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    position: relative;
+    overflow: hidden;
+}
+
+.div1 {
+    grid-column: span 1;
+    grid-row: 1;
+
+}
+
+.div2 {
+    grid-column: span 1;
+    grid-row: 2;
+}
+
+.div3 {
+    grid-column: span 3;
+    grid-row: span 2;
+}
+
+.div4 {
+    grid-column: span 1;
+    grid-row: 3;
+}
+
+
+/* titles and totals */
+.title1, .title2 {
+    position: absolute;
+    top: 18px;
+    margin: 0;
+    font-size: 24px;
+}
+
+.title1 {
+    right: 15px;
+}
+
+.title2 {
+    left: 15px;
+}
+
+.total {
+    position: absolute;
+    bottom: 18px;
+    right: 15px;
+    margin: 0;
+    font-size: 40px;
+}
+
+
+/* div1-1 : login */
+.login-box {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.login-box img {
+    position: block;
+    width: 40px;
+    border-radius: 50%;
+    margin: 10px 100px 0px;
+}
+
+.login-box input[type="text"] {
+    margin-top: 10px;
+}
+
+.login-box input[type="text"],
+.login-box input[type="password"] {
+    position: block;
+    width: 300px;
+    padding: 12px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f4f4f4;
+    color: #3e2d29;
+    font-size: 12px;
+}
+
+.login-box input[type="text"]::placeholder,
+.login-box input[type="password"]::placeholder {
+    color: #3e2d29;
+}
+
+.login-box .remember-me {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: #3e2d29;
+    margin-bottom: 15px;
+    margin-left: 40px;
+    margin-right: 40px;
+}
+
+.login-box .remember-me input[type="checkbox"] {
+    margin-right: 5px;
+    transform: translate(0, 2px);
+}
+
+.login-box button {
+    width: 140px;
+    padding: 12px;
+    border: none;
+    background-color: #3e2d29;
+    color: white;
+    font-size: 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.login-box button:hover {
+    background-color: #2c1d18;
+}
+
+
+/* div1-2 : Output Rate */
+#circleChart {
+    padding: 20px 20px;
+    width: 10px;
+    height: 10px;
+}
+
+.div1 h3 {
+    position: absolute;
+    top: 50%;
+    left: calc(200px/2 + 25px);
+    transform: translate(-50%, -50%);
+    margin: 0;
+    font-size: 20px;
+}
+
+
+
+/* div1-3 : Total output, div1-4 : Goals */
+.barchart1, .barchart4 {
+    position: absolute;
+    bottom: 20px;
+    left: 15px;
+    margin: 0;
+}
+
+.barchart2, .barchart5 {
+    position: absolute;
+    bottom: -35px;
+    left: 15px;
+    margin: 0;
+}
+
+.barchart3, .barchart6 {
+    position: absolute;
+    bottom: -90px;
+    left: 15px;
+    margin: 0;
+}
+
+.progress1, .progress2, .progress3 {
+    position: absolute;
+    left: 230px;
+    margin: 0;
+    font-size: 16px;
+}
+
+.progress4, .progress5, .progress6 {
+    position: absolute;
+    left: 350px;
+    margin: 0;
+    font-size: 16px;
+}
+
+.lineHigh, .lineMiddle, .lineLow {
+    position: absolute;
+    left: 15px;
+    margin: 0;
+    font-size: 16px;
+}
+
+.progress1, .lineHigh, .progress4 {
+    bottom: 155px;
+}
+
+.progress2, .lineMiddle, .progress5 {
+    bottom: 100px;
+}
+
+.progress3, .lineLow, .progress6 {
+    bottom: 45px;
+}
+
+
+/* div2 : cctv*/
+.div2 span {
+    position: absolute;
+    color: white;
+    padding: 2px 5px;
+    font-size: 12px;
+    border-radius: 3px;
+}
+
+.div2 span:first-child {
+    top: 10px;
+    left: 10px;
+    background-color: red;
+}
+
+.div2 span:last-child {
+    bottom: 10px;
+    right: 10px;
+    background-color: gray;
+}
+
+.cctvImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
+/* div3 : machine */
+.div3 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.div3 img {
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+    margin: auto auto 30px auto;
+}
+
+.statusBox {
+    display: inline-block;
+    background-color: #f0f0f0;
+    border: 2px solid #000;
+    padding: 10px;
+    width: 200px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.statusHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.statusHeader span {
+    top: 5px;
+    left: 10px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.statusButton {
+    background-color: #20968B;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    text-align : center;
+    font-size: 12px;
+}
+
+.statusContent {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; 
+}
+
+.statusContent span:first-child {
+    font-size: 18px;
+    font-weight: bolder;
+}
+
+.capacityValue {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.statusBox1, .statusBox2, .statusBox3, .statusBox4, .statusBox5 {
+    position: absolute;
+    margin: 0;
+}
+
+.statusBox1 {
+    top: 60px;
+    left: 260px;
+}
+
+.statusBox2 {
+    top: 10px;
+    right: 500px;
+}
+
+.statusBox3 {
+    top: 190px;
+    left: 80px;
+}
+
+.statusBox4 {
+    top: 310px;
+    left: 300px;
+}
+
+.statusBox5 {
+    top: 20px;
+    right: 120px;
+}
+
+
+
+/* div4 : lineGraph */
+.div4 canvas {
+    position: absolute;
+    bottom: 10px;
+    margin: 0;
+}

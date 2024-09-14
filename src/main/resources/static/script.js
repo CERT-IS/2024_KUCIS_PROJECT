@@ -109,119 +109,107 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
-    const allProgress = document.querySelectorAll('main .card .progress');
 
-    allProgress.forEach(item => {
-        item.style.setProperty('--value', item.dataset.value);
+    const allMenu2 = document.querySelectorAll('main .head .menu2');
+
+    allMenu2.forEach(item => {
+        const icon = item.querySelector('.material-symbols-outlined[data-icon="more_horiz"]');
+        const menuLink = item.querySelector('.menu-link2');
+
+        icon.addEventListener('click', function(event) {
+            allMenu2.forEach(menu => {
+                const otherMenuLink = menu.querySelector('.menu-link2');
+                if (otherMenuLink !== menuLink) {
+                    otherMenuLink.classList.remove('show');
+                }
+            });
+            menuLink.classList.toggle('show');
+
+            event.stopPropagation();
+        });
+
+        menuLink.addEventListener('click', function(event) {
+            event.stopPropagation();
+        });
+    });
+
+    window.addEventListener('click', function(e) {
+        allMenu2.forEach(item => {
+            const menuLink = item.querySelector('.menu-link2');
+            menuLink.classList.remove('show');
+        });
     });
 
 
-    var spanElments = document.querySelectorAll('.progress');
 
-    spanElments.forEach(function(spanElment) {
-        var spanText = spanElment.textContent;
-        spanElment.setAttribute('data-value', spanText);
+    const allMenu3 = document.querySelectorAll('main .info-data2 .card .head .menu');
+
+    allMenu3.forEach(item => {
+        const icon = item.querySelector('.material-symbols-outlined[data-icon="more_horiz"]');
+        const menuLink = item.querySelector('.menu-link3');
+
+        icon.addEventListener('click', function() {
+            menuLink.classList.toggle('show');
+        });
+    });
+
+    window.addEventListener('click', function(e) {
+        if (e.target !== imgProfile && e.target !== dropdownProfile) {
+            dropdownProfile.classList.remove('show');
+        }
+
+        allMenu3.forEach(item => {
+            const icon = item.querySelector('.material-symbols-outlined[data-icon="more_horiz"]');
+            const menuLink = item.querySelector('.menu-link3');
+
+            if (e.target !== icon && e.target !== menuLink) {
+                menuLink.classList.remove('show');
+            }
+        });
     });
 
 
-    let previousProcessors = 0;
-    let previousLoadAverage = 0;
-    let previousMemory = 0;
-    let previousHeapMemory = 0;
 
-    function updateDiskInfo(data) {
-        const currentProcessors = data.availableProcessors;
-        const currentLoadAverage = data.systemLoadAverage;
-        const currentMemory = data.freeMemory;
-        const currentHeapMemory = data.usedHeapMemory;
+    const successBox = document.querySelector('.safty');
+    let direction = 1;
+    let position = 0;
+    const speed = 1;
 
-        const trendingDownOs = document.getElementById('trending-down-os');
-        const trendingUpOs = docoument.getElementById('trending-up-os');
-        const trendingFlatOs = document.getElementById('trending-flat-os');
+    function moveBox() {
+        position += speed * direction;
 
-        const trendingDownCpu = document.getElementById('trending-down-cpu');
-        const trendingUpCpu = docoument.getElementById('trending-up-cpu');
-        const trendingFlatCpu = document.getElementById('trending-flat-cpu');
-
-        const trendingDownMemory = document.getElementById('trending-down-memory');
-        const trendingUpMemory = docoument.getElementById('trending-up-memory');
-        const trendingFlatMemory = document.getElementById('trending-flat-memory');
-
-        const trendingDownDisk = document.getElementById('trending-down-disk');
-        const trendingUpDisk = docoument.getElementById('trending-up-disk');
-        const trendingFlatDisk = document.getElementById('trending-flat-disk');
-
-        if (previousProcessors > currentProcessors) {
-            trendingDownOs.classList.remove('hidden');
-            trendingUpOs.classList.add('hidden');
-            trendingFlatOs.classList.add('hidden');
-        }
-        else if (previousProcessors < currentProcessors) {
-            trendingDownOs.classList.add('hidden');
-            trendingUpOs.classList.remove('hidden');
-            trendingFlatOs.classList.add('hidden');
-        }
-        else {
-            trendingDownOs.classList.add('hidden');
-            trendingUpOs.classList.add('hidden');
-            trendingFlatOs.classList.remove('hidden');
+        if (position >= 20 || position <= -20) {
+            direction *= -1;
         }
 
-        if (previousLoadAverage > currentLoadAverage) {
-            trendingDownCpu.classList.remove('hidden');
-            trendingUpCpu.classList.add('hidden');
-            trendingFlatCpu.classList.add('hidden');
-        }
-        else if (previousLoadAverage < currentLoadAverage) {
-            trendingDownCpu.classList.add('hidden');
-            trendingUpCpu.classList.remove('hidden');
-            trendingFlatCpu.classList.add('hidden');
-        }
-        else {
-            trendingDownCpu.classList.add('hidden');
-            trendingUpCpu.classList.add('hidden');
-            trendingFlatCpu.classList.remove('hidden');
-        }
+        successBox.style.transform = `translateY(${position}px)`;
 
-        if (previousMemory > currentMemory) {
-            trendingDownMemory.classList.remove('hidden');
-            trendingUpMemory.classList.add('hidden');
-            trendingFlatMemory.classList.add('hidden');
-        }
-        else if (previousMemory < currentMemory) {
-            trendingDownMemory.classList.add('hidden');
-            trendingUpMemory.classList.remove('hidden');
-            trendingFlatMemory.classList.add('hidden');
-        }
-        else {
-            trendingDownMemory.classList.add('hidden');
-            trendingUpMemory.classList.add('hidden');
-            trendingFlatMemory.classList.remove('hidden');
-        }
-
-        if (previousHeapMemory > currentHeapMemory) {
-            trendingDownDisk.classList.remove('hidden');
-            trendingUpDisk.classList.add('hidden');
-            trendingFlatDisk.classList.add('hidden');
-        }
-        else if (previousHeapMemory < currentHeapMemory) {
-            trendingDownDisk.classList.add('hidden');
-            trendingUpDisk.classList.remove('hidden');
-            trendingFlatDisk.classList.add('hidden');
-        }
-        else {
-            trendingDownDisk.classList.add('hidden');
-            trendingUpDisk.classList.add('hidden');
-            trendingFlatDisk.classList.remove('hidden');
-        }
-
-        previousProcessors = currentProcessors;
-        previousLoadAverage = currentLoadAverage;
-        previousMemory = currentMemory;
-        previousHeapMemory = currentHeapMemory;
+        requestAnimationFrame(moveBox);
     }
 
+    requestAnimationFrame(moveBox);
 
+
+
+
+
+
+
+
+    const memoryInfoPercentage = document.getElementById('memory-info-percentage').textContent;
+    const diskInfoPercentage = document.getElementById('disk-info-percentage').textContent;
+
+    const allProgress = document.querySelectorAll('main .card .progress');
+
+    if (allProgress.length > 0) {
+        allProgress[0].setAttribute('data-value', memoryInfoPercentage);
+        allProgress[0].style.setProperty('--value', memoryInfoPercentage);
+    }
+
+    if (allProgress.length > 1) {
+        allProgress[1].setAttribute('data-value', diskInfoPercentage);
+        allProgress[1].style.setProperty('--value', diskInfoPercentage);
+    }
 
     async function fetchSystemInfo() {
         try {
@@ -255,99 +243,9 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
-    async function fetchEventStreams() {
-        try {
-            const response = await fetch('/detect');
-            const eventStreams = await response.json();
-            const eventStreamsElement = document.getElementById('event-streams');
-            eventStreamsElement.innerHTML = '';
-
-            eventStreams.forEach(eventStream => {
-                const streamLi = document.createElement('li');
-                streamLi.textContent = `ID: ${eventStream.id}, Type: ${eventStream.type}, Level: ${eventStream.level}`;
-                eventStreamsElement.appendChild(streamLi);
-
-                if (eventStream.queue) {
-                    eventStream.queue.forEach(eventLog => {
-                        const logLi = document.createElement('li');
-                        logLi.textContent = `EventLog Type: ${eventLog.type}`;
-                        streamLi.appendChild(logLi);
-
-                        if (eventLog.cloudTrailEvent) {
-                            const cloudTrailLi = document.createElement('li');
-                            cloudTrailLi.textContent = `CloudTrailEvent: ${JSON.stringify(eventLog.cloudTrailEvent)}`;
-                            streamLi.appendChild(cloudTrailLi);
-                        }
-
-                        if (eventLog.wafEvent) {
-                            const wafLi = document.createElement('li');
-                            wafLi.textContent = `WAFEvent: ${JSON.stringify(eventLog.wafEvent)}`;
-                            streamLi.appendChild(wafLi);
-                        }
-
-                        if (eventLog.flowLogEvent) {
-                            const flowLogLi = document.createElement('li');
-                            flowLogLi.textContent = `FlowLogEvent: ${JSON.stringify(eventLog.flowLogEvent)}`;
-                            streamLi.appendChild(flowLogLi);
-                        }
-                    });
-                }
-            });
-        } catch (error) {
-            console.error('Error fetching event streams:', error);
-        }
-    }
-
-    async function fetchDangerousEvents() {
-        try {
-            const response = await fetch('/detect/dangrous');
-            const dangerousEvents = await response.json();
-            const dangerousEventsElement = document.getElementById('dangerous-events');
-            dangerousEventsElement.innerHTML = '';
-
-            dangerousEvents.forEach(eventStream => {
-                const streamLi = document.createElement('li');
-                streamLi.textContent = `ID: ${eventStream.id}, Type: ${eventStream.type}, Level: ${eventStream.level}`;
-                dangerousEventsElement.appendChild(streamLi);
-
-                if (eventStream.queue) {
-                    eventStream.queue.forEach(eventLog => {
-                        const logLi = document.createElement('li');
-                        logLi.textContent = `EventLog Type: ${eventLog.type}`;
-                        streamLi.appendChild(logLi);
-
-                        if (eventLog.cloudTrailEvent) {
-                            const cloudTrailLi = document.createElement('li');
-                            cloudTrailLi.textContent = `CloudTrailEvent: ${JSON.stringify(eventLog.cloudTrailEvent)}`;
-                            streamLi.appendChild(cloudTrailLi);
-                        }
-
-                        if (eventLog.wafEvent) {
-                            const wafLi = document.createElement('li');
-                            wafLi.textContent = `WAFEvent: ${JSON.stringify(eventLog.wafEvent)}`;
-                            streamLi.appendChild(wafLi);
-                        }
-
-                        if (eventLog.flowLogEvent) {
-                            const flowLogLi = document.createElement('li');
-                            flowLogLi.textContent = `FlowLogEvent: ${JSON.stringify(eventLog.flowLogEvent)}`;
-                            streamLi.appendChild(flowLogLi);
-                        }
-                    });
-                }
-            });
-        } catch (error) {
-            console.error('Error fetching event streams:', error);
-        }
-    }
-
-
-
     async function pollData() {
         try {
             await fetchSystemInfo();
-            await fetchEventStreams();
-            await fetchDangerousEvents();
         } catch (error) {
             console.error('Error in pollData:', error);
         } finally {

@@ -1,33 +1,38 @@
-version: '3.9'
+version: '3'
 services:
 
-  elasticsearch:
-    image: elasticsearch:8.11.0
-    container_name: elasticsearch
-    environment:
-      - node.name=elasticsearch
-      - discovery.type=single-node
-      - cluster.name=docker-cluster
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-      - xpack.security.enabled=false # false for dev
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
+  mysql:
+    image: mysql:8.0
+    networks:
+      - kucis_network
     volumes:
-      - esdata1:/usr/share/elasticsearch/data
+      - ./db/conf.d:/etc/mysql/conf.d
+      - ./db/data:/var/lib/mysql
+      - ./db/initdb.d:/docker-entrypoint-initdb.d
     ports:
-      - "9300:9300"
-      - "9200:9200"
+      - "3306:3306"
+    environment:
+      - TZ=Asia/Seoul
+      - MYSQL_HOST=localhost
+      - MYSQL_PORT=3306
+      - MYSQL_ROOT_PASSWORD=rootpassword
+      - MYSQL_USER=mysqluser
+      - MYSQL_PASSWORD=mysqlpw
+      - MYSQL_DATABASE=kucis
 
-  siem:
+  kucis-service:
     image: siem:1.0.0
+    networks:
+      - kucis_network
     ports:
       - "8080:8080"
+    depends_on:
+      - mysql
     environment:
-      - spring.data.elasticsearch.client.reactive.endpoints="localhost:9200"
-      - springdoc.version=1.0.0
-volumes:
-  esdata1:
-    driver: local
+      - SPRING_R2DBC_URL=r2dbc:mysql://mysql:3306/kucis
+      - SPRING_R2DBC_USERNAME=mysqluser
+      - SPRING_R2DBC_PASSWORD=mysqlpw
+
+networks:
+  kucis_network:
+    driver: bridge

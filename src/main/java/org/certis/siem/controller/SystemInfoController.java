@@ -32,7 +32,7 @@ public class SystemInfoController {
             double freeMemoryPercentage = ((double) freeMemory / totalMemory) * 100;
             systemInfo.put("freeMemory", formatMemory(freeMemory));
             systemInfo.put("totalMemory", formatMemory(totalMemory));
-            systemInfo.put("freeMemoryPercentage", String.format(" (%.2f%%)", freeMemoryPercentage));
+            systemInfo.put("freeMemoryPercentage", String.format("%.2f%%", freeMemoryPercentage));
 
             RuntimeMXBean runtimeMXBean = ManagementFactory.getRuntimeMXBean();
             systemInfo.put("jvmUptime", runtimeMXBean.getUptime());
@@ -44,7 +44,7 @@ public class SystemInfoController {
             double usedHeapPercentage = ((double) usedHeapMemory / maxHeapMemory) * 100;
             systemInfo.put("usedHeapMemory", formatMemory(usedHeapMemory));
             systemInfo.put("maxHeapMemory",  formatMemory(maxHeapMemory));
-            systemInfo.put("usedHeapPercentage",  String.format(" (%.2f%%)", usedHeapPercentage));
+            systemInfo.put("usedHeapPercentage",  String.format("%.2f%%", usedHeapPercentage));
 
             return systemInfo;
         });

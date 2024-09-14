@@ -217,6 +217,7 @@ nav .form-group .material-symbols-outlined[data-icon="search"] {
     transform: translateY(-50%);
     right: 16px;
     color: var(--dark-gray);
+    cursor: pointer;
 }
 
 nav .nav-link {
@@ -322,7 +323,7 @@ main .breadcrumbs li a.divider {
     pointer-events: none;
 }
 
-main .submit button{
+main .submit-button{
     padding: 4px 20px;
     background: var(--blue);
     border-radius: 5px;
@@ -335,10 +336,10 @@ main .submit button{
     margin-top: -22px;
     transition: all .3s ease;
 }
-main .submit button:hover {
+main .submit-button:hover {
     background: var(--dark-blue);
 }
-main .submit button .material-symbols-outlined {
+main .submit-button .material-symbols-outlined {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -404,7 +405,7 @@ main .info-data {
 }
 main .info-data .card {
     padding: 20px;
-    border-radius: 10px;
+    border-radius: 8px;
     background: var(--light);
     box-shadow: 4px 4px 16px rgba(0, 0, 0, .05);
 }
@@ -415,24 +416,13 @@ main .card .head {
     align-items: flex-start;
 }
 main .card .head h2 {
-    font-size: 24px;
+    font-size: 22px;
     font-weight: 600;
 }
 main .card .head p {
+    margin-top: 5px;
     font-size: 16px;
     font-weight: 500;
-}
-main .card .head .material-symbols-outlined[data-icon="trending_up"] {
-    font-size: 20px;
-    color: var(--red);
-}
-main .card .head .material-symbols-outlined[data-icon="trending_down"] {
-    font-size: 20px;
-    color: var(--blue);
-}
-main .card .head .material-symbols-outlined[data-icon="trending_flat"] {
-    font-size: 20px;
-    color: var(--dark-gray);
 }
 
 main .card .progress {
@@ -460,6 +450,29 @@ main .card .label {
     font-weight: 700;
 }
 
+
+main .info-data2 {
+    margin-top: 36px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(240px, 1fr));
+    grid-gap: 20px;
+}
+main .info-data2 .card {
+    padding: 20px;
+    border-radius: 8px;
+    background: var(--light);
+    box-shadow: 4px 4px 16px rgba(0, 0, 0, .05);
+}
+main .info-data2 .card:first-child {
+    grid-column: span 2;
+    grid-row: 1;
+}
+main .info-data2 .card:last-child {
+    grid-column: span 1;
+    grid-row: 1;
+}
+
+
 main .data {
     display: flex;
     grid-gap: 20px;
@@ -471,7 +484,7 @@ main .data .content-data {
     flex-basis: 400px;
     padding: 20px;
     background: var(--light);
-    border-radius: 10px;
+    border-radius: 8px;
     box-shadow: 4px 4px 16px rgba(0, 0, 0, .1);
 }
 
@@ -494,6 +507,17 @@ main .content-data .head .menu {
 main .content-data .head .menu .material-symbols-outlined[data-icon="more_horiz"] {
     cursor: pointer;
 }
+
+main .head .menu2 {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+main .head .menu2 .material-symbols-outlined[data-icon="more_horiz"] {
+    cursor: pointer;
+}
+
 
 main .content-data .head .menu-link {
     position: absolute;
@@ -525,11 +549,58 @@ main .content-data .head .menu-link a:hover {
     background: var(--gray);
 }
 
-main .content-data .dangerous-events {
+
+main .head .menu-link2 {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    background: var(--light);
+    border-radius: 10px;
+    box-shadow: 4px 4px 16px rgba(0, 0, 0, .1);
+    z-index: 100;
+    opacity: 0;
+    pointer-events: none;
+    transition: all .3s ease;
+}
+main .head .menu-link2.show {
+    top: 100%;
+    opacity: 1;
+    pointer-events: visible;
+}
+main .head .menu-link2 .filter-box {
+    display: block;
+    padding: 6px 16px;
+    font-size: 14px;
+    color: var(--dark);
+    transition: all .3s ease;
+}
+
+
+main .head .menu-link3 {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    width: 140px;
+    background: var(--light);
+    border-radius: 10px;
+    box-shadow: 4px 4px 16px rgba(0, 0, 0, .1);
+    padding: 10px 0;
+    z-index: 100;
+    opacity: 0;
+    pointer-events: none;
+    transition: all .3s ease;
+}
+
+
+
+
+main .content-data .waf-events {
     width: 100%;
     max-width: 100%;
     overflow-x: auto;
-    scrollbar-width: none;
+    max-height: 500px;
+    overflow-y: auto;
+    scrollbar-width: thin;
 }
 
 main .content-data .sys-info {
@@ -540,11 +611,39 @@ main .content-data .sys-info {
 }
 
 main .content-data .event-streams {
-    width: 50%;
-    max-width: 50%;
+    width: 100%;
+    max-width: 100%;
     overflow-x: auto;
-    scrollbar-width: none;
+    max-height: 500px;
+    overflow-y: auto;
+    scrollbar-width: thin;
 }
+
+
+main .event-container {
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: var(--gray);
+    border-left: 5px solid var(--blue);
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+main .event-header {
+    padding: 3px;
+}
+
+main .logs-content {
+    background-color: var(--light);
+    border-left: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 5px 10px;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
 
 
 main form {
@@ -596,4 +695,92 @@ main .btn-send:hover {
         display: none;
     }
 
+}
+
+.event-container {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px 0;
+    background-color: #f9f9f9;
+    transition: background-color 0.3s;
+    cursor: pointer;
+}
+
+.event-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logs-content {
+    background-color: #e6e6e6;
+    padding: 10px;
+    border-radius: 3px;
+    margin-top: 10px;
+    white-space: pre-wrap;
+    max-height: 200px;
+    max-width: 100%;
+    overflow-y: auto;
+    overflow-x: auto;
+    word-wrap: break-word;
+    display: none;
+}
+
+.logs-toggle {
+    color: #007bff;
+    font-weight: bold;
+    /* cursor: pointer;*/
+}
+
+.logs-toggle:hover {
+    text-decoration: underline;
+}
+
+.event-container:hover {
+    background-color: #f1f1f1;
+}
+
+.label-boxs {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 100px 0;
+}
+
+.label-box {
+    width: 280px;
+    padding: 20px;
+    margin: 10px 0;
+    border-radius: 10px;
+    color: white;
+    text-align: left;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.label-box h2 {
+    margin: 0 0 10px;
+    font-size: 1.5em;
+}
+
+.safty {
+    background-color: #1cc88a;
+}
+
+.warning {
+    background-color: #f6c23e;
+}
+
+.danger {
+    background-color: #e74a3b;
+}
+
+.graphSite {
+    display: block;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 30px 10px 0;
 }
