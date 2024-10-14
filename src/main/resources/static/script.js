@@ -49,31 +49,7 @@ document.addEventListener("DOMContentLoaded", function() {
         updateSidebar();
     });
 
-    sidebar.addEventListener('mouseleave', function() {
-        if (this.classList.contains('hide')) {
-            allDropdown.forEach(item => {
-                const a = item.parentElement.querySelector('a:first-child');
-                a.classList.remove('active');
-                item.classList.remove('show');
-            });
-            allSideDivider.forEach(item => {
-                item.textContent = '-';
-            });
-        }
-    });
 
-    sidebar.addEventListener('mouseenter', function() {
-        if (this.classList.contains('hide')) {
-            allDropdown.forEach(item => {
-                const a = item.parentElement.querySelector('a:first-child');
-                a.classList.remove('active');
-                item.classList.remove('show');
-            });
-            allSideDivider.forEach(item => {
-                item.textContent = item.dataset.text;
-            });
-        }
-    });
 
     const profile = document.querySelector('nav .profile');
     const imgProfile = profile.querySelector('img');
@@ -142,55 +118,25 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
-    const allMenu3 = document.querySelectorAll('main .info-data2 .card .head .menu');
+    let isChatOpen = false;
 
-    allMenu3.forEach(item => {
-        const icon = item.querySelector('.material-symbols-outlined[data-icon="more_horiz"]');
-        const menuLink = item.querySelector('.menu-link3');
-
-        icon.addEventListener('click', function() {
-            menuLink.classList.toggle('show');
-        });
-    });
-
-    window.addEventListener('click', function(e) {
-        if (e.target !== imgProfile && e.target !== dropdownProfile) {
-            dropdownProfile.classList.remove('show');
+    function toggleChat() {
+        const chatModal = document.getElementById("chatModal");
+        const chatButton = document.getElementById("chatButton");
+        
+        if (!isChatOpen) {
+            chatModal.classList.add("open");
+            chatButton.style.opacity = "0";
+        } else {
+            chatModal.classList.remove("open");
+            chatButton.style.opacity = "1";
         }
 
-        allMenu3.forEach(item => {
-            const icon = item.querySelector('.material-symbols-outlined[data-icon="more_horiz"]');
-            const menuLink = item.querySelector('.menu-link3');
-
-            if (e.target !== icon && e.target !== menuLink) {
-                menuLink.classList.remove('show');
-            }
-        });
-    });
-
-
-
-    const successBox = document.querySelector('.safty');
-    let direction = 1;
-    let position = 0;
-    const speed = 1;
-
-    function moveBox() {
-        position += speed * direction;
-
-        if (position >= 20 || position <= -20) {
-            direction *= -1;
-        }
-
-        successBox.style.transform = `translateY(${position}px)`;
-
-        requestAnimationFrame(moveBox);
+        isChatOpen = !isChatOpen;
     }
 
-    requestAnimationFrame(moveBox);
-
-
-
+    document.getElementById("chatButton").onclick = toggleChat;
+    document.querySelector(".close").onclick = toggleChat;
 
 
 
