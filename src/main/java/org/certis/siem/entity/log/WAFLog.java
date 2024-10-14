@@ -1,4 +1,4 @@
-package org.certis.siem.entity;
+package org.certis.siem.entity.log;
 
 import lombok.AllArgsConstructor;
         import lombok.Builder;

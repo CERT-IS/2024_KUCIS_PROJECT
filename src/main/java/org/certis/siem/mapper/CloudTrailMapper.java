@@ -1,7 +1,7 @@
-package org.certis.siem.utils;
+package org.certis.siem.mapper;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import org.certis.siem.entity.CloudTrailLog;
+import org.certis.siem.entity.log.CloudTrailLog;
 
 import java.time.Instant;
 import java.time.LocalDateTime;

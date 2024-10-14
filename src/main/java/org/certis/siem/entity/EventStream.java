@@ -5,17 +5,18 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
 @Table("eventStream")
-public class EventStream {
+public class EventStream<T> {
     @Id
     private Long id;
     private String eventName; //
     private String eventType; // cloud, web, waf
     private LocalDateTime timestamp;
-    private String logs;
+    private List<T> logs;
 }

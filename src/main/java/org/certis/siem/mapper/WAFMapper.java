@@ -1,7 +1,7 @@
-package org.certis.siem.utils;
+package org.certis.siem.mapper;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import org.certis.siem.entity.WAFLog;
+import org.certis.siem.entity.log.WAFLog;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

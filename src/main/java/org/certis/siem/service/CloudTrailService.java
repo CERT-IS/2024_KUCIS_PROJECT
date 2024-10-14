@@ -2,9 +2,9 @@ package org.certis.siem.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.RequiredArgsConstructor;
-import org.certis.siem.entity.CloudTrailLog;
+import org.certis.siem.entity.log.CloudTrailLog;
 import org.certis.siem.entity.EventStream;
-import org.certis.siem.utils.CloudTrailMapper;
+import org.certis.siem.mapper.CloudTrailMapper;
 import org.opensearch.client.opensearch.OpenSearchClient;
 import org.opensearch.client.opensearch._types.FieldValue;
 import org.opensearch.client.opensearch._types.query_dsl.Query;
@@ -20,7 +20,8 @@ import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static org.certis.siem.utils.EventMapper.mapCloudTrailLogsToEvent;
+import static org.certis.siem.mapper.EventMapper.mapLogsToEvent;
+
 @Service
 @RequiredArgsConstructor
 public class CloudTrailService {
@@ -73,9 +74,9 @@ public class CloudTrailService {
                             .map(CloudTrailMapper::mapJsonNodeToCloudTrailLog);
 
                     Flux<EventStream> unAuthLoginResults = getUnAuthLoginByCloudTrailLogs(cloudtrailLogs)
-                            .map(cloudTrailLog -> mapCloudTrailLogsToEvent("인가받지 않은 로그인 시도", "클라우드", cloudTrailLog));
+                            .map(cloudTrailLog -> mapLogsToEvent("인가받지 않은 로그인 시도", "클라우드", cloudTrailLog));
                     Flux<EventStream> notInRegionResults = getNotInRegionByCloudTrailLogs(cloudtrailLogs)
-                            .map(cloudTrailLog -> mapCloudTrailLogsToEvent("지정되지 않은 AWS 리전에서의 접근 시도", "클라우드", cloudTrailLog));
+                            .map(cloudTrailLog -> mapLogsToEvent("지정되지 않은 AWS 리전에서의 접근 시도", "클라우드", cloudTrailLog));
 
                     return Flux.merge(unAuthLoginResults, notInRegionResults);
                 });

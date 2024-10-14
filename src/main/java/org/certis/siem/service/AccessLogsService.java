@@ -2,10 +2,10 @@ package org.certis.siem.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.RequiredArgsConstructor;
-import org.certis.siem.entity.AccessLog;
+import org.certis.siem.entity.log.AccessLog;
 import org.certis.siem.entity.EventStream;
 import org.certis.siem.repository.EventRepository;
-import org.certis.siem.utils.AccessLogsMapper;
+import org.certis.siem.mapper.AccessLogsMapper;
 import org.opensearch.client.json.JsonData;
 import org.opensearch.client.opensearch.OpenSearchClient;
 import org.opensearch.client.opensearch._types.FieldValue;
@@ -28,7 +28,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static org.certis.siem.utils.EventMapper.mapAccessLogsToEvent;
+import static org.certis.siem.mapper.EventMapper.mapLogsToEvent;
 
 @Service
 @RequiredArgsConstructor
@@ -155,13 +155,13 @@ public class AccessLogsService {
 
         return Flux.merge(
                 checkPattern(accessLogsFlux,SQL_INJECTION_PATTERNS)
-                        .map(accessLog -> mapAccessLogsToEvent("SQL Injection", "Web", accessLog)),
+                        .map(accessLog -> mapLogsToEvent("SQL Injection", "Web", accessLog)),
                 checkPattern(accessLogsFlux,XSS_PATTERNS)
-                        .map(accessLog -> mapAccessLogsToEvent("XSS", "Web", accessLog)),
+                        .map(accessLog -> mapLogsToEvent("XSS", "Web", accessLog)),
                 checkPattern(accessLogsFlux,ADMIN_PAGE_PATTERNS)
-                        .map(accessLog -> mapAccessLogsToEvent("Admin Page Exposure", "Web", accessLog)),
+                        .map(accessLog -> mapLogsToEvent("Admin Page Exposure", "Web", accessLog)),
                 checkDirectoryIndex(accessLogsFlux)
-                        .map(accessLog -> mapAccessLogsToEvent("Directory Indexing", "Web", accessLog))
+                        .map(accessLog -> mapLogsToEvent("Directory Indexing", "Web", accessLog))
         );
     }
 
