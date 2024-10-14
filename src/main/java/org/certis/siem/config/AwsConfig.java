@@ -18,7 +18,7 @@ public class AwsConfig {
     @Value("${cloud.aws.credentials.secretKey}")
     private String secretKey;
 
-    @Value("${cloud.aws.region}")
+    @Value("${cloud.aws.region:ap-northeast-2}")
     private String region;
 
     @Bean

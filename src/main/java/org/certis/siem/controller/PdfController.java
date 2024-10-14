@@ -1,6 +1,5 @@
 package org.certis.siem.controller;
 
-import org.certis.siem.entity.dto.PdfRequest;
 import org.certis.siem.entity.dto.ReportRequest;
 import org.certis.siem.service.PdfService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequestMapping("/pdf")
@@ -26,29 +25,39 @@ public class PdfController {
 
     @Autowired
     private PdfService pdfService;
-    private static final String TEMPLATE_DIR = "src/main/resources/templates/pdf/";
+    private static final String TEMPLATE_DIR = "classpath:templates/pdf";
 
 
     @PostMapping("/report")
-    public String createReport(@RequestBody ReportRequest reportRequest) {
-        System.out.println("Report Name: " + reportRequest.getName());
-        System.out.println("Description: " + reportRequest.getDescription());
-
-        return "Report created successfully!";
-    }
-
-    @PostMapping("/template")
-    public Mono<ResponseEntity<ByteArrayResource>> previewPdf(@RequestBody PdfRequest request) {
-        String templateName = request.getTemplateName();
-        String title = request.getTitle();
-        String content = request.getContent();
+    public Mono<ResponseEntity<byte[]>> createReport(@RequestBody ReportRequest reportRequest) {
+        String templateName = reportRequest.getTemplate();
 
         if (templateName == null || templateName.isEmpty())
             templateName = "template";
 
         Context context = new Context();
-        context.setVariable("title", title);
-        context.setVariable("content", content);
+        setContextVariables(context, reportRequest);
+
+        System.out.println(reportRequest);
+
+        return pdfService.generatePdf("pdf/" + templateName + ".html", context)
+                .map(bytes -> {
+                    return ResponseEntity.ok()
+                            .header("Content-Disposition", "attachment; filename=\"" + "file.pdf\"")
+                            .contentType(MediaType.APPLICATION_PDF)
+                            .body(bytes);
+                });
+    }
+
+    @PostMapping("/previewPdf")
+    public Mono<ResponseEntity<ByteArrayResource>> previewPdf(@RequestBody ReportRequest reportRequest) {
+        String templateName = reportRequest.getTemplate();
+
+        if (templateName == null || templateName.isEmpty())
+            templateName = "template";
+
+        Context context = new Context();
+        setContextVariables(context, reportRequest);
 
         return pdfService.generatePdf("pdf/" + templateName + ".html", context)
                 .flatMap(pdfBytes -> pdfService.convertPdfToImage(pdfBytes))
@@ -58,26 +67,6 @@ public class PdfController {
                             .contentType(MediaType.IMAGE_PNG)
                             .body(resource);
                 });
-    }
-
-    @GetMapping("/download/{filename}")
-    public Mono<ResponseEntity<byte[]>> downloadPdf(@PathVariable("filename") String filename) {
-        File file = new File(TEMPLATE_DIR + filename);
-        if (file.exists()) {
-            return Mono.fromCallable(() -> {
-                try {
-                    byte[] bytes = Files.readAllBytes(file.toPath());
-                    return ResponseEntity.ok()
-                            .header("Content-Disposition", "attachment; filename=" + file.getName())
-                            .contentType(MediaType.APPLICATION_PDF)
-                            .body(bytes);
-                } catch (IOException e) {
-                    throw new RuntimeException("PDF 파일을 다운로드하는 중 오류 발생", e);
-                }
-            });
-        } else {
-            return Mono.just(ResponseEntity.notFound().build());
-        }
     }
 
 
@@ -114,10 +103,26 @@ public class PdfController {
     }
 
     @GetMapping("/list")
-    public Mono<String> listTemplates(Model model) {
+    public Mono<Map<String, Object>> listTemplates() {
         File folder = new File(TEMPLATE_DIR);
         String[] templates = folder.list((dir, name) -> name.endsWith(".html"));
-        model.addAttribute("templates", templates);
-        return Mono.just("form");
+        Map<String, Object> response = new HashMap<>();
+        response.put("templates", templates != null ? Arrays.asList(templates) : new ArrayList<>());
+        return Mono.just(response);
+    }
+
+    private void setContextVariables(Context context, ReportRequest reportRequest) {
+        context.setVariable("name", reportRequest.getName());
+        context.setVariable("description", reportRequest.getDescription());
+        context.setVariable("reportSource", reportRequest.getReportSource());
+        context.setVariable("notebook", reportRequest.getNotebook());
+        context.setVariable("fileFormat", reportRequest.getFileFormat());
+        context.setVariable("reportTrigger", reportRequest.getReportTrigger());
+        context.setVariable("requestTime", reportRequest.getRequestTime());
+        context.setVariable("frequency", reportRequest.getFrequency());
+        context.setVariable("every", reportRequest.getEvery());
+        context.setVariable("timeUnit", reportRequest.getTimeUnit());
+        context.setVariable("startTime", reportRequest.getStartTime());
+        context.setVariable("template", reportRequest.getTemplate());
     }
 }

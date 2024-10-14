@@ -60,6 +60,8 @@ dependencies {
 	// jackson LocalDateTime Serializer
 	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.4'
 
+	// websocket
+	// implementation 'org.springframework.boot:spring-boot-starter-websocket'
 }
 
 tasks.named('test') {

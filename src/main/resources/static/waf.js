@@ -1,3 +1,6 @@
+import wsManager from './websocket.js';
+
+
 let lastWAFEventTimestamp = new Date(0);
 let lastWAFEventOffset = 0;
 const MAX_EVENTS_DISPLAYED = 100;
@@ -301,6 +304,87 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
+
+
+
+    wsManager.connect();
+
+    wsManager.onMessage((event) => {
+        const message = JSON.parse(event.data);
+
+        switch (message.action) {
+            case "getWAFEvents":
+                const wafEvent = JSON.parse(message.data);
+                handleWAFEvents(wafEvent);
+                break;
+            default:
+                console.warn("Unknown action:", message.action);
+        }
+
+    });
+
+    setInterval(() => {
+        const request = {
+            action: "getWAFEvents",
+            size : 20,
+            offset : lastWAFEventOffset,
+            lastTimestamp: lastWAFEventTimestamp
+        };
+        if (wsManager.isConnected) {
+            wsManager.send(request);
+        }
+    }, 1000);
+
+
+    function handleWAFEvents(events) {
+        const eventsElement = document.getElementById('waf-events');
+        const currentEventCount = eventsElement.querySelectorAll('.event-container').length;
+
+        if (currentEventCount >= MAX_EVENTS_DISPLAYED) {
+            console.log(`waf-events fulled.`);
+            return;
+        }
+
+
+        if (events.length > 0) {
+            const newTimestamp = new Date(events[events.length - 1].timestamp);
+
+            if (newTimestamp.getTime() === lastWAFEventTimestamp.getTime()) {
+                lastWAFEventOffset += 1;
+            } else {
+                lastWAFEventTimestamp = newTimestamp;
+                lastWAFEventOffset = 0;
+            }
+
+            let existingEventCount = eventsElement.querySelectorAll('.event-container').length;
+            const totalEventCount = existingEventCount + events.length;
+
+            const fragment = document.createDocumentFragment();
+            events.forEach(event => {
+                if (existingEventCount < MAX_EVENTS_DISPLAYED) {
+                    const eventLi = document.createElement('li');
+
+                    eventLi.innerHTML = createEventHTML(event);
+                    fragment.appendChild(eventLi);
+                    existingEventCount++;
+                }
+            });
+
+            if (fragment.childNodes.length > 0) {
+                eventsElement.appendChild(fragment);
+            }
+
+            if (totalEventCount > MAX_EVENTS_DISPLAYED) {
+                const excessCount = totalEventCount - MAX_EVENTS_DISPLAYED;
+                const toRemove = Array.from(eventsElement.querySelectorAll('.event-container')).slice(0, excessCount);
+                toRemove.forEach(item => item.remove());
+            }
+        } else {
+            console.log(`No events in waf-events.`);
+        }
+    }
+
+
     function createEventHTML(event) {
         const logsContent = event.logs ? parseAndFormatLogs(event.logs) : 'No logs available';
 
@@ -318,19 +402,4 @@ document.addEventListener("DOMContentLoaded", function() {
     `;
     }
 
-
-
-
-
-    async function pollData() {
-        try {
-            await fetchWAFEvents();
-        } catch (error) {
-            console.error('Error in pollData:', error);
-        } finally {
-            setTimeout(pollData, 1000);
-        }
-    }
-
-    pollData();
 });
