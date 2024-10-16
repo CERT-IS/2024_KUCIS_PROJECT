@@ -1,3 +1,5 @@
+import wsManager from './websocket.js';
+
 document.addEventListener("DOMContentLoaded", function() {
     const allDropdown = document.querySelectorAll('#sidebar .side-dropdown');
     const sidebar = document.getElementById('sidebar');
@@ -146,58 +148,64 @@ document.addEventListener("DOMContentLoaded", function() {
     const diskInfoPercentage = document.getElementById('disk-info-percentage').textContent;
 
     const allProgress = document.querySelectorAll('main .card .progress');
+    const scaleFactor = 3;
+    
 
     if (allProgress.length > 0) {
+        const scaledMemoryPercentage = Math.min(memoryInfoPercentage * scaleFactor, 100);
         allProgress[0].setAttribute('data-value', memoryInfoPercentage);
-        allProgress[0].style.setProperty('--value', memoryInfoPercentage);
+        allProgress[0].style.setProperty('--value', scaledMemoryPercentage);
     }
 
     if (allProgress.length > 1) {
+        const scaledDiskPercentage = Math.min(diskInfoPercentage * scaleFactor, 100);
         allProgress[1].setAttribute('data-value', diskInfoPercentage);
-        allProgress[1].style.setProperty('--value', diskInfoPercentage);
+        allProgress[1].style.setProperty('--value', scaledDiskPercentage);
     }
 
-    async function fetchSystemInfo() {
-        try {
-            const response = await fetch('/system/info');
-            const data = await response.json();
 
-            const osInfo = document.getElementById('os-info');
-            const cpuInfo = document.getElementById('cpu-info');
-            const memoryInfo = document.getElementById('memory-info');
-            const memoryInfoFree = document.getElementById('memory-info-free');
-            const memoryInfoTotal = document.getElementById('memory-info-total');
-            const memoryInfoPercentage = document.getElementById('memory-info-percentage');
-            const diskInfo = document.getElementById('disk-info');
-            const diskInfoUsed = document.getElementById('disk-info-used');
-            const diskInfoMax = document.getElementById('disk-info-max');
-            const diskInfoPercentage = document.getElementById('disk-info-percentage');
-
-            if (osInfo) osInfo.textContent = `Available Processors: ${data.availableProcessors}`;
-            if (cpuInfo) cpuInfo.textContent = `실행 대기중인 Task의 평균 수: ${data.systemLoadAverage}`;
-            if (memoryInfo) memoryInfo.textContent = `Free Memory: ${data.freeMemory} / ${data.totalMemory}`;
-            if (memoryInfoFree) memoryInfoFree.textContent = `${data.freeMemory}`;
-            if (memoryInfoTotal) memoryInfoTotal.textContent = `${data.totalMemory}`;
-            if (memoryInfoPercentage) memoryInfoPercentage.textContent = `${data.freeMemoryPercentage}`;
-            if (diskInfo) diskInfo.textContent = `Used Heap Memory: ${data.usedHeapMemory} / ${data.maxHeapMemory}`;
-            if (diskInfoUsed) diskInfoUsed.textContent = `${data.usedHeapMemory}`;
-            if (diskInfoMax) diskInfoMax.textContent = `${data.maxHeapMemory}`;
-            if (diskInfoPercentage) diskInfoPercentage.textContent = `${data.usedHeapPercentage}`;
-
-        } catch (error) {
-            console.error('Error fetching system info:', error);
+    wsManager.connect();
+    wsManager.onMessage((event) => {
+        const message = JSON.parse(event.data);
+        switch (message.action) {
+            case "sendSystemInfo":
+                const systemInfo = JSON.parse(message.data);
+                updateSystemInfo(systemInfo);
+                break;
+            default:
+                console.warn("Unknown action:", message.action);
         }
-    }
+    });
+    setInterval(() => {
+        const request = {
+            action: "getSystemInfo"
+        };
 
-    async function pollData() {
-        try {
-            await fetchSystemInfo();
-        } catch (error) {
-            console.error('Error in pollData:', error);
-        } finally {
-            setTimeout(pollData, 1000);
+        if (wsManager.isConnected) {
+            wsManager.send(request);
         }
-    }
+    }, 1000);
 
-    pollData();
+    function updateSystemInfo(data) {
+        const osInfo = document.getElementById('os-info');
+        const cpuInfo = document.getElementById('cpu-info');
+        const memoryInfo = document.getElementById('memory-info');
+        const memoryInfoFree = document.getElementById('memory-info-free');
+        const memoryInfoTotal = document.getElementById('memory-info-total');
+        const memoryInfoPercentage = document.getElementById('memory-info-percentage');
+        const diskInfo = document.getElementById('disk-info');
+        const diskInfoUsed = document.getElementById('disk-info-used');
+        const diskInfoMax = document.getElementById('disk-info-max');
+        const diskInfoPercentage = document.getElementById('disk-info-percentage');
+        if (osInfo) osInfo.textContent = `Available Processors: ${data.availableProcessors}`;
+        if (cpuInfo) cpuInfo.textContent = `실행 대기중인 Task의 평균 수: ${data.systemLoadAverage}`;
+        if (memoryInfo) memoryInfo.textContent = `Free Memory: ${data.freeMemory} / ${data.totalMemory}`;
+        if (memoryInfoFree) memoryInfoFree.textContent = `${data.freeMemory}`;
+        if (memoryInfoTotal) memoryInfoTotal.textContent = `${data.totalMemory}`;
+        if (memoryInfoPercentage) memoryInfoPercentage.textContent = `${data.freeMemoryPercentage}`;
+        if (diskInfo) diskInfo.textContent = `Used Heap Memory: ${data.usedHeapMemory} / ${data.maxHeapMemory}`;
+        if (diskInfoUsed) diskInfoUsed.textContent = `${data.usedHeapMemory}`;
+        if (diskInfoMax) diskInfoMax.textContent = `${data.maxHeapMemory}`;
+        if (diskInfoPercentage) diskInfoPercentage.textContent = `${data.usedHeapPercentage}`;
+    }
 });

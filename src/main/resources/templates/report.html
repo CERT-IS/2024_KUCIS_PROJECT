@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/report.css">
-    <script src="/report.js"></script>
+    <script src="/report.js" defer></script>
     <title>Report PDF</title>
 </head>
 <body>
 <div class="container">
     <h1>Create Report Definition</h1>
-    <form>
+    <form id="report-form">
         <div>
             <label for="name">Name</label>
             <input type="text" id="name" name="name" value="주간보고서">
@@ -83,6 +83,24 @@
 
         <button type="submit">Create Report</button>
     </form>
+
+    <form id="upload-template-form" enctype="multipart/form-data">
+        <label for="template-file">Upload Template:</label>
+        <input type="file" id="template-file" name="template-file" accept=".html">
+        <button type="submit">Upload</button>
+    </form>
+    <form id="delete-template-form">
+        <label for="template-list">Delete Template:</label>
+        <select id="template-list" name="template-list"></select>
+        <button type="submit">Delete</button>
+    </form>
+    <button id="refresh-templates">Refresh Templates</button>
+    <div id="preview-container" style="display: none;">
+        <h2>Report Preview</h2>
+        <img id="preview-image" src="" alt="Report Preview Image" />
+        <br />
+        <a id="download-link" href="" download="report.pdf">Download PDF</a>
+    </div>
 </div>
 </body>
 </html>
