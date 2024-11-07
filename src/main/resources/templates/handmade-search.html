@@ -18,12 +18,12 @@
         <li><a href="/index"><span class="material-symbols-outlined">dashboard</span>Dashboard</a></li>
 
         <li class="divider" data-text="events">Events</li>
-        <li><a href="" class="active"><span class="material-symbols-outlined">bar_chart</span>WAF</a></li>
+        <li><a href="/waf"><span class="material-symbols-outlined">bar_chart</span>WAF</a></li>
         <li><a href="/handmade"><span class="material-symbols-outlined">widgets</span>HandMade</a></li>
 
         <li class="divider" data-text="search">Search</li>
         <li><a href="/waf-search"><span class="material-symbols-outlined">search</span>WAF-Search</a></li>
-        <li><a href="/handmade-search"><span class="material-symbols-outlined">manage_search</span>HandMade-Search</a></li> 
+        <li><a href="" class="active"><span class="material-symbols-outlined">manage_search</span>HandMade-Search</a></li> 
     </ul>
 </section>
 <!-- SIDEBAR -->
@@ -53,172 +53,58 @@
 
     <!-- MAIN -->
     <main>
-        <h1 class="title">WAF</h1>
+        <h1 class="title">Handmade-Search</h1>
         <ul class="breadcrumbs">
             <li><a href="/index">Home</a></li>
             <li class="divider">/</li>
-            <li><a href="" class="active">WAF</a></li>
+            <li><a href="" class="active">Handmade-Search</a></li>
         </ul>
 
-
-        <div class="info-data">
-            <div class="card">
-                <div class="head">
-                    <div>
-                        <h2>취약점 종류</h2>
-                    </div>
-                    <div class="menu">
-                        <span class="material-symbols-outlined" data-icon="more_horiz">more_horiz</span>
-                        <div class="menu-link">
-                            <div class="filter-box">
-                                <div class="filter-header">EDIT FILTER</div>
-                                <div class="filter-body">
-                                    <label for="fieldSelect">Field</label>
-                                    <select id="fieldSelect">
-                                        <option value="@log_group">@log_group</option>
-                                        <option value="@service_name">@service_name</option>
-                                        <option value="@user">@user</option>
-                                    </select>
-
-                                    <label for="operatorSelect">Operator</label>
-                                    <select id="operatorSelect">
-                                        <option value="is">is</option>
-                                        <option value="is_not">is not</option>
-                                        <option value="contains">contains</option>
-                                    </select>
-
-                                    <label for="valueInput">Value</label>
-                                    <input type="text" id="valueInput" placeholder="Enter a value">
-
-                                    <div class="custom-label">
-                                        <input type="checkbox" id="customLabelCheckbox">
-                                        <label for="customLabelCheckbox">Create custom label?</label>
-                                    </div>
-                                </div>
-
-                                <div class="filter-footer">
-                                    <button class="btn-cancel">Cancel</button>
-                                    <button class="btn-save">Save</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="graph">
-                    <canvas id="circleChart" style="width: 240px; margin-left: auto; margin-right: auto;"></canvas>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="head">
-                    <div>
-                        <h2>수집된 로그 데이터 수</h2>
-                    </div>
-                    <div class="menu">
-                        <span class="material-symbols-outlined" data-icon="more_horiz">more_horiz</span>
-                        <div class="menu-link">
-                            <div class="filter-box">
-                                <div class="filter-header">EDIT FILTER</div>
-                                <div class="filter-body">
-                                    <label for="fieldSelect">Field</label>
-                                    <select id="fieldSelect">
-                                        <option value="@log_group">@log_group</option>
-                                        <option value="@service_name">@service_name</option>
-                                        <option value="@user">@user</option>
-                                    </select>
-
-                                    <label for="operatorSelect">Operator</label>
-                                    <select id="operatorSelect">
-                                        <option value="is">is</option>
-                                        <option value="is_not">is not</option>
-                                        <option value="contains">contains</option>
-                                    </select>
-
-                                    <label for="valueInput">Value</label>
-                                    <input type="text" id="valueInput" placeholder="Enter a value">
-
-                                    <div class="custom-label">
-                                        <input type="checkbox" id="customLabelCheckbox">
-                                        <label for="customLabelCheckbox">Create custom label?</label>
-                                    </div>
-                                </div>
-
-                                <div class="filter-footer">
-                                    <button class="btn-cancel">Cancel</button>
-                                    <button class="btn-save">Save</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div><br><br>
-                <div class="graph">
-                    <canvas id="barChart" height="200%"></canvas>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="head">
-                    <div>
-                        <h2>로그 그룹별 취약점 수</h2>
-                    </div>
-                    <div class="menu">
-                        <span class="material-symbols-outlined" data-icon="more_horiz">more_horiz</span>
-                        <div class="menu-link">
-                            <div class="filter-box">
-                                <div class="filter-header">EDIT FILTER</div>
-                                <div class="filter-body">
-                                    <label for="fieldSelect">Field</label>
-                                    <select id="fieldSelect">
-                                        <option value="@log_group">@log_group</option>
-                                        <option value="@service_name">@service_name</option>
-                                        <option value="@user">@user</option>
-                                    </select>
-
-                                    <label for="operatorSelect">Operator</label>
-                                    <select id="operatorSelect">
-                                        <option value="is">is</option>
-                                        <option value="is_not">is not</option>
-                                        <option value="contains">contains</option>
-                                    </select>
-
-                                    <label for="valueInput">Value</label>
-                                    <input type="text" id="valueInput" placeholder="Enter a value">
-
-                                    <div class="custom-label">
-                                        <input type="checkbox" id="customLabelCheckbox">
-                                        <label for="customLabelCheckbox">Create custom label?</label>
-                                    </div>
-                                </div>
-
-                                <div class="filter-footer">
-                                    <button class="btn-cancel">Cancel</button>
-                                    <button class="btn-save">Save</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div><br><br>
-                <div class="graph">
-                    <canvas id="lineChart" height="200%"></canvas>
-                </div>
-            </div>
-        </div>
 
         <div class="info-data2">
             <div class="card">
                 <div class="head">
-                    <h2>WAF Events</h2>
-                </div>
-                <div class="waf-events">
-                    <div class="search-container">
-                        <select id="search-category" class="search-dropdown">
-                            <option value="id">Index</option>
-                            <option value="name">Name</option>
-                            <option value="type">Type</option>
-                            <option value="timestamp">Timestamp</option>
-                        </select>
-                        <input type="text" class="search-input" placeholder="Search..." onkeyup="searchFunction()">
+                    <div>
+                        <h2>Event Streams</h2>
                     </div>
+                    <div class="menu">
+                        <span class="material-symbols-outlined" data-icon="more_horiz">more_horiz</span>
+                        <div class="menu-link">
+                            <div class="filter-box">
+                                <div class="filter-header">EDIT FILTER</div>
+                                <div class="filter-body">
+                                    <label for="fieldSelect">Field</label>
+                                    <select id="fieldSelect">
+                                        <option value="@log_group">@log_group</option>
+                                        <option value="@service_name">@service_name</option>
+                                        <option value="@user">@user</option>
+                                    </select>
+
+                                    <label for="operatorSelect">Operator</label>
+                                    <select id="operatorSelect">
+                                        <option value="is">is</option>
+                                        <option value="is_not">is not</option>
+                                        <option value="contains">contains</option>
+                                    </select>
+
+                                    <label for="valueInput">Value</label>
+                                    <input type="text" id="valueInput" placeholder="Enter a value">
+
+                                    <div class="custom-label">
+                                        <input type="checkbox" id="customLabelCheckbox">
+                                        <label for="customLabelCheckbox">Create custom label?</label>
+                                    </div>
+                                </div>
+
+                                <div class="filter-footer">
+                                    <button class="btn-cancel">Cancel</button>
+                                    <button class="btn-save">Save</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><br>
+                <div class="waf-events">
                     <ul id="waf-events">
                         <div class="event-container">
                             <div class="event-header">
@@ -270,7 +156,182 @@
                             </div>
                             <pre class="logs-content" style="display: none;">${logsContent}</pre>
                         </div>
+                        <div class="event-container">
+                            <div class="event-header">
+                                <strong>index:</strong> 21 <br>
+                                <strong>name:</strong> User Buffer Attempt <br>
+                                <strong>type:</strong> System <br>
+                                <strong>timestamp:</strong> 2024-09-11T09:14:54:182 <br>
+                                <span class="logs-toggle" style="cursor: pointer;">▶</span>
+                            </div>
+                            <pre class="logs-content" style="display: none;">${logsContent}</pre>
+                        </div>
+                        <div class="event-container">
+                            <div class="event-header">
+                                <strong>index:</strong> 21 <br>
+                                <strong>name:</strong> User Buffer Attempt <br>
+                                <strong>type:</strong> System <br>
+                                <strong>timestamp:</strong> 2024-09-11T09:14:54:182 <br>
+                                <span class="logs-toggle" style="cursor: pointer;">▶</span>
+                            </div>
+                            <pre class="logs-content" style="display: none;">${logsContent}</pre>
+                        </div>
+                        <div class="event-container">
+                            <div class="event-header">
+                                <strong>index:</strong> 21 <br>
+                                <strong>name:</strong> User Buffer Attempt <br>
+                                <strong>type:</strong> System <br>
+                                <strong>timestamp:</strong> 2024-09-11T09:14:54:182 <br>
+                                <span class="logs-toggle" style="cursor: pointer;">▶</span>
+                            </div>
+                            <pre class="logs-content" style="display: none;">${logsContent}</pre>
+                        </div>
+                        <div class="event-container">
+                            <div class="event-header">
+                                <strong>index:</strong> 21 <br>
+                                <strong>name:</strong> User Buffer Attempt <br>
+                                <strong>type:</strong> System <br>
+                                <strong>timestamp:</strong> 2024-09-11T09:14:54:182 <br>
+                                <span class="logs-toggle" style="cursor: pointer;">▶</span>
+                            </div>
+                            <pre class="logs-content" style="display: none;">${logsContent}</pre>
+                        </div>
+                        <div class="event-container">
+                            <div class="event-header">
+                                <strong>index:</strong> 21 <br>
+                                <strong>name:</strong> User Buffer Attempt <br>
+                                <strong>type:</strong> System <br>
+                                <strong>timestamp:</strong> 2024-09-11T09:14:54:182 <br>
+                                <span class="logs-toggle" style="cursor: pointer;">▶</span>
+                            </div>
+                            <pre class="logs-content" style="display: none;">${logsContent}</pre>
+                        </div>
+                        <div class="event-container">
+                            <div class="event-header">
+                                <strong>index:</strong> 21 <br>
+                                <strong>name:</strong> User Buffer Attempt <br>
+                                <strong>type:</strong> System <br>
+                                <strong>timestamp:</strong> 2024-09-11T09:14:54:182 <br>
+                                <span class="logs-toggle" style="cursor: pointer;">▶</span>
+                            </div>
+                            <pre class="logs-content" style="display: none;">${logsContent}</pre>
+                        </div>
+                        <div class="event-container">
+                            <div class="event-header">
+                                <strong>index:</strong> 21 <br>
+                                <strong>name:</strong> User Buffer Attempt <br>
+                                <strong>type:</strong> System <br>
+                                <strong>timestamp:</strong> 2024-09-11T09:14:54:182 <br>
+                                <span class="logs-toggle" style="cursor: pointer;">▶</span>
+                            </div>
+                            <pre class="logs-content" style="display: none;">${logsContent}</pre>
+                        </div>
+                        <div class="event-container">
+                            <div class="event-header">
+                                <strong>index:</strong> 21 <br>
+                                <strong>name:</strong> User Buffer Attempt <br>
+                                <strong>type:</strong> System <br>
+                                <strong>timestamp:</strong> 2024-09-11T09:14:54:182 <br>
+                                <span class="logs-toggle" style="cursor: pointer;">▶</span>
+                            </div>
+                            <pre class="logs-content" style="display: none;">${logsContent}</pre>
+                        </div>
+                        <div class="event-container">
+                            <div class="event-header">
+                                <strong>index:</strong> 21 <br>
+                                <strong>name:</strong> User Buffer Attempt <br>
+                                <strong>type:</strong> System <br>
+                                <strong>timestamp:</strong> 2024-09-11T09:14:54:182 <br>
+                                <span class="logs-toggle" style="cursor: pointer;">▶</span>
+                            </div>
+                            <pre class="logs-content" style="display: none;">${logsContent}</pre>
+                        </div>
+                        <div class="event-container">
+                            <div class="event-header">
+                                <strong>index:</strong> 21 <br>
+                                <strong>name:</strong> User Buffer Attempt <br>
+                                <strong>type:</strong> System <br>
+                                <strong>timestamp:</strong> 2024-09-11T09:14:54:182 <br>
+                                <span class="logs-toggle" style="cursor: pointer;">▶</span>
+                            </div>
+                            <pre class="logs-content" style="display: none;">${logsContent}</pre>
+                        </div>
+                        <div class="event-container">
+                            <div class="event-header">
+                                <strong>index:</strong> 21 <br>
+                                <strong>name:</strong> User Buffer Attempt <br>
+                                <strong>type:</strong> System <br>
+                                <strong>timestamp:</strong> 2024-09-11T09:14:54:182 <br>
+                                <span class="logs-toggle" style="cursor: pointer;">▶</span>
+                            </div>
+                            <pre class="logs-content" style="display: none;">${logsContent}</pre>
+                        </div>
+                        <div class="event-container">
+                            <div class="event-header">
+                                <strong>index:</strong> 21 <br>
+                                <strong>name:</strong> User Buffer Attempt <br>
+                                <strong>type:</strong> System <br>
+                                <strong>timestamp:</strong> 2024-09-11T09:14:54:182 <br>
+                                <span class="logs-toggle" style="cursor: pointer;">▶</span>
+                            </div>
+                            <pre class="logs-content" style="display: none;">${logsContent}</pre>
+                        </div>
+                        <div class="event-container">
+                            <div class="event-header">
+                                <strong>index:</strong> 21 <br>
+                                <strong>name:</strong> User Buffer Attempt <br>
+                                <strong>type:</strong> System <br>
+                                <strong>timestamp:</strong> 2024-09-11T09:14:54:182 <br>
+                                <span class="logs-toggle" style="cursor: pointer;">▶</span>
+                            </div>
+                            <pre class="logs-content" style="display: none;">${logsContent}</pre>
+                        </div>
+                        <div class="event-container">
+                            <div class="event-header">
+                                <strong>index:</strong> 21 <br>
+                                <strong>name:</strong> User Buffer Attempt <br>
+                                <strong>type:</strong> System <br>
+                                <strong>timestamp:</strong> 2024-09-11T09:14:54:182 <br>
+                                <span class="logs-toggle" style="cursor: pointer;">▶</span>
+                            </div>
+                            <pre class="logs-content" style="display: none;">${logsContent}</pre>
+                        </div>
+                        <div class="event-container">
+                            <div class="event-header">
+                                <strong>index:</strong> 21 <br>
+                                <strong>name:</strong> User Buffer Attempt <br>
+                                <strong>type:</strong> System <br>
+                                <strong>timestamp:</strong> 2024-09-11T09:14:54:182 <br>
+                                <span class="logs-toggle" style="cursor: pointer;">▶</span>
+                            </div>
+                            <pre class="logs-content" style="display: none;">${logsContent}</pre>
+                        </div>
+                        <div class="event-container">
+                            <div class="event-header">
+                                <strong>index:</strong> 21 <br>
+                                <strong>name:</strong> User Buffer Attempt <br>
+                                <strong>type:</strong> System <br>
+                                <strong>timestamp:</strong> 2024-09-11T09:14:54:182 <br>
+                                <span class="logs-toggle" style="cursor: pointer;">▶</span>
+                            </div>
+                            <pre class="logs-content" style="display: none;">${logsContent}</pre>
+                        </div>
+                        <div class="event-container">
+                            <div class="event-header">
+                                <strong>index:</strong> 21 <br>
+                                <strong>name:</strong> User Buffer Attempt <br>
+                                <strong>type:</strong> System <br>
+                                <strong>timestamp:</strong> 2024-09-11T09:14:54:182 <br>
+                                <span class="logs-toggle" style="cursor: pointer;">▶</span>
+                            </div>
+                            <pre class="logs-content" style="display: none;">${logsContent}</pre>
+                        </div>
                     </ul>
+                </div>
+                <div class="pagination-controls">
+                    <button id="prevPageBtn" class="prevPageBtn">이전</button>
+                    <span id="page-number" class="page-number">1</span>
+                    <button id="nextPageBtn" class="nextPageBtn">다음</button>
                 </div>
             </div>
         </div>
@@ -385,7 +446,6 @@
 </section>
 <!-- NAVBAR -->
 
-<script type="module" src="waf.js"></script>
-<script src="/testgraph.js"></script>
+<script type="module" src="handmade.js"></script>
 </body>
 </html>

@@ -4,12 +4,14 @@ let lastEventTimestamp = new Date(0); // Epoch (1970-01-01T00:00:00Z)
 let lastEventOffset = 0;
 const MAX_EVENTS_DISPLAYED = 100;
 
-function toggleLogs(container) {
+
+export function toggleLogs(container) {
     const logsContent = container.querySelector('.logs-content');
     const toggleButton = container.querySelector('.logs-toggle');
 
-    if (logsContent) {
+    if (logsContent && toggleButton) {
         if (logsContent.style.display === 'none' || logsContent.style.display === '') {
+            
             document.querySelectorAll('.event-container').forEach(function(el) {
                 if (el !== container) {
                     const otherLogsContent = el.querySelector('.logs-content');
@@ -25,11 +27,9 @@ function toggleLogs(container) {
             });
 
             logsContent.style.display = 'block';
-            logsContent.style.opacity = 0;
-            logsContent.style.transition = 'opacity 0.3s ease';
             setTimeout(() => {
                 logsContent.style.opacity = 1;
-            }, 0);
+            }, 10);
             toggleButton.textContent = '▼';
         } else {
             logsContent.style.opacity = 0;
@@ -39,37 +39,48 @@ function toggleLogs(container) {
             }, 300);
         }
     } else {
-        console.warn('Logs content not found for container:', container);
+        console.warn('Logs content 또는 toggle button을 찾을 수 없습니다:', container);
     }
 }
 
-
-function searchFunction() {
-    let input = document.querySelector('.search-input').value.toUpperCase();
-    let category = document.getElementById('search-category').value;
-    let eventContainers = document.querySelectorAll('.event-container');
-
-    eventContainers.forEach(container => {
-        let searchValue = '';
-
-        if (category === 'id') {
-            searchValue = container.querySelector('.event-header strong:nth-of-type(1)').nextSibling.nodeValue.trim().toUpperCase();
-        } else if (category === 'name') {
-            searchValue = container.querySelector('.event-header strong:nth-of-type(2)').nextSibling.nodeValue.trim().toUpperCase();
-        } else if (category === 'type') {
-            searchValue = container.querySelector('.event-header strong:nth-of-type(3)').nextSibling.nodeValue.trim().toUpperCase();
-        } else if (category === 'timestamp') {
-            searchValue = container.querySelector('.event-header strong:nth-of-type(4)').nextSibling.nodeValue.trim().toUpperCase();
-        }
-
-        if (searchValue.indexOf(input) > -1) {
-            container.style.display = "";
-        } else {
-            container.style.display = "none";
-        }
+document.querySelectorAll('.event-container').forEach(container => {
+    container.addEventListener('click', function() {
+        toggleLogs(container);
     });
+});
+
+
+export function sendMessage(event) {
+    event.preventDefault();
+
+    const inputField = document.getElementById('userInput');
+    const chatBox = document.getElementById('chatBox');
+
+    const userMessage = inputField.value;
+    if (!userMessage.trim()) {
+        console.warn('입력값이 비어있습니다!');
+        return;
+    }
+
+    const userMsgDiv = document.createElement('div');
+    userMsgDiv.className = 'msg me';
+    userMsgDiv.innerHTML = `
+        <div class="chat">
+            <div class="profile">
+                <span class="time">${new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit', hour12: false})}</span>
+            </div>
+            <p>${userMessage}</p>
+        </div>
+    `;
+
+    chatBox.appendChild(userMsgDiv);
+    inputField.value = '';
+    chatBox.scrollTop = chatBox.scrollHeight;
 }
 
+document.getElementById('chatForm').addEventListener('submit', function(event) {
+    sendMessage(event);
+});
 
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -165,15 +176,46 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
 
+    function searchFunction() {
+        let input = document.querySelector('.search-input').value.toUpperCase();
+        let category = document.getElementById('search-category').value;
+        let eventContainers = document.querySelectorAll('.event-container');
+    
+        eventContainers.forEach(container => {
+            let searchValue = '';
+    
+            if (category === 'id') {
+                searchValue = container.querySelector('.event-header strong:nth-of-type(1)').nextSibling.nodeValue.trim().toUpperCase();
+            } else if (category === 'name') {
+                searchValue = container.querySelector('.event-header strong:nth-of-type(2)').nextSibling.nodeValue.trim().toUpperCase();
+            } else if (category === 'type') {
+                searchValue = container.querySelector('.event-header strong:nth-of-type(3)').nextSibling.nodeValue.trim().toUpperCase();
+            } else if (category === 'timestamp') {
+                searchValue = container.querySelector('.event-header strong:nth-of-type(4)').nextSibling.nodeValue.trim().toUpperCase();
+            }
+    
+            if (searchValue.indexOf(input) > -1) {
+                container.style.display = "";
+            } else {
+                container.style.display = "none";
+            }
+        });
+    }
+
+    window.searchFunction = searchFunction;
+
+
     let isChatOpen = false;
 
     function toggleChat() {
         const chatModal = document.getElementById("chatModal");
         const chatButton = document.getElementById("chatButton");
+        const notificationBadge = document.getElementById("notificationBadge");
         
         if (!isChatOpen) {
             chatModal.classList.add("open");
             chatButton.style.opacity = "0";
+            notificationBadge.style.display = "none";
         } else {
             chatModal.classList.remove("open");
             chatButton.style.opacity = "1";
@@ -185,6 +227,49 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("chatButton").onclick = toggleChat;
     document.querySelector(".close").onclick = toggleChat;
 
+
+    function showNotificationBadge() {
+        const notificationBadge = document.getElementById("notificationBadge");
+        if (!isChatOpen) {
+            notificationBadge.style.display = "flex";
+        }
+    }
+    
+    function onNewMessageReceived() {
+        showNotificationBadge();
+    }
+
+    let currentPage = 1;
+    const postsPerPage = 10;
+    const events = Array.from(document.querySelectorAll('.event-container'));
+
+    function showPage(page) {
+        events.forEach(event => event.style.display = 'none');
+        const start = (page - 1) * postsPerPage;
+        const end = start + postsPerPage;
+
+        for (let i = start; i < end && i < events.length; i++) {
+            events[i].style.display = 'block';
+        }
+        document.getElementById('page-number').textContent = page;
+    }
+
+    document.getElementById('prevPageBtn').addEventListener('click', function() {
+        if (currentPage > 1) {
+            currentPage--;
+            showPage(currentPage);
+        }
+    });
+
+    document.getElementById('nextPageBtn').addEventListener('click', function() {
+        const totalPages = Math.ceil(events.length / postsPerPage);
+        if (currentPage < totalPages) {
+            currentPage++;
+            showPage(currentPage);
+        }
+    });
+
+    showPage(currentPage);
 
 
     async function fetchEvents(url, elementId, lastTimestamp, offset = 0) {
@@ -439,6 +524,4 @@ document.addEventListener("DOMContentLoaded", function() {
             console.log(`No events in handmade-events.`);
         }
     }
-
-    
 });

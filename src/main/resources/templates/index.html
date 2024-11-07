@@ -20,6 +20,10 @@
         <li class="divider" data-text="events">Events</li>
         <li><a href="/waf"><span class="material-symbols-outlined">bar_chart</span>WAF</a></li>
         <li><a href="/handmade"><span class="material-symbols-outlined">widgets</span>HandMade</a></li>
+
+        <li class="divider" data-text="search">Search</li>
+        <li><a href="/waf-search"><span class="material-symbols-outlined">search</span>WAF-Search</a></li>
+        <li><a href="/handmade-search"><span class="material-symbols-outlined">manage_search</span>HandMade-Search</a></li> 
     </ul>
 </section>
 <!-- SIDEBAR -->
@@ -113,7 +117,7 @@
                 <div class="head">
                     <h3>SIEMple Bot</h3>
                 </div>
-                <div class="chat-box">
+                <div class="chat-box" id="chatBoxMain">
                     <p class="day"><span>10-09 (Wed)</span></p>
                     <div class="msg">
                         <img src="https://images.unsplash.com/photo-1534723328310-e82dad3ee43f?q=80&w=2536&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="">
@@ -198,9 +202,9 @@
                         </div>
                     </div>
                 </div>
-                <form action="#">
+                <form id="chatFormMain">
                     <div class="form-group">
-                        <input type="text" placeholder="Type...">
+                        <input type="text" id="userInput" placeholder="Type..." required>
                         <button type="submit" class="btn-send"><span class="material-symbols-outlined">send</span></button>
                     </div>
                 </form>
@@ -211,6 +215,7 @@
 
         <a href="#" class="chat-button" id="chatButton" onclick="toggleChat()">
             <span class="material-symbols-outlined" data-icon="chat">chat</span>
+            <span class="notification-badge" id="notificationBadge">!</span>
         </a>
 
         <div id="chatModal" class="chat-modal">
@@ -219,7 +224,7 @@
                     <h3>SIEMple Bot</h3>
                     <span class="close" onclick="toggleChat()">×</span>
                 </div>
-                <div class="chat-box">
+                <div class="chat-box" id="chatBoxModal">
                     <p class="day"><span>10-09 (Wed)</span></p>
                     <div class="msg">
                         <img src="https://images.unsplash.com/photo-1534723328310-e82dad3ee43f?q=80&w=2536&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="">
@@ -304,9 +309,9 @@
                         </div>
                     </div>
                 </div>
-                <form action="#">
+                <form id="chatForm">
                     <div class="form-group">
-                        <input type="text" placeholder="Type...">
+                        <input type="text" id="userInputModal" placeholder="Type..." required>
                         <button type="submit" class="btn-send"><span class="material-symbols-outlined">send</span></button>
                     </div>
                 </form>

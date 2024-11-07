@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
         '02:49:00', '02:50:00', '02:51:00', '02:52:00', '02:53:00', '02:54:00', 
         '02:55:00', '02:56:00', '02:57:00'];
 
-    // Gradient for the Bar and Line charts
+
     const ctxBar = document.getElementById('barChart').getContext('2d');
     const gradientBar = ctxBar.createLinearGradient(0, 0, 0, 400);
     gradientBar.addColorStop(0, 'rgba(0, 123, 255, 0.5)');
@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
     gradientLine.addColorStop(0, 'rgba(0, 123, 255, 0.5)');
     gradientLine.addColorStop(1, 'rgba(0, 123, 255, 0)');
 
-    // Bar chart data
+
     const data1 = {
         labels: labels,
         datasets: [{
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }]
     };
 
-    // Line chart data
+
     const data2 = {
         labels: labels,
         datasets: [{
@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }]
     };
 
-    // Pie chart data
+
     const data3 = {
         labels: ['02:50:00', '02:51:00', '02:52:00', '02:53:00'],
         datasets: [{
@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }]
     };
 
-    // Bar chart configuration
+
     new Chart(ctxBar, {
         type: 'bar',
         data: data1,
@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Line chart configuration
+
     new Chart(ctxLine, {
         type: 'line',
         data: data2,
@@ -130,7 +130,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Pie chart configuration
+
     const ctxPie = document.getElementById('circleChart').getContext('2d');
     new Chart(ctxPie, {
         type: 'pie',

@@ -1,5 +1,58 @@
 import wsManager from './websocket.js';
 
+export function sendMessage(event, source) {
+    event.preventDefault();
+
+    let inputField, chatBox, modalChatBox;
+    if (source === 'main') {
+        inputField = document.getElementById('userInput');
+        chatBox = document.getElementById('chatBoxMain');
+        modalChatBox = document.querySelector('#chatModal .chat-box');
+    } else if (source === 'modal') {
+        inputField = document.getElementById('userInputModal');
+        chatBox = document.getElementById('chatBoxMain');
+        modalChatBox = document.querySelector('#chatModal .chat-box');
+    }
+
+    const userMessage = inputField.value.trim();
+
+    if (userMessage !== '') {
+        const userMsgDiv = document.createElement('div');
+        userMsgDiv.className = 'msg me';
+        userMsgDiv.innerHTML = `
+            <div class="chat">
+                <div class="profile">
+                    <span class="time">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', hour12: false})}</span>
+                </div>
+                <p>${userMessage}</p>
+            </div>
+        `;
+
+        if (source === 'main') {
+            chatBox.appendChild(userMsgDiv);
+            modalChatBox.appendChild(userMsgDiv.cloneNode(true));
+        } else if (source === 'modal') {
+            modalChatBox.appendChild(userMsgDiv);
+            chatBox.appendChild(userMsgDiv.cloneNode(true));
+        }
+
+        inputField.value = '';
+        
+        chatBox.scrollTop = chatBox.scrollHeight;
+        modalChatBox.scrollTop = modalChatBox.scrollHeight;
+    }
+}
+
+document.getElementById('chatFormMain').addEventListener('submit', function(event) {
+    sendMessage(event, 'main');
+});
+
+document.getElementById('chatForm').addEventListener('submit', function(event) {
+    sendMessage(event, 'modal');
+});
+
+
+
 document.addEventListener("DOMContentLoaded", function() {
     const allDropdown = document.querySelectorAll('#sidebar .side-dropdown');
     const sidebar = document.getElementById('sidebar');
@@ -125,10 +178,12 @@ document.addEventListener("DOMContentLoaded", function() {
     function toggleChat() {
         const chatModal = document.getElementById("chatModal");
         const chatButton = document.getElementById("chatButton");
+        const notificationBadge = document.getElementById("notificationBadge");
         
         if (!isChatOpen) {
             chatModal.classList.add("open");
             chatButton.style.opacity = "0";
+            notificationBadge.style.display = "none";
         } else {
             chatModal.classList.remove("open");
             chatButton.style.opacity = "1";
@@ -140,7 +195,16 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("chatButton").onclick = toggleChat;
     document.querySelector(".close").onclick = toggleChat;
 
-
+    function showNotificationBadge() {
+        const notificationBadge = document.getElementById("notificationBadge");
+        if (!isChatOpen) {
+            notificationBadge.style.display = "flex";
+        }
+    }
+    
+    function onNewMessageReceived() {
+        showNotificationBadge();
+    }
 
 
 
