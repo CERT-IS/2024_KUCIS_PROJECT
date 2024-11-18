@@ -1,155 +1,171 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const labels = ['02:43:00', '02:44:00', '02:45:00', '02:46:00', '02:47:00', '02:48:00', 
-        '02:49:00', '02:50:00', '02:51:00', '02:52:00', '02:53:00', '02:54:00', 
-        '02:55:00', '02:56:00', '02:57:00'];
-
-
+document.addEventListener('DOMContentLoaded', function () {
     const ctxBar = document.getElementById('barChart').getContext('2d');
-    const gradientBar = ctxBar.createLinearGradient(0, 0, 0, 400);
-    gradientBar.addColorStop(0, 'rgba(0, 123, 255, 0.5)');
-    gradientBar.addColorStop(1, 'rgba(0, 123, 255, 0)');
-
     const ctxLine = document.getElementById('lineChart').getContext('2d');
-    const gradientLine = ctxLine.createLinearGradient(0, 0, 0, 400);
-    gradientLine.addColorStop(0, 'rgba(0, 123, 255, 0.5)');
-    gradientLine.addColorStop(1, 'rgba(0, 123, 255, 0)');
+    const ctxPie = document.getElementById('pieChart').getContext('2d');
 
+    const MAX_GRAPH_POINTS = 20;
 
-    const data1 = {
-        labels: labels,
-        datasets: [{
-            label: 'Count',
-            data: [5, 12, 8, 15, 10, 7, 5, 9, 20, 14, 11, 6, 13, 17, 10],
-            backgroundColor: gradientBar,
-            borderColor: '#007BFF',
-            borderWidth: 2,
-            fill: true
-        }]
-    };
-
-
-    const data2 = {
-        labels: labels,
-        datasets: [{
-            label: 'Count 1',
-            data: [15, 20, 25, 18, 22, 17, 13, 28, 32, 23, 19, 21, 25, 29, 16],
-            backgroundColor: gradientLine,
-            borderColor: '#007BFF',
-            borderWidth: 2,
-            fill: true,
-            pointBackgroundColor: '#FFFFFF',
-            pointBorderColor: '#007BFF',
-            pointBorderWidth: 2,
-            pointRadius: 4,
-            pointHoverRadius: 6
-        }, {
-            label: 'Count 2',
-            data: [10, 18, 12, 20, 15, 22, 9, 25, 30, 20, 14, 18, 23, 27, 19],
-            backgroundColor: 'rgba(252, 59, 86, 0.5)',
-            borderColor: 'rgba(252, 59, 86, 1)',
-            borderWidth: 2,
-            fill: true,
-            pointBackgroundColor: '#FFFFFF',
-            pointBorderColor: 'rgba(252, 59, 86, 1)',
-            pointBorderWidth: 2,
-            pointRadius: 4,
-            pointHoverRadius: 6
-        }]
-    };
-
-
-    const data3 = {
-        labels: ['02:50:00', '02:51:00', '02:52:00', '02:53:00'],
-        datasets: [{
-            label: 'Count',
-            data: [35, 25, 15, 10],
-            backgroundColor: [
-                'rgba(23, 117, 241, 0.5)',
-                'rgba(255, 99, 132, 0.5)',
-                'rgba(54, 162, 235, 0.5)',
-                'rgba(255, 206, 86, 0.5)'
-            ],
-            borderColor: '#007BFF',
-            borderWidth: 2
-        }]
-    };
-
-
-    new Chart(ctxBar, {
+    const barChart = new Chart(ctxBar, {
         type: 'bar',
-        data: data1,
+        data: {
+            labels: [],
+            datasets: [{
+                label: 'Event Count',
+                data: [],
+                backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1,
+            }],
+        },
         options: {
-            maintainAspectRatio: false,
             responsive: true,
-            scales: {
-                x: { grid: { display: false } },
-                y: {
-                    beginAtZero: true,
-                    grid: { color: 'rgba(200, 200, 200, 0.3)' }
-                }
-            },
-            plugins: {
-                legend: { display: false },
-                tooltip: {
-                    backgroundColor: 'rgba(0, 123, 255, 0.9)',
-                    titleColor: '#FFFFFF',
-                    bodyColor: '#FFFFFF',
-                    cornerRadius: 5,
-                    padding: 10,
-                    displayColors: false
-                }
-            }
-        }
+            maintainAspectRatio: false,
+        },
     });
 
-
-    new Chart(ctxLine, {
+    const lineChart = new Chart(ctxLine, {
         type: 'line',
-        data: data2,
+        data: {
+            labels: [],
+            datasets: [{
+                label: 'Critical Events',
+                data: [],
+                borderColor: 'rgba(255, 99, 132, 1)',
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                fill: true,
+            }],
+        },
         options: {
-            maintainAspectRatio: false,
             responsive: true,
-            scales: {
-                x: { grid: { display: false } },
-                y: {
-                    beginAtZero: true,
-                    grid: { color: 'rgba(200, 200, 200, 0.3)' }
-                }
-            },
-            plugins: {
-                legend: { display: true },
-                tooltip: {
-                    backgroundColor: 'rgba(0, 123, 255, 0.9)',
-                    titleColor: '#FFFFFF',
-                    bodyColor: '#FFFFFF',
-                    cornerRadius: 5,
-                    padding: 10,
-                    displayColors: false
-                }
-            }
-        }
+            maintainAspectRatio: false,
+        },
     });
 
-
-    const ctxPie = document.getElementById('circleChart').getContext('2d');
-    new Chart(ctxPie, {
+    const pieChart = new Chart(ctxPie, {
         type: 'pie',
-        data: data3,
+        data: {
+            labels: [],
+            datasets: [{
+                label: 'Event Types',
+                data: [],
+                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'],
+            }],
+        },
         options: {
-            maintainAspectRatio: false,
             responsive: true,
-            cutout: '60%',
-            plugins: {
-                legend: { display: true },
-                tooltip: {
-                    backgroundColor: 'rgba(0, 123, 255, 0.9)',
-                    titleColor: '#FFFFFF',
-                    bodyColor: '#FFFFFF',
-                    cornerRadius: 5,
-                    padding: 10,
-                    displayColors: false
-                }
-            }
+            maintainAspectRatio: false,
+        },
+    });
+
+
+    wsManager.connect();
+    wsManager.onMessage((event) => {
+        const message = JSON.parse(event.data);
+        switch (message.action) {
+            case "getWAFEvents":
+                const wafEvent = JSON.parse(message.data);
+                handleWAFEvents(wafEvent);
+                break;
+            
+            case "askResponse":
+                handleAskResponse(message.data);
+                break;
+
+            default:
+                console.warn("Unknown action:", message.action);
         }
     });
+    setInterval(() => {
+        const request = {
+            action: "getWAFEvents",
+            size : 20,
+            offset : lastWAFEventOffset,
+            lastTimestamp: lastWAFEventTimestamp
+        };
+        if (wsManager.isConnected) {
+            wsManager.send(request);
+        }
+    }, 1000);
+
+    function handleWAFEvents(events) {
+        const eventsElement = document.getElementById('waf-events');
+        const currentEventCount = eventsElement.querySelectorAll('.event-container').length;
+        if (currentEventCount >= MAX_EVENTS_DISPLAYED) {
+            console.log(`waf-events fulled.`);
+            return;
+        }
+
+        if (events.length > 0) {
+            const newTimestamp = new Date(events[events.length - 1].timestamp);
+
+            if (newTimestamp.getTime() === lastWAFEventTimestamp.getTime()) {
+                lastWAFEventOffset += 1;
+            } else {
+                lastWAFEventTimestamp = newTimestamp;
+                lastWAFEventOffset = 0;
+            }
+
+            let existingEventCount = eventsElement.querySelectorAll('.event-container').length;
+            const totalEventCount = existingEventCount + events.length;
+
+            const fragment = document.createDocumentFragment();
+            events.forEach(event => {
+                if (existingEventCount < MAX_EVENTS_DISPLAYED) {
+                    const eventLi = document.createElement('li');
+                    eventLi.innerHTML = createEventHTML(event);
+                    fragment.appendChild(eventLi);
+                    existingEventCount++;
+                }
+
+                updateCharts(event);
+            });
+
+            if (fragment.childNodes.length > 0) {
+                eventsElement.appendChild(fragment);
+            }
+
+            if (totalEventCount > MAX_EVENTS_DISPLAYED) {
+                const excessCount = totalEventCount - MAX_EVENTS_DISPLAYED;
+                const toRemove = Array.from(eventsElement.querySelectorAll('.event-container')).slice(0, excessCount);
+                toRemove.forEach(item => item.remove());
+            }
+        } else {
+            console.log(`No events in waf-events.`);
+        }
+    }
+
+
+    function updateCharts(event) {
+        const timestamp = new Date(event.timestamp).toLocaleTimeString();
+
+        if (barChart.data.labels.length >= MAX_GRAPH_POINTS) {
+            barChart.data.labels.shift();
+            barChart.data.datasets[0].data.shift();
+        }
+        barChart.data.labels.push(timestamp);
+        barChart.data.datasets[0].data.push(1);
+        barChart.update();
+
+        if (event.eventType === 'Critical') {
+            if (lineChart.data.labels.length >= MAX_GRAPH_POINTS) {
+                lineChart.data.labels.shift();
+                lineChart.data.datasets[0].data.shift();
+            }
+            lineChart.data.labels.push(timestamp);
+            lineChart.data.datasets[0].data.push(
+                (lineChart.data.datasets[0].data.slice(-1)[0] || 0) + 1
+            );
+            lineChart.update();
+        }
+        
+        const eventType = event.eventType || 'Unknown';
+        const typeIndex = pieChart.data.labels.indexOf(eventType);
+        if (typeIndex === -1) {
+            pieChart.data.labels.push(eventType);
+            pieChart.data.datasets[0].data.push(1);
+        } else {
+            pieChart.data.datasets[0].data[typeIndex] += 1;
+        }
+        pieChart.update();
+    }
 });

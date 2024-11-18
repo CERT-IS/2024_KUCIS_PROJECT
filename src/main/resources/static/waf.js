@@ -81,6 +81,18 @@ document.getElementById('chatForm').addEventListener('submit', function(event) {
 });
 
 
+function formatDate(date) {
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const weekday = date.toLocaleString('en-En', { weekday: 'short' });
+    return `${month}-${day} (${weekday})`;
+}
+
+const today = new Date();
+
+document.getElementById('date').textContent = formatDate(today);
+
+
 
 document.addEventListener("DOMContentLoaded", function() {
     const allDropdown = document.querySelectorAll('#sidebar .side-dropdown');
@@ -271,7 +283,6 @@ document.addEventListener("DOMContentLoaded", function() {
     showPage(currentPage);
 
 
-
     async function fetchEvents(url, elementId, lastTimestamp, offset = 0) {
         try {
             const eventsElement = document.getElementById(elementId);
@@ -398,6 +409,11 @@ document.addEventListener("DOMContentLoaded", function() {
                 const wafEvent = JSON.parse(message.data);
                 handleWAFEvents(wafEvent);
                 break;
+            
+            case "askResponse":
+                handleAskResponse(message.data);
+                break;
+
             default:
                 console.warn("Unknown action:", message.action);
         }
@@ -450,6 +466,35 @@ document.addEventListener("DOMContentLoaded", function() {
         } else {
             console.log(`No events in waf-events.`);
         }
+    }
+
+    function handleAskResponse(data) {
+        const messagesContainer = document.getElementById('chatBox');
+        if (!messagesContainer) {
+            console.error("Chat messages container not found.");
+            return;
+        }
+    
+        const now = new Date();
+        const formattedTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+    
+        const msgElement = document.createElement('div');
+        msgElement.classList.add('msg');
+    
+        msgElement.innerHTML = `
+            <img src="https://images.unsplash.com/photo-1534723328310-e82dad3ee43f?q=80&w=2536&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="">
+            <div class="chat">
+                <div class="profile">
+                    <span class="username">SIMEple Bot</span>
+                    <span class="time">${formattedTime}</span>
+                </div>
+                <p>${escapeHtml(data)}</p>
+            </div>
+        `;
+
+        messagesContainer.appendChild(msgElement);
+
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
 
     function createEventHTML(event) {

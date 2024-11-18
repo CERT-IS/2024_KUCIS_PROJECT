@@ -220,91 +220,6 @@
                         <input type="text" class="search-input" placeholder="Search..." onkeyup="searchFunction()">
                     </div>
                     <ul id="event-streams">
-                        <div class="event-container">
-                            <div class="event-header">
-                                <strong>index:</strong> 1 <br>
-                                <strong>name:</strong> User XSS Attempt <br>
-                                <strong>type:</strong> Web <br>
-                                <strong>timestamp:</strong> 2024-09-11T09:10:15:158 <br>
-                                <span class="logs-toggle" style="cursor: pointer;">▶</span>
-                            </div>
-                            <pre class="logs-content" style="display: none;">{
-                    "id": 1,
-                    "eventName": "User XSS Attempt",
-                    "eventType": "web",
-                    "timestamp": "2024-09-11T15:40:15.845233Z",
-                    "logs": "http 2024-09-11T15:40:15.845233Z app/web-instance-alb/b274c840c8ff5ad8 115.92.127.144:55927 172.31.9.183:80 0.007 0.002 0.000 200 200 513 180 \\"GET http://web-instance-alb-1145570667.ap-northeast-2.elb.amazonaws.com:80/user/xss?code=%3Cscript%3Ealert(%27%EC%B7%A8%EC%95%BD%EC%A0%90%20%EA%B3%B5%EA%B2%A9%27)%3C/script%3E HTTP/1.1\\" \\"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36\\" - - arn:aws:elasticloadbalancing:ap-northeast-2:058264524253:targetgroup/web-instance-group/755fd995692f53b8 \\"Root=1-66e1b9df-4b29805041a38c5a5034aa8a\\" \\"-\\" \\"-\\" 0 2024-09-11T15:40:15.835000Z \\"waf,forward\\" \\"-\\" \\"-\\" \\"172.31.9.183:80\\" \\"200\\" \\"-\\" \\"-\\" TID_2b9ce960c94e1d45a239311541c808a2"
-                            }
-                            </pre>
-                        </div>
-                        <div class="event-container">
-                            <div class="event-header">
-                                <strong>index:</strong> 2 <br>
-                                <strong>name:</strong> User SQLI Attempt <br>
-                                <strong>type:</strong> Web <br>
-                                <strong>timestamp:</strong> 2024-09-11T09:11:14:120 <br>
-                                <span class="logs-toggle" style="cursor: pointer;">▶</span>
-                            </div>
-                            <pre class="logs-content" style="display: none;">{
-                    "id": 1,
-                    "eventName": "User XSS Attempt",
-                    "eventType": "web",
-                    "timestamp": "2024-09-11T15:40:15.845233Z",
-                    "logs": "http 2024-09-11T15:40:15.845233Z app/web-instance-alb/b274c840c8ff5ad8 115.92.127.144:55927 172.31.9.183:80 0.007 0.002 0.000 200 200 513 180 \\"GET http://web-instance-alb-1145570667.ap-northeast-2.elb.amazonaws.com:80/user/xss?code=%3Cscript%3Ealert(%27%EC%B7%A8%EC%95%BD%EC%A0%90%20%EA%B3%B5%EA%B2%A9%27)%3C/script%3E HTTP/1.1\\" \\"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36\\" - - arn:aws:elasticloadbalancing:ap-northeast-2:058264524253:targetgroup/web-instance-group/755fd995692f53b8 \\"Root=1-66e1b9df-4b29805041a38c5a5034aa8a\\" \\"-\\" \\"-\\" 0 2024-09-11T15:40:15.835000Z \\"waf,forward\\" \\"-\\" \\"-\\" \\"172.31.9.183:80\\" \\"200\\" \\"-\\" \\"-\\" TID_2b9ce960c94e1d45a239311541c808a2"
-                            }
-                            </pre>
-                        </div>
-                        <div class="event-container">
-                            <div class="event-header">
-                                <strong>index:</strong> 3 <br>
-                                <strong>name:</strong> User File Vulnerability Attempt <br>
-                                <strong>type:</strong> Web <br>
-                                <strong>timestamp:</strong> 2024-09-11T09:11:17:242 <br>
-                                <span class="logs-toggle" style="cursor: pointer;">▶</span>
-                            </div>
-                            <pre class="logs-content" style="display: none;">{
-                    "id": 1,
-                    "eventName": "User XSS Attempt",
-                    "eventType": "web",
-                    "timestamp": "2024-09-11T15:40:15.845233Z",
-                    "logs": "http 2024-09-11T15:40:15.845233Z app/web-instance-alb/b274c840c8ff5ad8 115.92.127.144:55927 172.31.9.183:80 0.007 0.002 0.000 200 200 513 180 \\"GET http://web-instance-alb-1145570667.ap-northeast-2.elb.amazonaws.com:80/user/xss?code=%3Cscript%3Ealert(%27%EC%B7%A8%EC%95%BD%EC%A0%90%20%EA%B3%B5%EA%B2%A9%27)%3C/script%3E HTTP/1.1\\" \\"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36\\" - - arn:aws:elasticloadbalancing:ap-northeast-2:058264524253:targetgroup/web-instance-group/755fd995692f53b8 \\"Root=1-66e1b9df-4b29805041a38c5a5034aa8a\\" \\"-\\" \\"-\\" 0 2024-09-11T15:40:15.835000Z \\"waf,forward\\" \\"-\\" \\"-\\" \\"172.31.9.183:80\\" \\"200\\" \\"-\\" \\"-\\" TID_2b9ce960c94e1d45a239311541c808a2"
-                            }
-                            </pre>
-                        </div>
-                        <div class="event-container">
-                            <div class="event-header">
-                                <strong>index:</strong> 20 <br>
-                                <strong>name:</strong> User SSRF Attempt <br>
-                                <strong>type:</strong> Web <br>
-                                <strong>timestamp:</strong> 2024-09-11T09:13:14:142 <br>
-                                <span class="logs-toggle" style="cursor: pointer;">▶</span>
-                            </div>
-                            <pre class="logs-content" style="display: none;">{
-                    "id": 1,
-                    "eventName": "User XSS Attempt",
-                    "eventType": "web",
-                    "timestamp": "2024-09-11T15:40:15.845233Z",
-                    "logs": "http 2024-09-11T15:40:15.845233Z app/web-instance-alb/b274c840c8ff5ad8 115.92.127.144:55927 172.31.9.183:80 0.007 0.002 0.000 200 200 513 180 \\"GET http://web-instance-alb-1145570667.ap-northeast-2.elb.amazonaws.com:80/user/xss?code=%3Cscript%3Ealert(%27%EC%B7%A8%EC%95%BD%EC%A0%90%20%EA%B3%B5%EA%B2%A9%27)%3C/script%3E HTTP/1.1\\" \\"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36\\" - - arn:aws:elasticloadbalancing:ap-northeast-2:058264524253:targetgroup/web-instance-group/755fd995692f53b8 \\"Root=1-66e1b9df-4b29805041a38c5a5034aa8a\\" \\"-\\" \\"-\\" 0 2024-09-11T15:40:15.835000Z \\"waf,forward\\" \\"-\\" \\"-\\" \\"172.31.9.183:80\\" \\"200\\" \\"-\\" \\"-\\" TID_2b9ce960c94e1d45a239311541c808a2"
-                            }
-                            </pre>
-                        </div>
-                        <div class="event-container">
-                            <div class="event-header">
-                                <strong>index:</strong> 21 <br>
-                                <strong>name:</strong> User Buffer Attempt <br>
-                                <strong>type:</strong> System <br>
-                                <strong>timestamp:</strong> 2024-09-11T09:14:54:182 <br>
-                                <span class="logs-toggle" style="cursor: pointer;">▶</span>
-                            </div>
-                            <pre class="logs-content" style="display: none;">{
-                    "id": 1,
-                    "eventName": "User XSS Attempt",
-                    "eventType": "web",
-                    "timestamp": "2024-09-11T15:40:15.845233Z",
-                    "logs": "http 2024-09-11T15:40:15.845233Z app/web-instance-alb/b274c840c8ff5ad8 115.92.127.144:55927 172.31.9.183:80 0.007 0.002 0.000 200 200 513 180 \\"GET http://web-instance-alb-1145570667.ap-northeast-2.elb.amazonaws.com:80/user/xss?code=%3Cscript%3Ealert(%27%EC%B7%A8%EC%95%BD%EC%A0%90%20%EA%B3%B5%EA%B2%A9%27)%3C/script%3E HTTP/1.1\\" \\"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36\\" - - arn:aws:elasticloadbalancing:ap-northeast-2:058264524253:targetgroup/web-instance-group/755fd995692f53b8 \\"Root=1-66e1b9df-4b29805041a38c5a5034aa8a\\" \\"-\\" \\"-\\" 0 2024-09-11T15:40:15.835000Z \\"waf,forward\\" \\"-\\" \\"-\\" \\"172.31.9.183:80\\" \\"200\\" \\"-\\" \\"-\\" TID_2b9ce960c94e1d45a239311541c808a2"
-                            }
-                            </pre>
-                        </div>
                     </ul>
                 </div>
             </div>
@@ -322,7 +237,7 @@
                     <span class="close" onclick="toggleChat()">×</span>
                 </div>
                 <div class="chat-box" id="chatBox">
-                    <p class="day"><span>10-09 (Wed)</span></p>
+                    <p class="day"><span id="date"></span></p>
                     <div class="msg">
                         <img src="https://images.unsplash.com/photo-1534723328310-e82dad3ee43f?q=80&w=2536&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="">
                         <div class="chat">
