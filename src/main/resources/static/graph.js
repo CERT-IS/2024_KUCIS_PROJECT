@@ -1,8 +1,8 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function() {
     const lineGraphCtx = document.getElementById('lineGraph').getContext('2d');
 
     let labels = ['16:00', '16:05', '16:10', '16:15', '16:20', '16:25', '16:30', '16:35', '16:40', '16:45'];
-    let dataS1 = Array(10).fill(0);
+    let dataS1 = [45, 50, 55, 60, 65, 70, 75, 80, 85, 90];
 
     const gradient = lineGraphCtx.createLinearGradient(0, 0, 0, 400);
     gradient.addColorStop(0, 'rgba(0, 123, 255, 0.5)');
@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
             labels: labels,
             datasets: [
                 {
-                    label: 'Network Traffic (Tx + Rx)',
+                    label: 'S1',
                     data: dataS1,
                     borderColor: '#007BFF',
                     backgroundColor: gradient,
@@ -73,6 +73,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+
     function getNextTime(currentTime) {
         const [hours, minutes] = currentTime.split(':').map(Number);
         let newMinutes = minutes + 5;
@@ -86,36 +87,10 @@ document.addEventListener('DOMContentLoaded', function () {
         return `${newHours < 10 ? '0' : ''}${newHours}:${newMinutes < 10 ? '0' : ''}${newMinutes}`;
     }
 
-    async function fetchTrafficData() {
-        try {
-            const response = await fetch('/system/traffic');
-            if (response.ok) {
-                const trafficData = await response.json();
-
-                let totalTraffic = 0;
-                for (const [key, value] of Object.entries(trafficData)) {
-                    const trafficValue = parseFloat(value.split(' ')[0]);
-                    const unit = value.split(' ')[1];
-
-                    const multiplier = unit === 'KB' ? 1024 : unit === 'MB' ? 1024 ** 2 : 1024 ** 3;
-                    totalTraffic += trafficValue * multiplier;
-                }
-
-                return Math.floor(totalTraffic / (1024 ** 2));
-            } else {
-                console.error('Failed to fetch traffic data:', response.status);
-                return 0;
-            }
-        } catch (error) {
-            console.error('Error fetching traffic data:', error);
-            return 0;
-        }
-    }
-
-    async function updateChart() {
+    function updateChart() {
         const lastTime = labels[labels.length - 1];
         const newTime = getNextTime(lastTime);
-        const newValue = await fetchTrafficData();
+        const newValue = Math.floor(Math.random() * (2700 - 100 + 1)) + 100;
 
         labels.push(newTime);
         labels.shift();
@@ -132,6 +107,5 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    setInterval(updateChart, 5000);
-    updateChart();
+    setInterval(updateChart, 2000);
 });
