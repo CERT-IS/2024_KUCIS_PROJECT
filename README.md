@@ -4,6 +4,8 @@
 
 <img src="https://github.com/CERT-IS/2024_KUCIS_PROJECT/blob/main/img/Dashboard.png?raw=true">
 
+<br>
+
 ## 개요
 OpenSearch로 로그 데이터를 수집해 보안 이벤트 검출하는 SIEM 프로젝트
 
@@ -15,11 +17,15 @@ OpenSearch로 로그 데이터를 수집해 보안 이벤트 검출하는 SIEM �
 
 > 2024 KUCIS 프로젝트로 제출했고, 사이버 시큐리티 해커톤 및 대회에 참여하고 있습니다.
 
+<br>
+
 ## 아키텍처 구성
 
 <img src="https://github.com/CERT-IS/2024_KUCIS_PROJECT/blob/main/img/Architecture.png?raw=true"> 
 
 기술 스택 : Spring Webflux, Spring Cloud AWS , OpenSearch, Thymeleaf, OpenHTMLtoPDF, PDFBox
+
+<br>
 
 ## 상세 설명
 
@@ -29,13 +35,15 @@ OpenSearch로 로그 데이터를 수집해 보안 이벤트 검출하는 SIEM �
 
 ELK 스택을 활용해서 로그 데이터들을 OpenSearch Service에 구독했고, 대시보드 웹서비스를 개발하여 시각화 및 이벤트 검출을 진행했습니다.
 
-기본적으로 AWS의 GarudDuty와 WAF 서비스의 검출 로직을 따르지만, AWS의 보안 서비스는 취약점 검출에 있어서 어떤 비즈니스 로직을 가지고 판별하는지 공개하지 않고 있습니다.
+기본적으로 AWS의 GuardDuty와 WAF 서비스의 검출 로직을 따르지만, AWS의 보안 서비스는 취약점 검출에 있어서 어떤 비즈니스 로직을 가지고 판별하는지 공개하지 않고 있습니다.
 
 본 프로젝트에서는 AWS의 보안 서비스(WAF)와 함께 추가적으로 **수집한 로그 데이터를 토대로 취약점을 직접 검출해내는 로직**을 구현하고 있습니다.
 
 직접 시뮬레이션을 진행하면서 취약점을 찾고, 로그 데이터를 토대로 정규 표현식으로 정리해 검출하였습니다.
 
 제품 대시보드를 제공해서 실시간으로 검출과 모니터링을 진행할 수 있게 제공하고 있습니다.
+
+<br>
 
 ## 취약점 직접 검출을 위한 모의 시뮬레이션 주입
 
@@ -52,6 +60,8 @@ ELK 스택을 활용해서 로그 데이터들을 OpenSearch Service에 구독�
 - ALB Access Logs를 통해서 쿼리 패러미터를 통해 접근하는 SQL Injection, XSS 시도 검출
 - 추가적으로, 불충분한 인가, CSRF, 디렉토리 인덱싱, 관리자 페이지 노출 등
 
+<br>
+
 ## ISMS-P 2.11 침해 대응 보고서 자동화 및 커스텀 형식 제공
 
 검출되는 취약점들에 대해서 피해 규모를 상정하고 상세 데이터들을 정리해서 isms-p 2.11 침해 대응에 필요한 규격의 보고서를 작성합니다.
@@ -60,11 +70,15 @@ pdf로 미리보기와 다운로드가 가능하며, 기본적으로 제공되�
 
 html로 작성된 파일 양식을 통해 고객이 직접 원하는 형식에 맞춰서 보고서 형태를 변경할 수 있습니다.
 
+<br>
+
 ## Terraform을 이용한 편리한 보안 환경 구축
 
 HashiCorp에서 만든 오픈소스 코드형 인프라(IaC)인 **Terraform**을 통해 보안 제품의 환경 구축을 쉽고 간편하게 자동화합니다.
 
 기존의 환경 구축은 약 38분의 시간이 소모되는 것에 비해 **2분**만에 사용자의 작업이 끝나고 약 20분 간의 대기 시간을 통해 설치를 마무리할 수 있습니다.
+
+<br>
 
 ##  sLM 기반 인공지능 챗봇
 
