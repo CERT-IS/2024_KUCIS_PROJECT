@@ -26,4 +26,9 @@ public class DashBoardController {
     public String handmade(){
         return "handmade";
     }
+
+    @GetMapping("/login")
+    public String login(){
+        return "login";
+    }
 }

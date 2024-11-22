@@ -1,5 +1,6 @@
 import wsManager from './websocket.js';
 
+
 let lastWAFEventTimestamp = new Date(0);
 let lastWAFEventOffset = 0;
 const MAX_EVENTS_DISPLAYED = 100;
@@ -44,44 +45,7 @@ function toggleLogs(container) {
 }
 
 
-function searchFunction() {
-    let input = document.querySelector('.search-input').value.toUpperCase();
-    let category = document.getElementById('search-category').value;
-    let eventContainers = document.querySelectorAll('.event-container');
-
-    eventContainers.forEach(container => {
-        let searchValue = '';
-
-        if (category === 'id') {
-            searchValue = container.querySelector('.event-header strong:nth-of-type(1)').nextSibling.nodeValue.trim().toUpperCase();
-        } else if (category === 'name') {
-            searchValue = container.querySelector('.event-header strong:nth-of-type(2)').nextSibling.nodeValue.trim().toUpperCase();
-        } else if (category === 'type') {
-            searchValue = container.querySelector('.event-header strong:nth-of-type(3)').nextSibling.nodeValue.trim().toUpperCase();
-        } else if (category === 'timestamp') {
-            searchValue = container.querySelector('.event-header strong:nth-of-type(4)').nextSibling.nodeValue.trim().toUpperCase();
-        }
-
-        if (searchValue.indexOf(input) > -1) {
-            container.style.display = "";
-        } else {
-            container.style.display = "none";
-        }
-    });
-}
-
-
-
-
 document.addEventListener("DOMContentLoaded", function() {
-    const eventContainers = document.querySelectorAll('.event-container');
-
-    eventContainers.forEach(container => {
-        container.addEventListener('click', function() {
-            toggleLogs(container);
-        });
-    });
-
     const allDropdown = document.querySelectorAll('#sidebar .side-dropdown');
     const sidebar = document.getElementById('sidebar');
 
@@ -132,6 +96,31 @@ document.addEventListener("DOMContentLoaded", function() {
         updateSidebar();
     });
 
+    sidebar.addEventListener('mouseleave', function() {
+        if (this.classList.contains('hide')) {
+            allDropdown.forEach(item => {
+                const a = item.parentElement.querySelector('a:first-child');
+                a.classList.remove('active');
+                item.classList.remove('show');
+            });
+            allSideDivider.forEach(item => {
+                item.textContent = '-';
+            });
+        }
+    });
+
+    sidebar.addEventListener('mouseenter', function() {
+        if (this.classList.contains('hide')) {
+            allDropdown.forEach(item => {
+                const a = item.parentElement.querySelector('a:first-child');
+                a.classList.remove('active');
+                item.classList.remove('show');
+            });
+            allSideDivider.forEach(item => {
+                item.textContent = item.dataset.text;
+            });
+        }
+    });
 
     const profile = document.querySelector('nav .profile');
     const imgProfile = profile.querySelector('img');
@@ -141,17 +130,42 @@ document.addEventListener("DOMContentLoaded", function() {
         dropdownProfile.classList.toggle('show');
     });
 
-
-
-    const allMenu = document.querySelectorAll('main .head .menu');
+    const allMenu = document.querySelectorAll('main .content-data .head .menu');
 
     allMenu.forEach(item => {
         const icon = item.querySelector('.material-symbols-outlined[data-icon="more_horiz"]');
         const menuLink = item.querySelector('.menu-link');
 
+        icon.addEventListener('click', function() {
+            menuLink.classList.toggle('show');
+        });
+    });
+
+    window.addEventListener('click', function(e) {
+        if (e.target !== imgProfile && e.target !== dropdownProfile) {
+            dropdownProfile.classList.remove('show');
+        }
+
+        allMenu.forEach(item => {
+            const icon = item.querySelector('.material-symbols-outlined[data-icon="more_horiz"]');
+            const menuLink = item.querySelector('.menu-link');
+
+            if (e.target !== icon && e.target !== menuLink) {
+                menuLink.classList.remove('show');
+            }
+        });
+    });
+
+
+    const allMenu2 = document.querySelectorAll('main .head .menu2');
+
+    allMenu2.forEach(item => {
+        const icon = item.querySelector('.material-symbols-outlined[data-icon="more_horiz"]');
+        const menuLink = item.querySelector('.menu-link2');
+
         icon.addEventListener('click', function(event) {
-            allMenu.forEach(menu => {
-                const otherMenuLink = menu.querySelector('.menu-link');
+            allMenu2.forEach(menu => {
+                const otherMenuLink = menu.querySelector('.menu-link2');
                 if (otherMenuLink !== menuLink) {
                     otherMenuLink.classList.remove('show');
                 }
@@ -167,36 +181,36 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     window.addEventListener('click', function(e) {
-        allMenu.forEach(item => {
-            const menuLink = item.querySelector('.menu-link');
+        allMenu2.forEach(item => {
+            const menuLink = item.querySelector('.menu-link2');
             menuLink.classList.remove('show');
         });
     });
 
+    async function submitCode() {
+        const code = document.getElementById("codeInput").value;
 
-    let isChatOpen = false;
+        try {
+            const response = await fetch('/api/opensearch/query', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(code),
+            });
 
-    function toggleChat() {
-        const chatModal = document.getElementById("chatModal");
-        const chatButton = document.getElementById("chatButton");
+            if (!response.ok) {
+                throw new Error('Error fetching data from server');
+            }
 
-        if (!isChatOpen) {
-            chatModal.classList.add("open");
-            chatButton.style.opacity = "0";
-        } else {
-            chatModal.classList.remove("open");
-            chatButton.style.opacity = "1";
+            const wafList = await response.json();
+            console.log(wafList);
+
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred while processing your request');
         }
-
-        isChatOpen = !isChatOpen;
     }
-
-    document.getElementById("chatButton").onclick = toggleChat;
-    document.querySelector(".close").onclick = toggleChat;
-
-
-
-
     async function fetchEvents(url, elementId, lastTimestamp, offset = 0) {
         try {
             const eventsElement = document.getElementById(elementId);
@@ -315,9 +329,13 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
 
+
+
     wsManager.connect();
+
     wsManager.onMessage((event) => {
         const message = JSON.parse(event.data);
+
         switch (message.action) {
             case "getWAFEvents":
                 const wafEvent = JSON.parse(message.data);
@@ -326,7 +344,9 @@ document.addEventListener("DOMContentLoaded", function() {
             default:
                 console.warn("Unknown action:", message.action);
         }
+
     });
+
     setInterval(() => {
         const request = {
             action: "getWAFEvents",
@@ -338,35 +358,46 @@ document.addEventListener("DOMContentLoaded", function() {
             wsManager.send(request);
         }
     }, 1000);
+
+
     function handleWAFEvents(events) {
         const eventsElement = document.getElementById('waf-events');
         const currentEventCount = eventsElement.querySelectorAll('.event-container').length;
+
         if (currentEventCount >= MAX_EVENTS_DISPLAYED) {
             console.log(`waf-events fulled.`);
             return;
         }
+
+
         if (events.length > 0) {
             const newTimestamp = new Date(events[events.length - 1].timestamp);
+
             if (newTimestamp.getTime() === lastWAFEventTimestamp.getTime()) {
                 lastWAFEventOffset += 1;
             } else {
                 lastWAFEventTimestamp = newTimestamp;
                 lastWAFEventOffset = 0;
             }
+
             let existingEventCount = eventsElement.querySelectorAll('.event-container').length;
             const totalEventCount = existingEventCount + events.length;
+
             const fragment = document.createDocumentFragment();
             events.forEach(event => {
                 if (existingEventCount < MAX_EVENTS_DISPLAYED) {
                     const eventLi = document.createElement('li');
+
                     eventLi.innerHTML = createEventHTML(event);
                     fragment.appendChild(eventLi);
                     existingEventCount++;
                 }
             });
+
             if (fragment.childNodes.length > 0) {
                 eventsElement.appendChild(fragment);
             }
+
             if (totalEventCount > MAX_EVENTS_DISPLAYED) {
                 const excessCount = totalEventCount - MAX_EVENTS_DISPLAYED;
                 const toRemove = Array.from(eventsElement.querySelectorAll('.event-container')).slice(0, excessCount);
@@ -376,6 +407,7 @@ document.addEventListener("DOMContentLoaded", function() {
             console.log(`No events in waf-events.`);
         }
     }
+
 
     function createEventHTML(event) {
         const logsContent = event.logs ? parseAndFormatLogs(event.logs) : 'No logs available';
@@ -393,7 +425,5 @@ document.addEventListener("DOMContentLoaded", function() {
         </div>
     `;
     }
-
-
 
 });

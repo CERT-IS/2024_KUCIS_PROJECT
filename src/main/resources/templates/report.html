@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/report.css">
-    <script src="/report.js" defer></script> <!-- defer를 추가하여 HTML이 로드된 후 스크립트를 실행 -->
+    <script src="/report.js" defer></script>
     <title>Report PDF</title>
 </head>
 <body>
@@ -89,15 +89,12 @@
         <input type="file" id="template-file" name="template-file" accept=".html">
         <button type="submit">Upload</button>
     </form>
-
     <form id="delete-template-form">
         <label for="template-list">Delete Template:</label>
         <select id="template-list" name="template-list"></select>
         <button type="submit">Delete</button>
     </form>
-
     <button id="refresh-templates">Refresh Templates</button>
-
     <div id="preview-container" style="display: none;">
         <h2>Report Preview</h2>
         <img id="preview-image" src="" alt="Report Preview Image" />

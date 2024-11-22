@@ -1,12 +1,19 @@
 package org.certis.siem.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import lombok.RequiredArgsConstructor;
+import org.certis.siem.entity.log.AccessLog;
 import org.certis.siem.entity.log.CloudTrailLog;
 import org.certis.siem.entity.EventStream;
+import org.certis.siem.mapper.AccessLogsMapper;
 import org.certis.siem.mapper.CloudTrailMapper;
+import org.certis.siem.repository.EventRepository;
+import org.opensearch.client.json.JsonData;
 import org.opensearch.client.opensearch.OpenSearchClient;
 import org.opensearch.client.opensearch._types.FieldValue;
+import org.opensearch.client.opensearch._types.SortOrder;
 import org.opensearch.client.opensearch._types.query_dsl.Query;
 import org.opensearch.client.opensearch.core.SearchRequest;
 import org.opensearch.client.opensearch.core.search.SourceConfig;
@@ -37,6 +44,7 @@ public class CloudTrailService {
             "eu-west-3", "eu-north-1", "sa-east-1", "me-south-1",
             "af-south-1", "eu-south-1", "eu-south-2"
     );
+    private final EventRepository eventRepository;
 
     private final List<String> excludeRegions = new ArrayList<>(List.of("ap-northeast-2"));
     private Set<String> whitelistAddresss = new HashSet<>(Arrays.asList());
@@ -66,23 +74,54 @@ public class CloudTrailService {
         excludeRegions.removeAll(validRegions);
     }
 
-    public Flux<EventStream> processCloudTrailLogs() {
-        return executeSearch()
+    public Mono<LocalDateTime> process(LocalDateTime lastProcessedTimestamp) {
+        return executeSearch(lastProcessedTimestamp)
                 .collectList()
-                .flatMapMany(logs -> {
-                    Flux<CloudTrailLog> cloudtrailLogs = Flux.fromIterable(logs)
-                            .map(CloudTrailMapper::mapJsonNodeToCloudTrailLog);
+                .flatMap(jsonNodes -> {
+                    Flux<EventStream> eventStreamFlux = mapJsonNodeToCloudTrailLog(jsonNodes);
 
-                    Flux<EventStream> unAuthLoginResults = getUnAuthLoginByCloudTrailLogs(cloudtrailLogs)
-                            .map(cloudTrailLog -> mapLogsToEvent("인가받지 않은 로그인 시도", "클라우드", cloudTrailLog));
-                    Flux<EventStream> notInRegionResults = getNotInRegionByCloudTrailLogs(cloudtrailLogs)
-                            .map(cloudTrailLog -> mapLogsToEvent("지정되지 않은 AWS 리전에서의 접근 시도", "클라우드", cloudTrailLog));
+                    List<CloudTrailLog> cloudtrailList = jsonNodes.stream()
+                            .map(CloudTrailMapper::mapJsonNodeToCloudTrailLog)
+                            .collect(Collectors.toList());
 
-                    return Flux.merge(unAuthLoginResults, notInRegionResults);
+
+                    LocalDateTime latestTimestamp = getLatestTimestamp(cloudtrailList, lastProcessedTimestamp);
+
+
+                    return eventStreamFlux
+                            .collectList()
+                            .flatMap(eventStreams -> eventRepository.saveAll(eventStreams)
+                                    .then(Mono.just(latestTimestamp))
+                                    .onErrorMap(e -> new RuntimeException("Error processing Accesslogs: " + e.getMessage(), e))
+                            );
                 });
     }
 
-    public Flux<CloudTrailLog> getUnAuthLoginByCloudTrailLogs(Flux<CloudTrailLog> logs) {
+    public LocalDateTime getLatestTimestamp(List<CloudTrailLog> cloudTrailLogs, LocalDateTime lastProcessedTimestamp) {
+        return cloudTrailLogs.stream()
+                .map(CloudTrailLog::getTimestamp)
+                .max(Comparator.naturalOrder())
+                .orElse(lastProcessedTimestamp);
+    }
+
+    public Flux<EventStream> mapJsonNodeToCloudTrailLog(List<JsonNode> jsonNodes) {
+        List<CloudTrailLog> cloudTrailList = jsonNodes.stream()
+                .map(CloudTrailMapper::mapJsonNodeToCloudTrailLog)
+                .collect(Collectors.toList());
+
+        Flux<CloudTrailLog> cloudTrailLogFlux = Flux.fromIterable(cloudTrailList);
+
+        return Flux.merge(
+                getUnAuthLoginByCloudTrailLogs(cloudTrailLogFlux)
+                        .map(cloudTrailLog -> mapLogsToEvent("인가받지 않은 로그인 시도", "클라우드", cloudTrailLog)),
+                getNotInRegionByCloudTrailLogs(cloudTrailLogFlux)
+                        .map(cloudTrailLog -> mapLogsToEvent("지정되지 않은 AWS 리전에서의 접근 시도", "클라우드", cloudTrailLog)),
+                getContainsWildcardByCloudTrailLogs(cloudTrailLogFlux)
+                        .map(cloudTrailLog -> mapLogsToEvent("IAM 역할 변조를 통한 권한 상승", "클라우드", cloudTrailLog))
+        );
+    }
+
+    private Flux<CloudTrailLog> getUnAuthLoginByCloudTrailLogs(Flux<CloudTrailLog> logs) {
         return logs
                 .filter(this::isFailedLogin)
                 .groupBy(CloudTrailLog::getSourceIPAddress)
@@ -91,8 +130,12 @@ public class CloudTrailService {
                 .flatMap(Flux::fromIterable);
     }
 
-    public Flux<CloudTrailLog> getNotInRegionByCloudTrailLogs(Flux<CloudTrailLog> logs) {
+    private Flux<CloudTrailLog> getNotInRegionByCloudTrailLogs(Flux<CloudTrailLog> logs) {
         return logs.filter(log -> isRegionExcluded(excludeRegions, log));
+    }
+
+    private Flux<CloudTrailLog> getContainsWildcardByCloudTrailLogs(Flux<CloudTrailLog> logs){
+        return logs.filter(log -> containsWildcard(log));
     }
 
     private boolean isRegionExcluded(List<String> excludedRegions, CloudTrailLog log) {
@@ -128,13 +171,37 @@ public class CloudTrailService {
         return false;
     }
 
-    private Flux<JsonNode> executeSearch() {
-        Query query = Query.of(q -> q
-                .match(t -> t
-                        .field("@log_group")
-                        .query(FieldValue.of(logGroup))
-                )
-        );
+    private boolean containsWildcard(CloudTrailLog log){
+        Map<String, Object> requestParameters = log.getRequestParameters();
+
+        if(requestParameters == null)
+            return false;
+
+        Object policyDocument = requestParameters.get("policyDocument");
+        if (policyDocument != null && policyDocument instanceof String) {
+            String policyDoc = (String) policyDocument;
+            return policyDoc.contains("\"Action\": \"*\"") || policyDoc.contains("\"Resource\": \"*\"");
+        }
+
+        return false;
+    }
+
+    private Flux<JsonNode> executeSearch(LocalDateTime lastProcessedTimestamp) {
+        SearchRequest searchRequest = searchRequest(lastProcessedTimestamp);
+
+        return Mono.fromCallable(() -> openSearchClient.search(searchRequest, JsonNode.class))
+                .flatMapMany(searchResponse -> Flux.fromIterable(searchResponse.hits().hits())
+                        .map(hit -> hit.source()))
+                .onErrorMap(e -> new RuntimeException("Error from OpenSearch", e));
+    }
+
+    private SearchRequest searchRequest(LocalDateTime timestamp) {
+        String timestampString = timestamp.format(DateTimeFormatter.ISO_DATE_TIME);
+
+        Query query = Query.of(q -> q.bool(b -> b
+                .must(m -> m.match(t -> t.field("@log_group.keyword").query(FieldValue.of(logGroup))))
+                .filter(f -> f.range(r -> r.field("@timestamp").gt(JsonData.of(timestampString))))
+        ));
 
         SourceFilter sourceFilter = SourceFilter.of(s -> s
                 .includes(
@@ -156,20 +223,12 @@ public class CloudTrailService {
                 )
         );
 
-        SourceConfig sourceConfig = SourceConfig.of(src -> src
-                .filter(sourceFilter)
-        );
+        SourceConfig sourceConfig = SourceConfig.of(src -> src.filter(sourceFilter));
 
-        SearchRequest searchRequest = SearchRequest.of(s -> s
-                .index(indexName)
+        return SearchRequest.of(s -> s.index(indexName)
                 .source(sourceConfig)
                 .query(query)
-                .size(100)
-        );
-
-        return Mono.fromCallable(() -> openSearchClient.search(searchRequest, JsonNode.class))
-                .flatMapMany(searchResponse -> Flux.fromIterable(searchResponse.hits().hits())
-                        .map(hit -> hit.source()))
-                .onErrorMap(e -> new RuntimeException("Error retrieving documents from OpenSearch: " + e.getMessage(), e));
+                .sort(sort -> sort.field(f -> f.field("@timestamp").order(SortOrder.Asc)))
+                .size(100));
     }
 }

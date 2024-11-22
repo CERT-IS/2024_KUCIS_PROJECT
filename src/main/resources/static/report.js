@@ -58,7 +58,6 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(data => {
                 const templateSelect = document.getElementById("template-list");
                 templateSelect.innerHTML = ''; // 기존 옵션 제거
-
                 if (data && data.templates && data.templates.length > 0) {
                     data.templates.forEach(template => {
                         const option = document.createElement("option");
@@ -72,13 +71,10 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .catch(error => alert("Failed to load templates: " + error.message));
     }
-
     loadTemplates(); // 페이지 로드 시 템플릿 로드
-
     uploadTemplateForm.addEventListener("submit", function (event) {
         event.preventDefault();
         const formData = new FormData(uploadTemplateForm);
-
         fetch("/pdf/upload", {
             method: "POST",
             body: formData
@@ -93,16 +89,13 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .catch(error => alert("Error: " + error.message));
     });
-
     deleteTemplateForm.addEventListener("submit", function (event) {
         event.preventDefault();
         const filename = templateList.value;
-
         if (!filename) {
             alert("Please select a template to delete.");
             return;
         }
-
         fetch(`/pdf/delete?filename=${filename}`, {
             method: "POST"
         })
@@ -116,6 +109,5 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .catch(error => alert("Error: " + error.message));
     });
-
     refreshTemplatesButton.addEventListener("click", loadTemplates);
 });
