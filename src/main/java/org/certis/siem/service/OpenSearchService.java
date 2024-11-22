@@ -2,14 +2,11 @@ package org.certis.siem.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.RequiredArgsConstructor;
-import org.certis.siem.entity.AccessLog;
+import org.certis.siem.entity.log.AccessLog;
 import org.certis.siem.entity.EventStream;
-import org.certis.siem.entity.HttpLog;
-import org.certis.siem.entity.WAFLog;
+import org.certis.siem.entity.log.WAFLog;
 import org.certis.siem.repository.EventRepository;
-import org.certis.siem.utils.AccessLogsMapper;
-import org.certis.siem.utils.EventMapper;
-import org.certis.siem.utils.WAFMapper;
+import org.certis.siem.mapper.WAFMapper;
 import org.opensearch.client.json.JsonData;
 import org.opensearch.client.opensearch.OpenSearchClient;
 import org.opensearch.client.opensearch._types.FieldValue;
@@ -29,14 +26,11 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static org.certis.siem.utils.EventMapper.mapAccessLogsToEvent;
-import static org.certis.siem.utils.EventMapper.mapHttpLogsToEvent;
-import static org.certis.siem.utils.HttpMapper.convertJsonNodeToHttpLog;
+import static org.certis.siem.mapper.EventMapper.mapLogsToEvent;
 
 @Service
 @RequiredArgsConstructor
@@ -61,7 +55,8 @@ public class OpenSearchService {
 
     public Flux<EventStream> checkXSS(Flux<EventStream> logs) {
         return logs.filter(accessLog -> {
-            String message = accessLog.getLogs();
+            AccessLog log = (AccessLog) accessLog.getLogs();
+            String message= log.getMessage();
             String url = extractUrl(message);
             if (url != null) {
                 String decodedUrl = decodeUrl(url);
@@ -158,7 +153,7 @@ public class OpenSearchService {
                 .collect(Collectors.toList());
 
         return Flux.fromIterable(wafLogs)
-                .map(wafLog -> EventMapper.mapWAFLogsToEvent("WAF EventStream", "WAF", wafLog));
+                .map(wafLog -> mapLogsToEvent("WAF EventStream", "WAF", wafLog));
     }
 
 

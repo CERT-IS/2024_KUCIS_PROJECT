@@ -4,89 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-    <link rel="stylesheet" href="/style.css"> <!-- /style.css -->
+    <link rel="stylesheet" href="/style.css">
     <title>DashBoard</title>
-    <style>
-        .filter-box {
-            width: 300px;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        }
-        .filter-header {
-            font-weight: bold;
-            font-size: 18px;
-            margin-bottom: 10px;
-        }
-        .filter-body {
-            display: flex;
-            flex-direction: column;
-        }
-        .filter-body label {
-            margin-bottom: 5px;
-            font-size: 14px;
-        }
-        .filter-body select, .filter-body input {
-            padding: 8px;
-            font-size: 14px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        .custom-label {
-            display: flex;
-            align-items: center;
-            font-size: 14px;
-        }
-        .custom-label input {
-            margin-right: 5px;
-        }
-        .filter-footer {
-            display: flex;
-            justify-content: flex-end;
-            margin-top: 10px;
-        }
-        .filter-footer button {
-            padding: 8px 12px;
-            margin-left: 10px;
-            font-size: 14px;
-            cursor: pointer;
-            border: none;
-            border-radius: 5px;
-        }
-        .btn-cancel {
-            background-color: #ccc;
-        }
-        .btn-save {
-            background-color: #28a745;
-            color: white;
-        }
-
-        .card .graph {
-            display: flex;
-            margin-top: 10px;
-            margin-bottom: 5px;
-        }
-    </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 <!-- SIDEBAR -->
 <section id="sidebar">
-    <a href="/" class="brand"><span class="material-symbols-outlined">deployed_code</span> SIEMple</a>   <!-- /index.html -->
+    <a href="/index" class="brand"><span class="material-symbols-outlined">deployed_code</span> SIEMple</a>
 
     <ul class="side-menu">
         <li class="divider" data-text="dashboard">DashBoard</li>
-        <li><a href="/"><span class="material-symbols-outlined">dashboard</span>Dashboard</a></li>   <!-- /index.html -->
-        <li class="divider" data-text="main">Main</li>
-        <li><a href="/waf"><span class="material-symbols-outlined">bar_chart</span>WAF</a></li>   <!-- /waf.html -->
-        <li><a href="/handmade" class="active"><span class="material-symbols-outlined">widgets</span>HandMade</a></li>   <!-- /handmade.html -->
+        <li><a href="/index"><span class="material-symbols-outlined">dashboard</span>Dashboard</a></li>
 
-
-        <li class="divider" data-text="search">Search</li>
-        <li><a href="/search1"><span class="material-symbols-outlined">search</span>Search1</a></li>   <!-- /search1.html -->
-        <li><a href="/search2"><span class="material-symbols-outlined">manage_search</span>Search2</a></li>   <!-- /search2.html -->
+        <li class="divider" data-text="events">Events</li>
+        <li><a href="/waf"><span class="material-symbols-outlined">bar_chart</span>WAF</a></li>
+        <li><a href="" class="active"><span class="material-symbols-outlined">widgets</span>HandMade</a></li>
     </ul>
 </section>
 <!-- SIDEBAR -->
@@ -96,24 +29,13 @@
     <!-- NAVBAR -->
     <nav>
         <span class="material-symbols-outlined" data-icon="menu">menu</span>
-        <form action="#">
+        <form action="">
             <div class="form-group">
                 <input type="text" placeholder="Search...">
                 <span class="material-symbols-outlined" data-icon="search">search</span>
             </div>
         </form>
 
-        <a href="#" class="nav-link">
-            <span class="material-symbols-outlined">notifications</span>
-            <span class="badge">5</span>
-        </a>
-
-        <a href="#" class="nav-link">
-            <span class="material-symbols-outlined">sms</span>
-            <span class="badge">8</span>
-        </a>
-
-        <span class="divider"></span>
         <div class="profile">
             <img src="https://avatars.githubusercontent.com/u/13532356?s=200&v=4" alt="">
             <ul class="profile-link">
@@ -129,9 +51,9 @@
     <main>
         <h1 class="title">HandMade</h1>
         <ul class="breadcrumbs">
-            <li><a href="#">Home</a></li>
+            <li><a href="">Home</a></li>
             <li class="divider">/</li>
-            <li><a href="#" class="active">HandMade</a></li>
+            <li><a href="" class="active">HandMade</a></li>
         </ul>
 
 
@@ -141,9 +63,9 @@
                     <div>
                         <h2>취약점 종류</h2>
                     </div>
-                    <div class="menu2">
+                    <div class="menu">
                         <span class="material-symbols-outlined" data-icon="more_horiz">more_horiz</span>
-                        <div class="menu-link2">
+                        <div class="menu-link">
                             <div class="filter-box">
                                 <div class="filter-header">EDIT FILTER</div>
                                 <div class="filter-body">
@@ -188,9 +110,9 @@
                     <div>
                         <h2>수집된 로그 데이터 수</h2>
                     </div>
-                    <div class="menu2">
+                    <div class="menu">
                         <span class="material-symbols-outlined" data-icon="more_horiz">more_horiz</span>
-                        <div class="menu-link2">
+                        <div class="menu-link">
                             <div class="filter-box">
                                 <div class="filter-header">EDIT FILTER</div>
                                 <div class="filter-body">
@@ -226,7 +148,7 @@
                     </div>
                 </div><br><br>
                 <div class="graph">
-                    <canvas id="barChart" style="width: fit-content;"></canvas>
+                    <canvas id="barChart" height="200%"></canvas>
                 </div>
             </div>
 
@@ -235,9 +157,9 @@
                     <div>
                         <h2>로그 그룹별 취약점 수</h2>
                     </div>
-                    <div class="menu2">
+                    <div class="menu">
                         <span class="material-symbols-outlined" data-icon="more_horiz">more_horiz</span>
-                        <div class="menu-link2">
+                        <div class="menu-link">
                             <div class="filter-box">
                                 <div class="filter-header">EDIT FILTER</div>
                                 <div class="filter-body">
@@ -273,155 +195,227 @@
                     </div>
                 </div><br><br>
                 <div class="graph">
-                    <canvas id="lineChart" style="width: fit-content;"></canvas>
+                    <canvas id="lineChart" height="200%"></canvas>
                 </div>
             </div>
         </div>
 
-        <div class="data">
-            <div class="content-data">
+        <div class="info-data2">
+            <div class="card">
                 <div class="head">
-                    <h3>Event Streams</h3>
-                    <div class="menu">
-                        <span class="material-symbols-outlined" data-icon="more_horiz">more_horiz</span>
-                        <ul class="menu-link">
-                            <li><a href="#">Edit</a></li>
-                            <li><a href="#">Save</a></li>
-                            <li><a href="#">Remove</a></li>
-                        </ul>
-                    </div>
+                    <h2>Event Streams</h2>
                 </div>
                 <div class="event-streams">
+                    <div class="search-container">
+                        <select id="search-category" class="search-dropdown">
+                            <option value="id">Index</option>
+                            <option value="name">Name</option>
+                            <option value="type">Type</option>
+                            <option value="timestamp">Timestamp</option>
+                        </select>
+                        <input type="text" class="search-input" placeholder="Search..." onkeyup="searchFunction()">
+                    </div>
                     <ul id="event-streams">
+                        <div class="event-container" onclick="toggleLogs(this)">
+                            <div class="event-header">
+                                <strong>index:</strong> 1 <br>
+                                <strong>name:</strong> User XSS Attempt <br>
+                                <strong>type:</strong> Web <br>
+                                <strong>timestamp:</strong> 2024-09-11T09:10:15:158 <br>
+                                <span class="logs-toggle" style="cursor: pointer;" onclick="toggleLogs(this)">▶</span>
+                            </div>
+                            <pre class="logs-content" style="display: none;">{
+                    "id": 1,
+                    "eventName": "User XSS Attempt",
+                    "eventType": "web",
+                    "timestamp": "2024-09-11T15:40:15.845233Z",
+                    "logs": "http 2024-09-11T15:40:15.845233Z app/web-instance-alb/b274c840c8ff5ad8 115.92.127.144:55927 172.31.9.183:80 0.007 0.002 0.000 200 200 513 180 \\"GET http://web-instance-alb-1145570667.ap-northeast-2.elb.amazonaws.com:80/user/xss?code=%3Cscript%3Ealert(%27%EC%B7%A8%EC%95%BD%EC%A0%90%20%EA%B3%B5%EA%B2%A9%27)%3C/script%3E HTTP/1.1\\" \\"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36\\" - - arn:aws:elasticloadbalancing:ap-northeast-2:058264524253:targetgroup/web-instance-group/755fd995692f53b8 \\"Root=1-66e1b9df-4b29805041a38c5a5034aa8a\\" \\"-\\" \\"-\\" 0 2024-09-11T15:40:15.835000Z \\"waf,forward\\" \\"-\\" \\"-\\" \\"172.31.9.183:80\\" \\"200\\" \\"-\\" \\"-\\" TID_2b9ce960c94e1d45a239311541c808a2"
+                            }
+                            </pre>
+                        </div>
+                        <div class="event-container" onclick="toggleLogs(this)">
+                            <div class="event-header">
+                                <strong>index:</strong> 2 <br>
+                                <strong>name:</strong> User SQLI Attempt <br>
+                                <strong>type:</strong> Web <br>
+                                <strong>timestamp:</strong> 2024-09-11T09:11:14:120 <br>
+                                <span class="logs-toggle" style="cursor: pointer;" onclick="toggleLogs(this)">▶</span>
+                            </div>
+                            <pre class="logs-content" style="display: none;">{
+                    "id": 1,
+                    "eventName": "User XSS Attempt",
+                    "eventType": "web",
+                    "timestamp": "2024-09-11T15:40:15.845233Z",
+                    "logs": "http 2024-09-11T15:40:15.845233Z app/web-instance-alb/b274c840c8ff5ad8 115.92.127.144:55927 172.31.9.183:80 0.007 0.002 0.000 200 200 513 180 \\"GET http://web-instance-alb-1145570667.ap-northeast-2.elb.amazonaws.com:80/user/xss?code=%3Cscript%3Ealert(%27%EC%B7%A8%EC%95%BD%EC%A0%90%20%EA%B3%B5%EA%B2%A9%27)%3C/script%3E HTTP/1.1\\" \\"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36\\" - - arn:aws:elasticloadbalancing:ap-northeast-2:058264524253:targetgroup/web-instance-group/755fd995692f53b8 \\"Root=1-66e1b9df-4b29805041a38c5a5034aa8a\\" \\"-\\" \\"-\\" 0 2024-09-11T15:40:15.835000Z \\"waf,forward\\" \\"-\\" \\"-\\" \\"172.31.9.183:80\\" \\"200\\" \\"-\\" \\"-\\" TID_2b9ce960c94e1d45a239311541c808a2"
+                            }
+                            </pre>
+                        </div>
+                        <div class="event-container" onclick="toggleLogs(this)">
+                            <div class="event-header">
+                                <strong>index:</strong> 3 <br>
+                                <strong>name:</strong> User File Vulnerability Attempt <br>
+                                <strong>type:</strong> Web <br>
+                                <strong>timestamp:</strong> 2024-09-11T09:11:17:242 <br>
+                                <span class="logs-toggle" style="cursor: pointer;" onclick="toggleLogs(this)">▶</span>
+                            </div>
+                            <pre class="logs-content" style="display: none;">{
+                    "id": 1,
+                    "eventName": "User XSS Attempt",
+                    "eventType": "web",
+                    "timestamp": "2024-09-11T15:40:15.845233Z",
+                    "logs": "http 2024-09-11T15:40:15.845233Z app/web-instance-alb/b274c840c8ff5ad8 115.92.127.144:55927 172.31.9.183:80 0.007 0.002 0.000 200 200 513 180 \\"GET http://web-instance-alb-1145570667.ap-northeast-2.elb.amazonaws.com:80/user/xss?code=%3Cscript%3Ealert(%27%EC%B7%A8%EC%95%BD%EC%A0%90%20%EA%B3%B5%EA%B2%A9%27)%3C/script%3E HTTP/1.1\\" \\"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36\\" - - arn:aws:elasticloadbalancing:ap-northeast-2:058264524253:targetgroup/web-instance-group/755fd995692f53b8 \\"Root=1-66e1b9df-4b29805041a38c5a5034aa8a\\" \\"-\\" \\"-\\" 0 2024-09-11T15:40:15.835000Z \\"waf,forward\\" \\"-\\" \\"-\\" \\"172.31.9.183:80\\" \\"200\\" \\"-\\" \\"-\\" TID_2b9ce960c94e1d45a239311541c808a2"
+                            }
+                            </pre>
+                        </div>
+                        <div class="event-container" onclick="toggleLogs(this)">
+                            <div class="event-header">
+                                <strong>index:</strong> 20 <br>
+                                <strong>name:</strong> User SSRF Attempt <br>
+                                <strong>type:</strong> Web <br>
+                                <strong>timestamp:</strong> 2024-09-11T09:13:14:142 <br>
+                                <span class="logs-toggle" style="cursor: pointer;" onclick="toggleLogs(this)">▶</span>
+                            </div>
+                            <pre class="logs-content" style="display: none;">{
+                    "id": 1,
+                    "eventName": "User XSS Attempt",
+                    "eventType": "web",
+                    "timestamp": "2024-09-11T15:40:15.845233Z",
+                    "logs": "http 2024-09-11T15:40:15.845233Z app/web-instance-alb/b274c840c8ff5ad8 115.92.127.144:55927 172.31.9.183:80 0.007 0.002 0.000 200 200 513 180 \\"GET http://web-instance-alb-1145570667.ap-northeast-2.elb.amazonaws.com:80/user/xss?code=%3Cscript%3Ealert(%27%EC%B7%A8%EC%95%BD%EC%A0%90%20%EA%B3%B5%EA%B2%A9%27)%3C/script%3E HTTP/1.1\\" \\"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36\\" - - arn:aws:elasticloadbalancing:ap-northeast-2:058264524253:targetgroup/web-instance-group/755fd995692f53b8 \\"Root=1-66e1b9df-4b29805041a38c5a5034aa8a\\" \\"-\\" \\"-\\" 0 2024-09-11T15:40:15.835000Z \\"waf,forward\\" \\"-\\" \\"-\\" \\"172.31.9.183:80\\" \\"200\\" \\"-\\" \\"-\\" TID_2b9ce960c94e1d45a239311541c808a2"
+                            }
+                            </pre>
+                        </div>
+                        <div class="event-container" onclick="toggleLogs(this)">
+                            <div class="event-header">
+                                <strong>index:</strong> 21 <br>
+                                <strong>name:</strong> User Buffer Attempt <br>
+                                <strong>type:</strong> System <br>
+                                <strong>timestamp:</strong> 2024-09-11T09:14:54:182 <br>
+                                <span class="logs-toggle" style="cursor: pointer;" onclick="toggleLogs(this)">▶</span>
+                            </div>
+                            <pre class="logs-content" style="display: none;">{
+                    "id": 1,
+                    "eventName": "User XSS Attempt",
+                    "eventType": "web",
+                    "timestamp": "2024-09-11T15:40:15.845233Z",
+                    "logs": "http 2024-09-11T15:40:15.845233Z app/web-instance-alb/b274c840c8ff5ad8 115.92.127.144:55927 172.31.9.183:80 0.007 0.002 0.000 200 200 513 180 \\"GET http://web-instance-alb-1145570667.ap-northeast-2.elb.amazonaws.com:80/user/xss?code=%3Cscript%3Ealert(%27%EC%B7%A8%EC%95%BD%EC%A0%90%20%EA%B3%B5%EA%B2%A9%27)%3C/script%3E HTTP/1.1\\" \\"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36\\" - - arn:aws:elasticloadbalancing:ap-northeast-2:058264524253:targetgroup/web-instance-group/755fd995692f53b8 \\"Root=1-66e1b9df-4b29805041a38c5a5034aa8a\\" \\"-\\" \\"-\\" 0 2024-09-11T15:40:15.835000Z \\"waf,forward\\" \\"-\\" \\"-\\" \\"172.31.9.183:80\\" \\"200\\" \\"-\\" \\"-\\" TID_2b9ce960c94e1d45a239311541c808a2"
+                            }
+                            </pre>
+                        </div>
                     </ul>
                 </div>
             </div>
         </div>
+
+        <a href="#" class="chat-button" id="chatButton" onclick="toggleChat()">
+            <span class="material-symbols-outlined" data-icon="chat">chat</span>
+        </a>
+
+        <div id="chatModal" class="chat-modal">
+            <div class="card">
+                <div class="head">
+                    <h3>SIEMple Bot</h3>
+                    <span class="close" onclick="toggleChat()">×</span>
+                </div>
+                <div class="chat-box">
+                    <p class="day"><span>10-09 (Wed)</span></p>
+                    <div class="msg">
+                        <img src="https://images.unsplash.com/photo-1534723328310-e82dad3ee43f?q=80&w=2536&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="">
+                        <div class="chat">
+                            <div class="profile">
+                                <span class="username">SIMEple Bot</span>
+                                <span class="time">18:30</span>
+                            </div>
+                            <p>Hello</p>
+                        </div>
+                    </div>
+
+                    <div class="msg me">
+                        <div class="chat">
+                            <div class="profile">
+                                <span class="time">18:30</span>
+                            </div>
+                            <p>나 물어볼께 있어</p>
+                        </div>
+                    </div>
+
+                    <div class="msg">
+                        <img src="https://images.unsplash.com/photo-1534723328310-e82dad3ee43f?q=80&w=2536&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="">
+                        <div class="chat">
+                            <div class="profile">
+                                <span class="username">SIMEple Bot</span>
+                                <span class="time">18:31</span>
+                            </div>
+                            <p>무엇을 도와드릴까요?</p>
+                        </div>
+                    </div>
+
+                    <div class="msg me">
+                        <div class="chat">
+                            <div class="profile">
+                                <span class="time">18:31</span>
+                            </div>
+                            <p>넌 무엇을 할 수 있니?</p>
+                        </div>
+                    </div>
+
+                    <div class="msg">
+                        <img src="https://images.unsplash.com/photo-1534723328310-e82dad3ee43f?q=80&w=2536&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="">
+                        <div class="chat">
+                            <div class="profile">
+                                <span class="username">SIMEple Bot</span>
+                                <span class="time">18:31</span>
+                            </div>
+                            <p>저는 다양한 질문에 답하고, 정보 제공, 문제 해결, 글쓰기, 번역, 학습 도움 등 여러 가지 일을 도와드릴 수 있습니다. 궁금한 내용이 있으면 말씀해 주세요!</p>
+                        </div>
+                    </div>
+
+                    <div class="msg me">
+                        <div class="chat">
+                            <div class="profile">
+                                <span class="time">18:31</span>
+                            </div>
+                            <p>예시를 들어줘.</p>
+                        </div>
+                    </div>
+
+                    <div class="msg">
+                        <img src="https://images.unsplash.com/photo-1534723328310-e82dad3ee43f?q=80&w=2536&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="">
+                        <div class="chat">
+                            <div class="profile">
+                                <span class="username">SIMEple Bot</span>
+                                <span class="time">18:32</span>
+                            </div>
+                            <p>물론입니다! 다음은 제가 도와드릴 수 있는 몇 가지 예시입니다:<br><br>
+
+                                1. <b>정보 제공</b>: 특정 주제에 대한 정보나 배경 설명을 드릴 수 있습니다. 예를 들어, "인공지능의 역사"에 대해 설명해 드릴 수 있습니다.<br><br>
+
+                                2. <b>해결</b>: 수학 문제나 논리 문제를 해결하는 데 도움을 드릴 수 있습니다. 예를 들어, "2x + 3 = 11의 해를 구해줘" 같은 질문에 답할 수 있습니다.<br><br>
+
+                                3. <b>글쓰기 도움</b>: 에세이, 보고서, 이메일 등의 글을 작성하는 데 도움을 드릴 수 있습니다. 예를 들어, "감사 이메일을 작성해줘"라고 요청하실 수 있습니다.<br><br>
+
+                                4. <b>번역</b>: 한국어와 다른 언어 간의 번역을 도와드릴 수 있습니다. 예를 들어, "이 문장을 영어로 번역해줘"라고 하실 수 있습니다.<br><br>
+
+                                5. <b>학습 도움</b>: 특정 과목에 대한 공부 방법이나 자료를 추천해 드릴 수 있습니다. 예를 들어, "수학을 잘하는 방법을 알려줘"라고 물어보실 수 있습니다.<br><br>
+
+                                더 궁금한 점이 있으면 말씀해 주세요!</p>
+                        </div>
+                    </div>
+                </div>
+                <form action="#">
+                    <div class="form-group">
+                        <input type="text" placeholder="Type...">
+                        <button type="submit" class="btn-send"><span class="material-symbols-outlined">send</span></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
     </main>
     <!-- MAIN -->
 </section>
 <!-- NAVBAR -->
 
-<script>
-    const labels = ['02:43:00', '02:44:00', '02:45:00', '02:46:00', '02:47:00', '02:48:00',
-        '02:49:00', '02:50:00', '02:51:00', '02:52:00', '02:53:00', '02:54:00',
-        '02:55:00', '02:56:00', '02:57:00'];
-
-    const dataValues = [5, 0, 2, 10, 1, 0, 5, 0, 35, 10, 0, 5, 5, 15, 1];
-
-    // Bar 차트 데이터
-    const data1 = {
-        labels: labels,
-        datasets: [{
-            label: 'Count',
-            data: dataValues,
-            backgroundColor: 'rgba(23, 117, 241, 0.4)',
-            borderColor: 'rgba(23, 117, 241, 1)',
-            borderWidth: 1
-        }]
-    };
-
-    // Bar 차트 설정
-    const config1 = {
-        type: 'bar',
-        data: data1,
-        options: {
-            scales: {
-                y: { beginAtZero: true }
-            },
-            plugins: {
-                legend: { display: false }
-            }
-        }
-    };
-
-    // Bar 차트 생성
-    var myBarChart = new Chart(
-        document.getElementById('barChart'),
-        config1
-    );
-
-
-    const dataValues1 = [5, 0, 2, 10, 1, 0, 5, 0, 35, 10, 0, 5, 5, 15, 1];
-    const dataValues2 = [3, 1, 0, 5, 2, 1, 4, 1, 20, 5, 1, 2, 3, 10, 0]; // 두 번째 데이터셋
-
-    // Line 차트 데이터
-    const data2 = {
-        labels: labels,
-        datasets: [{
-            label: 'Count 1',
-            data: dataValues1,
-            backgroundColor: 'rgba(23, 117, 241, 0.4)',
-            borderColor: 'rgba(23, 117, 241, 1)',
-            borderWidth: 2,
-            fill: true
-        }, {
-            label: 'Count 2',
-            data: dataValues2,
-            backgroundColor: 'rgba(252, 59, 86, 0.4)', // 두 번째 데이터셋 배경색
-            borderColor: 'rgba(252, 59, 86, 1)', // 두 번째 데이터셋 선 색상
-            borderWidth: 2,
-            fill: true
-        }]
-    };
-
-    // Line 차트 설정
-    const config2 = {
-        type: 'line',
-        data: data2,
-        options: {
-            scales: {
-                y: { beginAtZero: true }
-            },
-            plugins: {
-                legend: { display: true } // 범례 표시
-            }
-        }
-    };
-
-    // Line 차트 생성
-    var myLineChart = new Chart(
-        document.getElementById('lineChart'),
-        config2
-    );
-
-
-    const data3 = {
-        labels: ['02:50:00', '02:51:00', '02:52:00', '02:53:00'],
-        datasets: [{
-            label: 'Count',
-            data: [35, 10, 15, 5],  // 4개의 데이터
-            backgroundColor: [
-                'rgba(23, 117, 241, 0.4)',
-                'rgba(255, 99, 132, 0.4)',
-                'rgba(54, 162, 235, 0.4)',
-                'rgba(255, 206, 86, 0.4)'
-            ],
-            borderColor: 'rgba(23, 117, 241, 1)',
-            borderWidth: 1
-        }]
-    };
-
-    const config3 = {
-        type: 'pie',  // 원형 그래프
-        data: data3,
-        options: {
-            responsive: false,
-            cutout: '60%',
-            plugins: {
-                legend: { display: true }
-            }
-        }
-    };
-
-    var myChart = new Chart(
-        document.getElementById('circleChart'),
-        config3
-    );
-
-
-
-</script>
-<script src="/handmade.js"></script> <!-- /script.js -->
+<script type="module" src="/handmade.js"></script>
+<script src="/testgraph.js"></script>
 </body>
 </html>

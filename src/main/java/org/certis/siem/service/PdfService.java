@@ -29,14 +29,23 @@ public class PdfService {
             String html = templateEngine.process(templateName, context);
             try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
 
-                ClassPathResource fontResource = new ClassPathResource("static/fonts/MaruBuri-Regular.otf");
+                ClassPathResource fontResource = new ClassPathResource("static/fonts/MaruBuri-Regular.ttf");
+
+                System.out.println("Font resource path: "+fontResource.getPath());
+                System.out.println("Font exists: "+fontResource.exists());
+
                 try (InputStream fontStream = fontResource.getInputStream()) {
                     PdfRendererBuilder builder = new PdfRendererBuilder();
                     builder.withHtmlContent(html, "/");
 
-                    builder.useFont(() -> fontStream, "MaruBuir-Regular");
+                    builder.useFont(() -> fontStream, "MaruBuri-Regular");
                     builder.toStream(os);
                     builder.run();
+
+                    if (fontStream.available() > 0) {
+                        System.out.println("Font stream is available and ready to read.");
+                    }
+                    System.out.println("empty or not available.");
                 }
 
                 return os.toByteArray();

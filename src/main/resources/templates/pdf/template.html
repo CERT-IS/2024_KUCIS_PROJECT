@@ -1,11 +1,36 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8"> </meta>
-    <title>PDF Example</title>
+    <meta charset="UTF-8"/>
+    <title th:text="${name} + ' Report'">Report</title>
+    <style>
+        body {
+            font-family: 'MaruBuri-Regular', sans-serif;
+        }
+        h1 {
+            color: #333;
+        }
+        h2 {
+            color: #555;
+        }
+        p {
+            line-height: 1.5;
+        }
+    </style>
 </head>
 <body>
-<h1 th:text="${title}">Title</h1>
+<h1 th:text="${name} + ' Report'">Report Title</h1>
+<p th:text="${description}">This is a description of the report.</p>
+<h2>Report Details</h2>
+<p><strong>Report Source:</strong> <span th:text="${reportSource}">Report Source</span></p>
+<p><strong>Notebook:</strong> <span th:text="${notebook}">Notebook Name</span></p>
+<p><strong>File Format:</strong> <span th:text="${fileFormat}">File Format</span></p>
+<p><strong>Report Trigger:</strong> <span th:text="${reportTrigger}">Report Trigger</span></p>
+<p><strong>Request Time:</strong> <span th:text="${requestTime}">Request Time</span></p>
+<p><strong>Frequency:</strong> <span th:text="${frequency}">Frequency</span></p>
+<p><strong>Every:</strong> <span th:text="${every}">0</span> <span th:text="${timeUnit}">Units</span></p>
+<p><strong>Start Time:</strong> <span th:text="${startTime}">Start Time</span></p>
+<h2>Additional Content</h2>
 <p th:text="${content}">Content goes here...</p>
 </body>
 </html>

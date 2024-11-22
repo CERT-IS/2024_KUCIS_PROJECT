@@ -1,3 +1,5 @@
+import wsManager from './websocket.js';
+
 let lastEventTimestamp = new Date(0); // Epoch (1970-01-01T00:00:00Z)
 let lastEventOffset = 0;
 const MAX_EVENTS_DISPLAYED = 100;
@@ -40,6 +42,34 @@ function toggleLogs(container) {
         console.warn('Logs content not found for container:', container);
     }
 }
+
+
+function searchFunction() {
+    let input = document.querySelector('.search-input').value.toUpperCase();
+    let category = document.getElementById('search-category').value;
+    let eventContainers = document.querySelectorAll('.event-container');
+
+    eventContainers.forEach(container => {
+        let searchValue = '';
+
+        if (category === 'id') {
+            searchValue = container.querySelector('.event-header strong:nth-of-type(1)').nextSibling.nodeValue.trim().toUpperCase();
+        } else if (category === 'name') {
+            searchValue = container.querySelector('.event-header strong:nth-of-type(2)').nextSibling.nodeValue.trim().toUpperCase();
+        } else if (category === 'type') {
+            searchValue = container.querySelector('.event-header strong:nth-of-type(3)').nextSibling.nodeValue.trim().toUpperCase();
+        } else if (category === 'timestamp') {
+            searchValue = container.querySelector('.event-header strong:nth-of-type(4)').nextSibling.nodeValue.trim().toUpperCase();
+        }
+
+        if (searchValue.indexOf(input) > -1) {
+            container.style.display = "";
+        } else {
+            container.style.display = "none";
+        }
+    });
+}
+
 
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -93,31 +123,6 @@ document.addEventListener("DOMContentLoaded", function() {
         updateSidebar();
     });
 
-    sidebar.addEventListener('mouseleave', function() {
-        if (this.classList.contains('hide')) {
-            allDropdown.forEach(item => {
-                const a = item.parentElement.querySelector('a:first-child');
-                a.classList.remove('active');
-                item.classList.remove('show');
-            });
-            allSideDivider.forEach(item => {
-                item.textContent = '-';
-            });
-        }
-    });
-
-    sidebar.addEventListener('mouseenter', function() {
-        if (this.classList.contains('hide')) {
-            allDropdown.forEach(item => {
-                const a = item.parentElement.querySelector('a:first-child');
-                a.classList.remove('active');
-                item.classList.remove('show');
-            });
-            allSideDivider.forEach(item => {
-                item.textContent = item.dataset.text;
-            });
-        }
-    });
 
     const profile = document.querySelector('nav .profile');
     const imgProfile = profile.querySelector('img');
@@ -127,42 +132,17 @@ document.addEventListener("DOMContentLoaded", function() {
         dropdownProfile.classList.toggle('show');
     });
 
-    const allMenu = document.querySelectorAll('main .content-data .head .menu');
+
+
+    const allMenu = document.querySelectorAll('main .head .menu');
 
     allMenu.forEach(item => {
         const icon = item.querySelector('.material-symbols-outlined[data-icon="more_horiz"]');
         const menuLink = item.querySelector('.menu-link');
 
-        icon.addEventListener('click', function() {
-            menuLink.classList.toggle('show');
-        });
-    });
-
-    window.addEventListener('click', function(e) {
-        if (e.target !== imgProfile && e.target !== dropdownProfile) {
-            dropdownProfile.classList.remove('show');
-        }
-
-        allMenu.forEach(item => {
-            const icon = item.querySelector('.material-symbols-outlined[data-icon="more_horiz"]');
-            const menuLink = item.querySelector('.menu-link');
-
-            if (e.target !== icon && e.target !== menuLink) {
-                menuLink.classList.remove('show');
-            }
-        });
-    });
-
-
-    const allMenu2 = document.querySelectorAll('main .head .menu2');
-
-    allMenu2.forEach(item => {
-        const icon = item.querySelector('.material-symbols-outlined[data-icon="more_horiz"]');
-        const menuLink = item.querySelector('.menu-link2');
-
         icon.addEventListener('click', function(event) {
-            allMenu2.forEach(menu => {
-                const otherMenuLink = menu.querySelector('.menu-link2');
+            allMenu.forEach(menu => {
+                const otherMenuLink = menu.querySelector('.menu-link');
                 if (otherMenuLink !== menuLink) {
                     otherMenuLink.classList.remove('show');
                 }
@@ -178,11 +158,33 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     window.addEventListener('click', function(e) {
-        allMenu2.forEach(item => {
-            const menuLink = item.querySelector('.menu-link2');
+        allMenu.forEach(item => {
+            const menuLink = item.querySelector('.menu-link');
             menuLink.classList.remove('show');
         });
     });
+
+
+    let isChatOpen = false;
+
+    function toggleChat() {
+        const chatModal = document.getElementById("chatModal");
+        const chatButton = document.getElementById("chatButton");
+
+        if (!isChatOpen) {
+            chatModal.classList.add("open");
+            chatButton.style.opacity = "0";
+        } else {
+            chatModal.classList.remove("open");
+            chatButton.style.opacity = "1";
+        }
+
+        isChatOpen = !isChatOpen;
+    }
+
+    document.getElementById("chatButton").onclick = toggleChat;
+    document.querySelector(".close").onclick = toggleChat;
+
 
 
     async function fetchEvents(url, elementId, lastTimestamp, offset = 0) {
@@ -350,37 +352,93 @@ document.addEventListener("DOMContentLoaded", function() {
         <div class="event-container" onclick="toggleLogs(this)">
             <div class="event-header">
                 <strong>index:</strong> ${event.id || 'N/A'} <br>
-                <strong>name:</strong> User XSS Attempt} <br>
+                <strong>name:</strong> ${event.eventName || 'N/A'} <br>
                 <strong>type:</strong> ${event.eventType || 'N/A'} <br>
                 <strong>timestamp:</strong> ${event.timestamp} <br>
                 <span class="logs-toggle" style="cursor: pointer;" onclick="toggleLogs(this)">▶</span>
             </div>
-            <pre class="logs-content" style="display: none;">{
-  "id": 1,
-  "eventName": "User XSS Attempt",
-  "eventType": "web",
-  "timestamp": "2024-09-11T15:40:15.845233Z",
-  "logs": "http 2024-09-11T15:40:15.845233Z app/web-instance-alb/b274c840c8ff5ad8 115.92.127.144:55927 172.31.9.183:80 0.007 0.002 0.000 200 200 513 180 \\"GET http://web-instance-alb-1145570667.ap-northeast-2.elb.amazonaws.com:80/user/xss?code=%3Cscript%3Ealert(%27%EC%B7%A8%EC%95%BD%EC%A0%90%20%EA%B3%B5%EA%B2%A9%27)%3C/script%3E HTTP/1.1\\" \\"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36\\" - - arn:aws:elasticloadbalancing:ap-northeast-2:058264524253:targetgroup/web-instance-group/755fd995692f53b8 \\"Root=1-66e1b9df-4b29805041a38c5a5034aa8a\\" \\"-\\" \\"-\\" 0 2024-09-11T15:40:15.835000Z \\"waf,forward\\" \\"-\\" \\"-\\" \\"172.31.9.183:80\\" \\"200\\" \\"-\\" \\"-\\" TID_2b9ce960c94e1d45a239311541c808a2"
-}
-</pre>
+            <pre class="logs-content" style="display: none;">${logsContent}</pre>
         </div>
     `;
     }
 
+    wsManager.connect();
+
+    wsManager.onMessage((event) => {
+        const message = JSON.parse(event.data);
+
+        switch (message.action) {
+            case "getHandmadeEvents":
+                const wafEvent = JSON.parse(message.data);
+                handleHandmadeEvents(wafEvent);
+                break;
+            default:
+                console.warn("Unknown action:", message.action);
+        }
+
+    });
 
 
+    setInterval(() => {
+        const request = {
+            action: "getHandmadeEvents",
+            size : 20,
+            offset : lastEventOffset,
+            lastTimestamp: lastEventTimestamp
+        };
+        if (wsManager.isConnected) {
+            wsManager.send(request);
+        }
+    }, 1000);
+
+    function handleHandmadeEvents(events) {
+        const eventsElement = document.getElementById('event-streams');
+        const currentEventCount = eventsElement.querySelectorAll('.event-container').length;
+
+        if (currentEventCount >= MAX_EVENTS_DISPLAYED) {
+            console.log(`handmade-events fulled.`);
+            return;
+        }
 
 
-    async function pollData() {
-        try {
-            // await fetchEventStreams();
-            await new Promise(resolve => setTimeout(resolve, 1000 * 15));
+        if (events.length > 0) {
+            const newTimestamp = new Date(events[events.length - 1].timestamp);
 
-            await fetchHttpEvent('event-streams');
-        } catch (error) {
-            console.error('Error in pollData:', error);
+            if (newTimestamp.getTime() === lastEventTimestamp.getTime()) {
+                lastEventOffset += 1;
+            } else {
+                lastEventTimestamp = newTimestamp;
+                lastEventOffset = 0;
+            }
+
+            let existingEventCount = eventsElement.querySelectorAll('.event-container').length;
+            const totalEventCount = existingEventCount + events.length;
+
+            const fragment = document.createDocumentFragment();
+            events.forEach(event => {
+                if (existingEventCount < MAX_EVENTS_DISPLAYED) {
+                    const eventLi = document.createElement('li');
+
+                    eventLi.innerHTML = createEventHTML(event);
+                    fragment.appendChild(eventLi);
+                    existingEventCount++;
+                }
+            });
+
+            if (fragment.childNodes.length > 0) {
+                eventsElement.appendChild(fragment);
+            }
+
+            if (totalEventCount > MAX_EVENTS_DISPLAYED) {
+                const excessCount = totalEventCount - MAX_EVENTS_DISPLAYED;
+                const toRemove = Array.from(eventsElement.querySelectorAll('.event-container')).slice(0, excessCount);
+                toRemove.forEach(item => item.remove());
+            }
+
+        } else {
+            console.log(`No events in handmade-events.`);
         }
     }
 
-    pollData();
+
 });

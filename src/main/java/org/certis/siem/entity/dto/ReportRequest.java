@@ -12,6 +12,8 @@ public class ReportRequest {
 
     @NotBlank(message = "Name is required")
     private String name;
+
+    private String template;
     private String description;
     private String reportSource;
     private String notebook;
