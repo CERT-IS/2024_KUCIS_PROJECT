@@ -31,4 +31,14 @@ public class DashBoardController {
     public String login(){
         return "login";
     }
+
+    @GetMapping("/waf-search")
+    public String waf_search(){
+        return "waf-search";
+    }
+
+    @GetMapping("/handmade-search")
+    public String handmade_search(){
+        return "handmade-search";
+    }
 }

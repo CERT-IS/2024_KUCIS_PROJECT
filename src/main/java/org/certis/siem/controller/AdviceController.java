@@ -14,7 +14,7 @@ import reactor.core.publisher.Sinks;
 @RestController
 public class AdviceController {
 
-    private final WebClient webClient;
+    public static WebClient webClient = null;
 
     private final Sinks.Many<String> sink;
     private final ObjectMapper objectMapper = new ObjectMapper();

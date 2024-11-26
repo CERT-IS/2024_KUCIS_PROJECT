@@ -1,0 +1,104 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
+* {
+    font-family: "Open Sans", sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --gray: #F1F0F6;
+    --dark-gray: #8D8D8D;
+    --light: #fff;
+    --dark: #000;
+    --blue: #1775F1;
+    --light-blue: #D0E4FF;
+    --dark-blue: #0C5FCD;
+    --red: #FC3B56;
+}
+
+
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: var(--gray);
+}
+
+.login-box {
+    width: 400px;
+    padding: 30px;
+    background-color: var(--light);
+    border-radius: 10px;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    box-shadow: 4px 4px 16px rgba(0, 0, 0, .05);
+}
+
+.login-box h2 {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--blue);
+
+    margin-bottom: 20px;
+}
+
+.login-box img {
+    width: 100px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+}
+
+.login-box input[type="text"],
+.login-box input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid var(--light-blue);
+    border-radius: 5px;
+    background: var(--light-blue);
+    color: var(--dark);
+    font-size: 14px;
+}
+
+.login-box input[type="text"]::placeholder,
+.login-box input[type="password"]::placeholder {
+    color: var(--dark);
+}
+
+.login-box .remember-me {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    color: var(--dark);
+    margin-bottom: 20px;
+}
+
+.login-box .remember-me input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+.login-box .remember-me a {
+    color: var(--dark);
+    text-decoration: none;
+}
+
+.login-box button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    background-color: var(--blue);
+    color: var(--light);
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.login-box button:hover {
+    background-color: var(--dark-blue);
+}

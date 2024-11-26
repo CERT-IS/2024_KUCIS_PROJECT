@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <link rel="stylesheet" href="/style.css">
+    <title>DashBoard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<!-- SIDEBAR -->
+<section id="sidebar">
+    <a href="/" class="brand"><span class="material-symbols-outlined">deployed_code</span> SIEMple</a>
+
+    <ul class="side-menu">
+        <li class="divider" data-text="dashboard">DashBoard</li>
+        <li><a href="/"><span class="material-symbols-outlined">dashboard</span>Dashboard</a></li>
+
+        <li class="divider" data-text="events">Events</li>
+        <li><a href="/waf"><span class="material-symbols-outlined">bar_chart</span>WAF</a></li>
+        <li><a href="/handmade"><span class="material-symbols-outlined">widgets</span>HandMade</a></li>
+
+        <li class="divider" data-text="search">Search</li>
+        <li><a href="/waf-search"><span class="material-symbols-outlined">search</span>WAF-Search</a></li>
+        <li><a href="" class="active"><span class="material-symbols-outlined">manage_search</span>HandMade-Search</a></li>
+    </ul>
+</section>
+<!-- SIDEBAR -->
+
+<!-- NAVBAR -->
+<section id="content">
+    <!-- NAVBAR -->
+    <nav>
+        <span class="material-symbols-outlined" data-icon="menu">menu</span>
+        <form action="">
+            <div class="form-group">
+                <input type="text" placeholder="Search...">
+                <span class="material-symbols-outlined" data-icon="search">search</span>
+            </div>
+        </form>
+
+        <div class="profile">
+            <img src="https://avatars.githubusercontent.com/u/13532356?s=200&v=4" alt="">
+            <ul class="profile-link">
+                <li><a href="#"><span class="material-symbols-outlined">account_circle</span>Profile</a></li>
+                <li><a href="#"><span class="material-symbols-outlined">settings</span>Settings</a></li>
+                <li><a href="#"><span class="material-symbols-outlined">logout</span>Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+    <!-- NAVBAR -->
+
+    <!-- MAIN -->
+    <main>
+        <h1 class="title">Handmade-Search</h1>
+        <ul class="breadcrumbs">
+            <li><a href="/">Home</a></li>
+            <li class="divider">/</li>
+            <li><a href="" class="active">Handmade-Search</a></li>
+        </ul>
+
+
+        <div class="info-data2">
+            <div class="card">
+                <div class="head">
+                    <div>
+                        <h2>Event Streams</h2>
+                    </div>
+
+                    <div class="search-form">
+                        <form id="searchForm">
+                            <label for="searchInput">검색:</label>
+                            <input type="text" id="searchInput" placeholder="검색어를 입력하세요">
+                            <button type="submit">제출</button>
+                        </form>
+                    </div>
+
+                    <div class="menu">
+                        <span class="material-symbols-outlined" data-icon="more_horiz">more_horiz</span>
+                        <div class="menu-link">
+                            <div class="filter-box">
+                                <div class="filter-header">EDIT FILTER</div>
+                                <div class="filter-body">
+                                    <label for="fieldSelect">Field</label>
+                                    <select id="fieldSelect">
+                                        <option value="@log_group">@log_group</option>
+                                        <option value="@service_name">@service_name</option>
+                                        <option value="@user">@user</option>
+                                    </select>
+
+                                    <label for="operatorSelect">Operator</label>
+                                    <select id="operatorSelect">
+                                        <option value="is">is</option>
+                                        <option value="is_not">is not</option>
+                                        <option value="contains">contains</option>
+                                    </select>
+
+                                    <label for="valueInput">Value</label>
+                                    <input type="text" id="valueInput" placeholder="Enter a value">
+
+                                    <div class="custom-label">
+                                        <input type="checkbox" id="customLabelCheckbox">
+                                        <label for="customLabelCheckbox">Create custom label?</label>
+                                    </div>
+                                </div>
+
+                                <div class="filter-footer">
+                                    <button class="btn-cancel">Cancel</button>
+                                    <button class="btn-save">Save</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><br>
+                <div class="events">
+                    <ul id="events"> </ul>
+                </div>
+                <div class="pagination-controls">
+                    <button id="prevPageBtn" class="prevPageBtn">이전</button>
+                    <span id="page-number" class="page-number">1</span>
+                    <button id="nextPageBtn" class="nextPageBtn">다음</button>
+                </div>
+            </div>
+        </div>
+
+        <a href="#" class="chat-button" id="chatButton" onclick="toggleChat()">
+            <span class="material-symbols-outlined" data-icon="chat">chat</span>
+            <span class="notification-badge" id="notificationBadge">!</span>
+        </a>
+
+        <div id="chatModal" class="chat-modal">
+            <div class="card">
+                <div class="head">
+                    <h3>SIEMple Bot</h3>
+                    <span class="close" onclick="toggleChat()">×</span>
+                </div>
+                <div class="chat-box" id="chatBox">
+                    <p class="day"><span id="date"></span></p>
+
+                </div>
+                <form id="chatForm">
+                    <div class="form-group">
+                        <input type="text" id="userInput" placeholder="Type..." required>
+                        <button type="submit" class="btn-send"><span class="material-symbols-outlined">send</span></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </main>
+    <!-- MAIN -->
+</section>
+<!-- NAVBAR -->
+
+<script type="module" src="handmade-search.js"></script>
+<script type="module" src="query.js"></script>
+</body>
+</html>

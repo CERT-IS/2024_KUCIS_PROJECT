@@ -20,6 +20,10 @@
         <li class="divider" data-text="events">Events</li>
         <li><a href="/waf"><span class="material-symbols-outlined">bar_chart</span>WAF</a></li>
         <li><a href="/handmade"><span class="material-symbols-outlined">widgets</span>HandMade</a></li>
+
+        <li class="divider" data-text="search">Search</li>
+        <li><a href="/waf-search"><span class="material-symbols-outlined">search</span>WAF-Search</a></li>
+        <li><a href="/handmade-search"><span class="material-symbols-outlined">manage_search</span>HandMade-Search</a></li>
     </ul>
 </section>
 <!-- SIDEBAR -->
@@ -62,7 +66,7 @@
                 <div class="head">
                     <div>
                         <h2>Operating System</h2>
-                        <p><span id="os-info">Available Processors: 16</span></p>
+                        <p><span id="os-info">Available Processors: </span></p>
                     </div>
                 </div>
             </div>
@@ -71,7 +75,7 @@
                 <div class="head">
                     <div>
                         <h2>CPU</h2>
-                        <p><span id="cpu-info">실행 대기중인 Task의 평균 수: 0.94</span></p>
+                        <p><span id="cpu-info">실행 대기중인 Task의 평균 수: </span></p>
                     </div>
                 </div>
             </div>
@@ -80,22 +84,22 @@
                 <div class="head">
                     <div>
                         <h2>Memory</h2>
-                        <p><span id="memory-info">Free Memory: 2.6GB / 7.6GB</span></p>
+                        <p><span id="memory-info">Free Memory: </span></p>
                     </div>
                 </div>
-                <span class="progress" data-value="33.69%"></span>
-                <span class="label"><span id="memory-info-percentage">33.69%</span></span>
+                <span class="progress"></span>
+                <span class="label"><span id="memory-info-percentage"></span></span>
             </div>
 
             <div class="card">
                 <div class="head">
                     <div>
                         <h2>Disk</h2>
-                        <p><span id="disk-info">Used Heap Memory: 110.4MB / 1.9GB</span></p>
+                        <p><span id="disk-info">Used Heap Memory: </span></p>
                     </div>
                 </div>
                 <span class="progress" data-value="5.64%"></span>
-                <span class="label"><span id="disk-info-percentage">5.64%</span></span>
+                <span class="label"><span id="disk-info-percentage"></span></span>
             </div>
         </div>
 
@@ -113,94 +117,13 @@
                 <div class="head">
                     <h3>SIEMple Bot</h3>
                 </div>
-                <div class="chat-box">
-                    <p class="day"><span>10-09 (Wed)</span></p>
-                    <div class="msg">
-                        <img src="https://images.unsplash.com/photo-1534723328310-e82dad3ee43f?q=80&w=2536&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="">
-                        <div class="chat">
-                            <div class="profile">
-                                <span class="username">SIMEple Bot</span>
-                                <span class="time">18:30</span>
-                            </div>
-                            <p>Hello</p>
-                        </div>
-                    </div>
+                <div class="chat-box" id="chatBoxMain">
+                    <p class="day"><span id="date"></span></p>
 
-                    <div class="msg me">
-                        <div class="chat">
-                            <div class="profile">
-                                <span class="time">18:30</span>
-                            </div>
-                            <p>나 물어볼께 있어</p>
-                        </div>
-                    </div>
-
-                    <div class="msg">
-                        <img src="https://images.unsplash.com/photo-1534723328310-e82dad3ee43f?q=80&w=2536&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="">
-                        <div class="chat">
-                            <div class="profile">
-                                <span class="username">SIMEple Bot</span>
-                                <span class="time">18:31</span>
-                            </div>
-                            <p>무엇을 도와드릴까요?</p>
-                        </div>
-                    </div>
-
-                    <div class="msg me">
-                        <div class="chat">
-                            <div class="profile">
-                                <span class="time">18:31</span>
-                            </div>
-                            <p>넌 무엇을 할 수 있니?</p>
-                        </div>
-                    </div>
-
-                    <div class="msg">
-                        <img src="https://images.unsplash.com/photo-1534723328310-e82dad3ee43f?q=80&w=2536&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="">
-                        <div class="chat">
-                            <div class="profile">
-                                <span class="username">SIMEple Bot</span>
-                                <span class="time">18:31</span>
-                            </div>
-                            <p>저는 다양한 질문에 답하고, 정보 제공, 문제 해결, 글쓰기, 번역, 학습 도움 등 여러 가지 일을 도와드릴 수 있습니다. 궁금한 내용이 있으면 말씀해 주세요!</p>
-                        </div>
-                    </div>
-
-                    <div class="msg me">
-                        <div class="chat">
-                            <div class="profile">
-                                <span class="time">18:31</span>
-                            </div>
-                            <p>예시를 들어줘.</p>
-                        </div>
-                    </div>
-
-                    <div class="msg">
-                        <img src="https://images.unsplash.com/photo-1534723328310-e82dad3ee43f?q=80&w=2536&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="">
-                        <div class="chat">
-                            <div class="profile">
-                                <span class="username">SIMEple Bot</span>
-                                <span class="time">18:32</span>
-                            </div>
-                            <p>물론입니다! 다음은 제가 도와드릴 수 있는 몇 가지 예시입니다:<br><br>
-
-                                1. <b>정보 제공</b>: 특정 주제에 대한 정보나 배경 설명을 드릴 수 있습니다. 예를 들어, "인공지능의 역사"에 대해 설명해 드릴 수 있습니다.<br><br>
-
-                                2. <b>해결</b>: 수학 문제나 논리 문제를 해결하는 데 도움을 드릴 수 있습니다. 예를 들어, "2x + 3 = 11의 해를 구해줘" 같은 질문에 답할 수 있습니다.<br><br>
-
-                                3. <b>글쓰기 도움</b>: 에세이, 보고서, 이메일 등의 글을 작성하는 데 도움을 드릴 수 있습니다. 예를 들어, "감사 이메일을 작성해줘"라고 요청하실 수 있습니다.<br><br>
-
-                                4. <b>번역</b>: 한국어와 다른 언어 간의 번역을 도와드릴 수 있습니다. 예를 들어, "이 문장을 영어로 번역해줘"라고 하실 수 있습니다.<br><br>
-
-                                5. <b>학습 도움</b>: 특정 과목에 대한 공부 방법이나 자료를 추천해 드릴 수 있습니다. 예를 들어, "수학을 잘하는 방법을 알려줘"라고 물어보실 수 있습니다.<br><br>
-
-                                더 궁금한 점이 있으면 말씀해 주세요!</p>
-                        </div>
-                    </div>
                 </div>
-                <form action="#">
+                <form id="chatFormMain">
                     <div class="form-group">
-                        <input type="text" placeholder="Type...">
+                        <input type="text" id="userInput" placeholder="Type..." required>
                         <button type="submit" class="btn-send"><span class="material-symbols-outlined">send</span></button>
                     </div>
                 </form>
@@ -211,6 +134,7 @@
 
         <a href="#" class="chat-button" id="chatButton" onclick="toggleChat()">
             <span class="material-symbols-outlined" data-icon="chat">chat</span>
+            <span class="notification-badge" id="notificationBadge">!</span>
         </a>
 
         <div id="chatModal" class="chat-modal">
@@ -219,94 +143,13 @@
                     <h3>SIEMple Bot</h3>
                     <span class="close" onclick="toggleChat()">×</span>
                 </div>
-                <div class="chat-box">
-                    <p class="day"><span>10-09 (Wed)</span></p>
-                    <div class="msg">
-                        <img src="https://images.unsplash.com/photo-1534723328310-e82dad3ee43f?q=80&w=2536&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="">
-                        <div class="chat">
-                            <div class="profile">
-                                <span class="username">SIMEple Bot</span>
-                                <span class="time">18:30</span>
-                            </div>
-                            <p>Hello</p>
-                        </div>
-                    </div>
+                <div class="chat-box" id="chatBoxModal">
+                    <p class="day"><span id="dateToggle"></span></p>
 
-                    <div class="msg me">
-                        <div class="chat">
-                            <div class="profile">
-                                <span class="time">18:30</span>
-                            </div>
-                            <p>나 물어볼께 있어</p>
-                        </div>
-                    </div>
-
-                    <div class="msg">
-                        <img src="https://images.unsplash.com/photo-1534723328310-e82dad3ee43f?q=80&w=2536&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="">
-                        <div class="chat">
-                            <div class="profile">
-                                <span class="username">SIMEple Bot</span>
-                                <span class="time">18:31</span>
-                            </div>
-                            <p>무엇을 도와드릴까요?</p>
-                        </div>
-                    </div>
-
-                    <div class="msg me">
-                        <div class="chat">
-                            <div class="profile">
-                                <span class="time">18:31</span>
-                            </div>
-                            <p>넌 무엇을 할 수 있니?</p>
-                        </div>
-                    </div>
-
-                    <div class="msg">
-                        <img src="https://images.unsplash.com/photo-1534723328310-e82dad3ee43f?q=80&w=2536&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="">
-                        <div class="chat">
-                            <div class="profile">
-                                <span class="username">SIMEple Bot</span>
-                                <span class="time">18:31</span>
-                            </div>
-                            <p>저는 다양한 질문에 답하고, 정보 제공, 문제 해결, 글쓰기, 번역, 학습 도움 등 여러 가지 일을 도와드릴 수 있습니다. 궁금한 내용이 있으면 말씀해 주세요!</p>
-                        </div>
-                    </div>
-
-                    <div class="msg me">
-                        <div class="chat">
-                            <div class="profile">
-                                <span class="time">18:31</span>
-                            </div>
-                            <p>예시를 들어줘.</p>
-                        </div>
-                    </div>
-
-                    <div class="msg">
-                        <img src="https://images.unsplash.com/photo-1534723328310-e82dad3ee43f?q=80&w=2536&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="">
-                        <div class="chat">
-                            <div class="profile">
-                                <span class="username">SIMEple Bot</span>
-                                <span class="time">18:32</span>
-                            </div>
-                            <p>물론입니다! 다음은 제가 도와드릴 수 있는 몇 가지 예시입니다:<br><br>
-
-                                1. <b>정보 제공</b>: 특정 주제에 대한 정보나 배경 설명을 드릴 수 있습니다. 예를 들어, "인공지능의 역사"에 대해 설명해 드릴 수 있습니다.<br><br>
-
-                                2. <b>해결</b>: 수학 문제나 논리 문제를 해결하는 데 도움을 드릴 수 있습니다. 예를 들어, "2x + 3 = 11의 해를 구해줘" 같은 질문에 답할 수 있습니다.<br><br>
-
-                                3. <b>글쓰기 도움</b>: 에세이, 보고서, 이메일 등의 글을 작성하는 데 도움을 드릴 수 있습니다. 예를 들어, "감사 이메일을 작성해줘"라고 요청하실 수 있습니다.<br><br>
-
-                                4. <b>번역</b>: 한국어와 다른 언어 간의 번역을 도와드릴 수 있습니다. 예를 들어, "이 문장을 영어로 번역해줘"라고 하실 수 있습니다.<br><br>
-
-                                5. <b>학습 도움</b>: 특정 과목에 대한 공부 방법이나 자료를 추천해 드릴 수 있습니다. 예를 들어, "수학을 잘하는 방법을 알려줘"라고 물어보실 수 있습니다.<br><br>
-
-                                더 궁금한 점이 있으면 말씀해 주세요!</p>
-                        </div>
-                    </div>
                 </div>
-                <form action="#">
+                <form id="chatForm">
                     <div class="form-group">
-                        <input type="text" placeholder="Type...">
+                        <input type="text" id="userInputModal" placeholder="Type..." required>
                         <button type="submit" class="btn-send"><span class="material-symbols-outlined">send</span></button>
                     </div>
                 </form>
@@ -318,7 +161,7 @@
 </section>
 <!-- NAVBAR -->
 
-<script type="module" src="/script.js"></script>
+<script type="module" src="script.js"></script>
 <script src="/graph.js"></script>
 </body>
 </html>

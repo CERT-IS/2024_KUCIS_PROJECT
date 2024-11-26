@@ -4,12 +4,14 @@ let lastWAFEventTimestamp = new Date(0);
 let lastWAFEventOffset = 0;
 const MAX_EVENTS_DISPLAYED = 100;
 
-function toggleLogs(container) {
+
+export function toggleLogs(container) {
     const logsContent = container.querySelector('.logs-content');
     const toggleButton = container.querySelector('.logs-toggle');
 
-    if (logsContent) {
+    if (logsContent && toggleButton) {
         if (logsContent.style.display === 'none' || logsContent.style.display === '') {
+
             document.querySelectorAll('.event-container').forEach(function(el) {
                 if (el !== container) {
                     const otherLogsContent = el.querySelector('.logs-content');
@@ -25,11 +27,9 @@ function toggleLogs(container) {
             });
 
             logsContent.style.display = 'block';
-            logsContent.style.opacity = 0;
-            logsContent.style.transition = 'opacity 0.3s ease';
             setTimeout(() => {
                 logsContent.style.opacity = 1;
-            }, 0);
+            }, 10);
             toggleButton.textContent = '▼';
         } else {
             logsContent.style.opacity = 0;
@@ -38,50 +38,71 @@ function toggleLogs(container) {
                 toggleButton.textContent = '▶';
             }, 300);
         }
-    } else {
-        console.warn('Logs content not found for container:', container);
     }
 }
 
-
-function searchFunction() {
-    let input = document.querySelector('.search-input').value.toUpperCase();
-    let category = document.getElementById('search-category').value;
-    let eventContainers = document.querySelectorAll('.event-container');
-
-    eventContainers.forEach(container => {
-        let searchValue = '';
-
-        if (category === 'id') {
-            searchValue = container.querySelector('.event-header strong:nth-of-type(1)').nextSibling.nodeValue.trim().toUpperCase();
-        } else if (category === 'name') {
-            searchValue = container.querySelector('.event-header strong:nth-of-type(2)').nextSibling.nodeValue.trim().toUpperCase();
-        } else if (category === 'type') {
-            searchValue = container.querySelector('.event-header strong:nth-of-type(3)').nextSibling.nodeValue.trim().toUpperCase();
-        } else if (category === 'timestamp') {
-            searchValue = container.querySelector('.event-header strong:nth-of-type(4)').nextSibling.nodeValue.trim().toUpperCase();
-        }
-
-        if (searchValue.indexOf(input) > -1) {
-            container.style.display = "";
-        } else {
-            container.style.display = "none";
-        }
+document.querySelectorAll('.event-container').forEach(container => {
+    container.addEventListener('click', function() {
+        toggleLogs(container);
     });
+});
+
+
+export function sendMessage(event) {
+    event.preventDefault();
+
+    const inputField = document.getElementById('userInput');
+    const chatBox = document.getElementById('chatBox');
+
+    const userMessage = inputField.value;
+    if (!userMessage.trim()) {
+        console.warn('입력값이 비어있습니다!');
+        return;
+    }
+
+    const userMsgDiv = document.createElement('div');
+    userMsgDiv.className = 'msg me';
+    userMsgDiv.innerHTML = `
+        <div class="chat">
+            <div class="profile">
+                <span class="time">${new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit', hour12: false})}</span>
+            </div>
+            <p>${userMessage}</p>
+        </div>
+    `;
+
+    chatBox.appendChild(userMsgDiv);
+    inputField.value = '';
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    const request = {
+        action: "getChatMessage",
+        message: userMessage
+    };
+    if (wsManager.isConnected) {
+        wsManager.send(request);
+    }
 }
 
+document.getElementById('chatForm').addEventListener('submit', function(event) {
+    sendMessage(event);
+});
+
+
+function formatDate(date) {
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const weekday = date.toLocaleString('en-En', { weekday: 'short' });
+    return `${month}-${day} (${weekday})`;
+}
+
+const today = new Date();
+
+document.getElementById('date').textContent = formatDate(today);
 
 
 
 document.addEventListener("DOMContentLoaded", function() {
-    const eventContainers = document.querySelectorAll('.event-container');
-
-    eventContainers.forEach(container => {
-        container.addEventListener('click', function() {
-            toggleLogs(container);
-        });
-    });
-
     const allDropdown = document.querySelectorAll('#sidebar .side-dropdown');
     const sidebar = document.getElementById('sidebar');
 
@@ -173,16 +194,46 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
+    function searchFunction() {
+        let input = document.querySelector('.search-input').value.toUpperCase();
+        let category = document.getElementById('search-category').value;
+        let eventContainers = document.querySelectorAll('.event-container');
+
+        eventContainers.forEach(container => {
+            let searchValue = '';
+
+            if (category === 'id') {
+                searchValue = container.querySelector('.event-header strong:nth-of-type(1)').nextSibling.nodeValue.trim().toUpperCase();
+            } else if (category === 'name') {
+                searchValue = container.querySelector('.event-header strong:nth-of-type(2)').nextSibling.nodeValue.trim().toUpperCase();
+            } else if (category === 'type') {
+                searchValue = container.querySelector('.event-header strong:nth-of-type(3)').nextSibling.nodeValue.trim().toUpperCase();
+            } else if (category === 'timestamp') {
+                searchValue = container.querySelector('.event-header strong:nth-of-type(4)').nextSibling.nodeValue.trim().toUpperCase();
+            }
+
+            if (searchValue.indexOf(input) > -1) {
+                container.style.display = "";
+            } else {
+                container.style.display = "none";
+            }
+        });
+    }
+
+    window.searchFunction = searchFunction;
+
 
     let isChatOpen = false;
 
     function toggleChat() {
         const chatModal = document.getElementById("chatModal");
         const chatButton = document.getElementById("chatButton");
+        const notificationBadge = document.getElementById("notificationBadge");
 
         if (!isChatOpen) {
             chatModal.classList.add("open");
             chatButton.style.opacity = "0";
+            notificationBadge.style.display = "none";
         } else {
             chatModal.classList.remove("open");
             chatButton.style.opacity = "1";
@@ -195,6 +246,49 @@ document.addEventListener("DOMContentLoaded", function() {
     document.querySelector(".close").onclick = toggleChat;
 
 
+    function showNotificationBadge() {
+        const notificationBadge = document.getElementById("notificationBadge");
+        if (!isChatOpen) {
+            notificationBadge.style.display = "flex";
+        }
+    }
+
+    function onNewMessageReceived() {
+        showNotificationBadge();
+    }
+
+
+    let currentPage = 1;
+    const postsPerPage = 10;
+    const events = Array.from(document.querySelectorAll('.event-container'));
+
+    function showPage(page) {
+        events.forEach(event => event.style.display = 'none');
+        const start = (page - 1) * postsPerPage;
+        const end = start + postsPerPage;
+
+        for (let i = start; i < end && i < events.length; i++) {
+            events[i].style.display = 'block';
+        }
+        document.getElementById('page-number').textContent = page;
+    }
+
+    document.getElementById('prevPageBtn').addEventListener('click', function() {
+        if (currentPage > 1) {
+            currentPage--;
+            showPage(currentPage);
+        }
+    });
+
+    document.getElementById('nextPageBtn').addEventListener('click', function() {
+        const totalPages = Math.ceil(events.length / postsPerPage);
+        if (currentPage < totalPages) {
+            currentPage++;
+            showPage(currentPage);
+        }
+    });
+
+    showPage(currentPage);
 
 
     async function fetchEvents(url, elementId, lastTimestamp, offset = 0) {
@@ -323,10 +417,16 @@ document.addEventListener("DOMContentLoaded", function() {
                 const wafEvent = JSON.parse(message.data);
                 handleWAFEvents(wafEvent);
                 break;
+
+            case "askResponse":
+                handleAskResponse(message.data);
+                break;
+
             default:
                 console.warn("Unknown action:", message.action);
         }
     });
+
     setInterval(() => {
         const request = {
             action: "getWAFEvents",
@@ -338,6 +438,7 @@ document.addEventListener("DOMContentLoaded", function() {
             wsManager.send(request);
         }
     }, 1000);
+
     function handleWAFEvents(events) {
         const eventsElement = document.getElementById('waf-events');
         const currentEventCount = eventsElement.querySelectorAll('.event-container').length;
@@ -377,23 +478,49 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
+    function handleAskResponse(data) {
+        const messagesContainer = document.getElementById('chatBox');
+        if (!messagesContainer) {
+            console.error("Chat messages container not found.");
+            return;
+        }
+
+        const now = new Date();
+        const formattedTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+
+        const msgElement = document.createElement('div');
+        msgElement.classList.add('msg');
+
+        msgElement.innerHTML = `
+            <img src="https://images.unsplash.com/photo-1534723328310-e82dad3ee43f?q=80&w=2536&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="">
+            <div class="chat">
+                <div class="profile">
+                    <span class="username">SIMEple Bot</span>
+                    <span class="time">${formattedTime}</span>
+                </div>
+                <p>${escapeHtml(data)}</p>
+            </div>
+        `;
+
+        messagesContainer.appendChild(msgElement);
+
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
     function createEventHTML(event) {
         const logsContent = event.logs ? parseAndFormatLogs(event.logs) : 'No logs available';
 
         return `
-        <div class="event-container" onclick="toggleLogs(this)">
+        <div class="event-container">
             <div class="event-header">
                 <strong>index:</strong> ${event.id || 'N/A'} <br>
                 <strong>name:</strong> ${event.eventName || 'N/A'} <br>
                 <strong>type:</strong> ${event.eventType || 'N/A'} <br>
                 <strong>timestamp:</strong> ${event.timestamp} <br>
-                <span class="logs-toggle" style="cursor: pointer;" onclick="toggleLogs(this)">▶</span>
+                <span class="logs-toggle" style="cursor: pointer;">▶</span>
             </div>
             <pre class="logs-content" style="display: none;">${logsContent}</pre>
         </div>
     `;
     }
-
-
-
 });

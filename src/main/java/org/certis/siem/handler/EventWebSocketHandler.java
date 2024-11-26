@@ -1,21 +1,20 @@
-package org.certis.siem;
+package org.certis.siem.handler;
+
+import static org.certis.siem.controller.AdviceController.webClient;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.time.Instant;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.certis.siem.service.EventDetectService;
 import org.certis.siem.service.SystemInfoService;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.reactive.socket.WebSocketHandler;
+import org.springframework.web.reactive.socket.WebSocketMessage;
 import org.springframework.web.reactive.socket.WebSocketSession;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
-
-import java.time.Duration;
-import java.time.Instant;
-import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
@@ -34,6 +33,9 @@ public class EventWebSocketHandler implements WebSocketHandler {
                     try {
                         Map<String, Object> json = objectMapper.readValue(e, Map.class);
                         String action = (String) json.get("action");
+
+                        System.out.println("handle message : " + json);
+
                         switch (action) {
                             case "getWAFEvents":
                                 return handleGetWAFEvents(json, session);
@@ -41,6 +43,8 @@ public class EventWebSocketHandler implements WebSocketHandler {
                                 return handleGetHandmadeEvents(json, session);
                             case "getSystemInfo":
                                 return handleGetSystemInfo(session);
+                            case "getChatMessage":
+                                return handleChatMessage(json, session);
                             default:
                                 return Mono.empty();
                         }
@@ -72,7 +76,6 @@ public class EventWebSocketHandler implements WebSocketHandler {
                 .flatMap(systemInfoJson -> session.send(Mono.just(session.textMessage(systemInfoJson))))
                 .then();
     }
-
     private Mono<Void> handleGetWAFEvents(Map<String, Object> json, WebSocketSession session) {
         String lastTimestampStr = (String) json.get("lastTimestamp");
         Instant lastTimestamp = (lastTimestampStr != "null") ? Instant.parse(lastTimestampStr) : Instant.now();
@@ -121,6 +124,38 @@ public class EventWebSocketHandler implements WebSocketHandler {
                 .then();
     }
 
+    private Mono<Void> handleChatMessage(Map<String, Object> json, WebSocketSession session){
+        String message = (String) json.get("message");
+
+        if(message == null || message.isBlank()){
+            return session.send(Mono.just(session.textMessage("{\"error\":\"blank message\"}")));
+        }
+
+        return sendToModel(message)
+                .flatMap(response -> session.send(Mono.just(session.textMessage(response))))
+                .then();
+    }
+
+    private Mono<String> sendToModel(String message){
+        return Mono.just("test chat message")
+                /*webClient.post()
+                .uri("/ask")
+                .bodyValue(Map.of("message", message))
+                .retrieve()
+                .bodyToMono(String.class)*/
+                .map(response -> {
+                    try {
+                        Map<String, String> responseJson = Map.of(
+                                "action", "askResponse",
+                                "data", response
+                        );
+                        return objectMapper.writeValueAsString(responseJson);
+                    } catch (JsonProcessingException e) {
+                        e.printStackTrace();
+                        return "{\"error\":\"processing error\"}";
+                    }
+                });
+    }
 }
 
 

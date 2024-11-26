@@ -1,9 +1,6 @@
 package org.certis.siem.config;
 
 import lombok.RequiredArgsConstructor;
-import org.certis.siem.EventWebSocketHandler;
-import org.certis.siem.service.EventDetectService;
-import org.certis.siem.service.SystemInfoService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.handler.SimpleUrlHandlerMapping;
