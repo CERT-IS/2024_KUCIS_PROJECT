@@ -22,8 +22,8 @@
         <li><a href="/handmade"><span class="material-symbols-outlined">widgets</span>HandMade</a></li>
 
         <li class="divider" data-text="search">Search</li>
-        <li><a href="" class="active"><span class="material-symbols-outlined">search</span>WAF-Search</a></li>
-        <li><a href="/handmade-search"><span class="material-symbols-outlined">manage_search</span>HandMade-Search</a></li>
+        <li><a href="" class="active"><span class="material-symbols-outlined">search</span>Search</a></li>
+
     </ul>
 </section>
 <!-- SIDEBAR -->
@@ -53,11 +53,11 @@
 
     <!-- MAIN -->
     <main>
-        <h1 class="title">WAF-Search</h1>
+        <h1 class="title">Search</h1>
         <ul class="breadcrumbs">
             <li><a href="/">Home</a></li>
             <li class="divider">/</li>
-            <li><a href="" class="active">WAF-Search</a></li>
+            <li><a href="" class="active">Search</a></li>
         </ul>
 
 
@@ -68,13 +68,7 @@
                         <h2>WAF Events</h2>
                     </div>
 
-                    <div class="search-form">
-                        <form id="searchForm">
-                            <label for="searchInput">검색:</label>
-                            <input type="text" id="searchInput" placeholder="검색어를 입력하세요">
-                            <button type="submit">제출</button>
-                        </form>
-                    </div>
+
 
                     <div class="menu">
                         <span class="material-symbols-outlined" data-icon="more_horiz">more_horiz</span>
@@ -111,10 +105,30 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div><br>
+                    </div></div>
+
+                <br>
                 <div class="events">
                     <ul id="events">
+                        <div class="search-form">
+                            <form id="searchForm">
+                                <label for="searchInput">Query 입력:</label>
+                                <textarea id="searchInput" placeholder="Query를 입력하세요" rows="10" cols="60"></textarea>
+                                <button type="submit">Search</button>
+                            </form>
+                        </div>
+
+                        <br>
+                        <div class="search-form">
+                            <form id="conditionalForm">
+                                <label for="conditionalInput">Condition 입력:</label>
+                                <textarea id="conditionalInput" placeholder="Condition를 입력하세요" rows="10" cols="60"></textarea>
+                                <button type="submit">Search</button>
+                            </form>
+                        </div>
+
+                        <br>
+
                         <div class="event-container">
                             <div class="event-header">
                                 <strong>index:</strong> 1 <br>
@@ -164,7 +178,6 @@
 </section>
 <!-- NAVBAR -->
 
-<script type="module" src="waf-search.js"></script>
 <script type="module" src="query.js"></script>
 </body>
 </html>

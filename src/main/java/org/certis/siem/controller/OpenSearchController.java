@@ -82,8 +82,6 @@ public class OpenSearchController {
             @RequestBody SearchRequest searchRequest,
             @RequestParam(defaultValue = "10") int size) {
 
-        System.out.println("reqeust: "+ searchRequest.toString());
-
         Flux<JsonNode> results = openSearchService.executeConditionalSearch(searchRequest.getNewIndex(),
                 searchRequest.getLogGroup(),
                 searchRequest.getWhereClause(),

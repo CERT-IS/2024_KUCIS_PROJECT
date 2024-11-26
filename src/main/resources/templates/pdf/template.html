@@ -19,6 +19,7 @@
     </style>
 </head>
 <body>
+
 <h1 th:text="${name} + ' Report'">Report Title</h1>
 <p th:text="${description}">This is a description of the report.</p>
 <h2>Report Details</h2>
@@ -30,7 +31,9 @@
 <p><strong>Frequency:</strong> <span th:text="${frequency}">Frequency</span></p>
 <p><strong>Every:</strong> <span th:text="${every}">0</span> <span th:text="${timeUnit}">Units</span></p>
 <p><strong>Start Time:</strong> <span th:text="${startTime}">Start Time</span></p>
+
 <h2>Additional Content</h2>
+
 <p th:text="${content}">Content goes here...</p>
 </body>
 </html>
