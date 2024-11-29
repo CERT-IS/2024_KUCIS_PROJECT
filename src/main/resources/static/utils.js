@@ -130,8 +130,7 @@ export function parseAndFormatLogs(logsString) {
         }
 
         const formattedLogs = JSON.stringify(parsedLogs, null, 2);
-
-        return formatJsonToHtml(formattedLogs);
+        return formattedLogs;
     } catch (error) {
         console.error('Error parsing logs:', error);
         return 'Invalid logs format: ' + escapeHtml(logsString);
@@ -167,7 +166,7 @@ export function createEventHTML(event) {
         toggleLogs(eventContainer);
     });
 
-    return eventContainer.outerHTML;
+    return eventContainer;
 }
 
 export function toggleLogs(container) {
@@ -192,6 +191,7 @@ export function toggleLogs(container) {
                 }
             });
         }
+
     } else {
         console.warn('Logs content 또는 toggle button을 찾을 수 없습니다:', container);
     }

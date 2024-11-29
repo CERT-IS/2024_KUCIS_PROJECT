@@ -30,15 +30,12 @@ document.addEventListener("DOMContentLoaded", function() {
             const list = await response.json();
             console.log(list);
 
-            const listItem = document.createElement('li');
-            listItem.textContent = `검색 결과: ${searchValue}`;
+            events.innerHTML = '';
 
             if (list && list.length > 0) {
                 list.forEach(item => {
-                    const eventHTML = createEventHTML();
-                    const wrapper = document.createElement('div');
-                    wrapper.innerHTML = eventHTML;
-                    events.appendChild(wrapper.firstChild);
+                    const eventElemnt = createEventHTML(item);
+                    events.appendChild(eventElemnt);
                 });
             } else {
                 const noResultItem = document.createElement('li');

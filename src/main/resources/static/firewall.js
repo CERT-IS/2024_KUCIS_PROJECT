@@ -1,15 +1,9 @@
 import wsManager from './websocket.js';
-import {createEventHTML} from "./utils.js";
+import {createEventHTML, toggleLogs} from "./utils.js";
 
 let lastEventTimestamp = new Date(0); // Epoch (1970-01-01T00:00:00Z)
 let lastEventOffset = 0;
 const MAX_EVENTS_DISPLAYED = 100;
-
-document.querySelectorAll('.event-container').forEach(container => {
-    container.addEventListener('click', function() {
-        toggleLogs(container);
-    });
-});
 
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -95,15 +89,13 @@ document.addEventListener("DOMContentLoaded", function() {
             }
 
             let existingEventCount = eventsElement.querySelectorAll('.event-container').length;
-            const totalEventCount = existingEventCount + events.length;
-
             const fragment = document.createDocumentFragment();
+
             events.forEach(event => {
                 if (existingEventCount < MAX_EVENTS_DISPLAYED) {
-                    const eventLi = document.createElement('li');
+                    const eventElement = createEventHTML(event);
 
-                    eventLi.innerHTML = createEventHTML(event);
-                    fragment.appendChild(eventLi);
+                    fragment.appendChild(eventElement);
                     existingEventCount++;
                 }
             });
@@ -112,6 +104,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 eventsElement.appendChild(fragment);
             }
 
+            const totalEventCount = eventsElement.querySelectorAll('.event-container').length;
             if (totalEventCount > MAX_EVENTS_DISPLAYED) {
                 const excessCount = totalEventCount - MAX_EVENTS_DISPLAYED;
                 const toRemove = Array.from(eventsElement.querySelectorAll('.event-container')).slice(0, excessCount);
