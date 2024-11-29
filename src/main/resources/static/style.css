@@ -364,18 +364,23 @@ main .card .label {
 
 main .chat-box {
     width: 100%;
-    max-height: 450px;
+    height: 84%;
     overflow-y: auto;
-    margin-top: 20px;
     margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    gap: 10px;
 }
+
 main .chat-box::-webkit-scrollbar {
     display: none;
 }
+
 main .chat-box .day {
     text-align: center;
-    margin-bottom: 10px;
 }
+
 main .chat-box .day span {
     display: inline-block;
     padding: 6px 12px;
@@ -388,21 +393,24 @@ main .chat-box .day span {
 
 main .chat-box .msg {
     display: flex;
-    grid-gap: 6px;
+    gap: 6px;
     align-items: flex-start;
 }
+
 main .chat-box .msg img {
     width: 28px;
     height: 28px;
     border-radius: 50%;
     object-fit: cover;
 }
+
 main .chat-box .profile .username {
     font-size: 14px;
     font-weight: 600;
     display: inline-block;
     margin-right: 6px;
 }
+
 main .chat-box .profile .time {
     font-size: 12px;
     color: var(--dark-gray);
@@ -415,30 +423,42 @@ main .chat-box .chat p {
     max-width: 400px;
     line-height: 150%;
 }
+
 main .chat-box .msg:not(.me) .chat p {
     border-radius: 0 5px 5px 5px;
     background: var(--gray);
 }
+
 main .chat-box .msg.me {
     justify-content: flex-end;
 }
+
 main .chat-box .msg.me .profile {
     text-align: right;
 }
+
 main .chat-box .msg.me p {
     background: var(--blue);
     color: var(--light);
     border-radius: 5px 0 5px 5px;
 }
 
+
 main form {
     margin-top: 10px;
 }
+
 main .form-group {
-    width: 100%;
     display: flex;
-    grid-gap: 10px;
+    position: sticky;
+    bottom: 0;
+    background: var(--light);
+    padding: 10px;
+    border-top: 1px solid var(--gray);
+    gap: 10px;
+    width: 100%;
 }
+
 main .form-group input {
     flex-grow: 1;
     padding: 10px 16px;
@@ -890,4 +910,18 @@ main .pagination-controls .page-number {
 
 .search-form button:hover {
     background-color: #0056b3;
+}
+
+.iframe-container {
+    margin-top: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.iframe-container iframe {
+    width: 100%;
+    height: 600px;
+    border: none;
 }
