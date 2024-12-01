@@ -1,6 +1,7 @@
 package org.certis.siem.service;
 
 import static org.certis.siem.mapper.EventMapper.mapLogsToEvent;
+import static org.certis.siem.service.OpenSearchService.executeSearch;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import java.net.URLDecoder;
@@ -118,8 +119,8 @@ public class HttpLogsService {
         });
     }
     public Mono<LocalDateTime> process(LocalDateTime lastProcessedTimestamp) {
-
-        return executeSearch(lastProcessedTimestamp)
+        SearchRequest searchRequest = searchRequest(lastProcessedTimestamp);
+        return executeSearch(searchRequest)
                 .collectList()
                 .flatMap(jsonNodes -> {
                     Flux<EventStream> eventStreamFlux = mapJsonToEventStream(jsonNodes);
@@ -162,16 +163,6 @@ public class HttpLogsService {
                 checkDirectoryIndex(httpLogFlux)
                         .map(httpLog -> mapLogsToEvent("Directory Indexing", "Web", httpLog))
         );
-    }
-
-
-    private Flux<JsonNode> executeSearch(LocalDateTime lastProcessedTimestamp) {
-        SearchRequest searchRequest = searchRequest(lastProcessedTimestamp);
-
-        return Mono.fromCallable(() -> openSearchClient.search(searchRequest, JsonNode.class))
-                .flatMapMany(searchResponse -> Flux.fromIterable(searchResponse.hits().hits())
-                        .map(hit -> hit.source()))
-                .onErrorMap(e -> new RuntimeException("Error from OpenSearch", e));
     }
 
     private SearchRequest searchRequest(LocalDateTime timestamp) {

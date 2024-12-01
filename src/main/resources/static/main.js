@@ -214,6 +214,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const message = JSON.parse(event.data);
 
         if (message.action === "askResponse") {
+            onNewMessageReceived();
+
             const formattedTime = getFormattedTime();
             chatMessages.push({
                 type: 'bot',

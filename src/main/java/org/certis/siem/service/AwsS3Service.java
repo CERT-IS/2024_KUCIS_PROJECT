@@ -1,20 +1,26 @@
 package org.certis.siem.service;
 
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.*;
+import com.amazonaws.services.s3.model.ListObjectsV2Request;
+import com.amazonaws.services.s3.model.ListObjectsV2Result;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.services.s3.model.S3ObjectInputStream;
+import com.amazonaws.services.s3.model.S3ObjectSummary;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.util.Comparator;
+import java.util.zip.GZIPInputStream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.certis.siem.entity.AwsS3;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.time.Instant;
-import java.util.Comparator;
-import java.util.zip.GZIPInputStream;
 
 @Service
 @Slf4j
@@ -34,12 +40,6 @@ public class AwsS3Service {
     @Value("${cloud.aws.bucket.certis}")
     private String certisBucket;
 
-
-    public Mono<AwsS3> upload(String eventLog, String eventName) {
-        String key = String.format(eventKey,name, eventName, Instant.now());
-        return putS3(eventLog, key)
-                .map(path -> AwsS3.builder().key(key).path(path).build());
-    }
 
     private Mono<String> putS3(String uploadEventLog, String fileName) {
         return Mono.fromCallable(() -> {

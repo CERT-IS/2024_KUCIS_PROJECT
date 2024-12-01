@@ -22,9 +22,9 @@ public class BatchService {
     private final MetadataService metadataService;
 
     private final AccessLogsService accessLogsService;
-    private final OpenSearchService openSearchService;
     private final CloudTrailService cloudTrailService;
     private final HttpLogsService httpLogsService;
+    private final WAFService wafService;
     private final EventRepository eventRepository;
 
     private final String access_logs = "aws-access-logs-groups";
@@ -45,7 +45,7 @@ public class BatchService {
                 .defaultIfEmpty(defaultDate);
 
         Mono<LocalDateTime> wafLogsTimestampMono = getLastProcessedTimestamp(waf_logs)
-                .flatMap(openSearchService::process)
+                .flatMap(wafService::process)
                 .filter(latestTimestamp -> latestTimestamp != null)
                 .defaultIfEmpty(defaultDate);
 

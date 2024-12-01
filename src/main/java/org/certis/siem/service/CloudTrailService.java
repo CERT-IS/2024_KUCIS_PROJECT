@@ -28,6 +28,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.certis.siem.mapper.EventMapper.mapLogsToEvent;
+import static org.certis.siem.service.OpenSearchService.executeSearch;
 
 @Service
 @RequiredArgsConstructor
@@ -75,7 +76,9 @@ public class CloudTrailService {
     }
 
     public Mono<LocalDateTime> process(LocalDateTime lastProcessedTimestamp) {
-        return executeSearch(lastProcessedTimestamp)
+        SearchRequest searchRequest = searchRequest(lastProcessedTimestamp);
+
+        return executeSearch(searchRequest)
                 .collectList()
                 .flatMap(jsonNodes -> {
                     Flux<EventStream> eventStreamFlux = mapJsonNodeToCloudTrailLog(jsonNodes);
@@ -186,14 +189,6 @@ public class CloudTrailService {
         return false;
     }
 
-    private Flux<JsonNode> executeSearch(LocalDateTime lastProcessedTimestamp) {
-        SearchRequest searchRequest = searchRequest(lastProcessedTimestamp);
-
-        return Mono.fromCallable(() -> openSearchClient.search(searchRequest, JsonNode.class))
-                .flatMapMany(searchResponse -> Flux.fromIterable(searchResponse.hits().hits())
-                        .map(hit -> hit.source()))
-                .onErrorMap(e -> new RuntimeException("Error from OpenSearch", e));
-    }
 
     private SearchRequest searchRequest(LocalDateTime timestamp) {
         String timestampString = timestamp.format(DateTimeFormatter.ISO_DATE_TIME);

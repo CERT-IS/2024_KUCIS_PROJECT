@@ -46,10 +46,9 @@ export function toggleMenu(selector, toggleClass = 'show') {
     });
 }
 
-export function setProgressBar(element, value, scaleFactor = 3) {
-    const scaledValue = Math.min(value * scaleFactor, 100);
-    element.setAttribute('data-value', value);
-    element.style.setProperty('--value', scaledValue);
+export function setProgressBar(element, value) {
+    element.style.setProperty('--value', `${value}%`);
+    console.log("success Progressbar " + value);
 }
 
 export function formatChatDate(date) {

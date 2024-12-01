@@ -1,5 +1,6 @@
 import wsManager from './websocket.js';
-import {createEventHTML, toggleLogs} from "./utils.js";
+import {createEventHTML} from "./utils.js";
+import {updateCharts} from "./graph.js";
 
 let lastEventTimestamp = new Date(0); // Epoch (1970-01-01T00:00:00Z)
 let lastEventOffset = 0;
@@ -53,10 +54,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
     setInterval(() => {
-
         const isHandmade = window.location.href.includes('/handmade');
         const action = isHandmade ? "getHandmadeEvents" : "getWAFEvents";
-
         const request = {
             action: action,
             size : 20,
@@ -70,13 +69,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function handleEvents(events) {
         const eventsElement = document.getElementById('event-streams');
-        const currentEventCount = eventsElement.querySelectorAll('.event-container').length;
-
-        if (currentEventCount >= MAX_EVENTS_DISPLAYED) {
-            console.log(`events fulled.`);
-            return;
-        }
-
 
         if (events.length > 0) {
             const newTimestamp = new Date(events[events.length - 1].timestamp);
@@ -92,6 +84,7 @@ document.addEventListener("DOMContentLoaded", function() {
             const fragment = document.createDocumentFragment();
 
             events.forEach(event => {
+                // updateCharts(events);
                 if (existingEventCount < MAX_EVENTS_DISPLAYED) {
                     const eventElement = createEventHTML(event);
 

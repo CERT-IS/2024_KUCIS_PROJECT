@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-    <link rel="stylesheet" href="../static/style.css">
+    <link rel="stylesheet" href="/style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <title>DashBoard</title>
 </head>
@@ -94,18 +94,18 @@
                         <p><span id="memory-info">Free Memory: </span></p>
                     </div>
                 </div>
-                <span class="progress"></span>
+                <span class="progress" data-type="memory"></span>
                 <span class="label"><span id="memory-info-percentage"></span></span>
             </div>
 
             <div class="card">
                 <div class="head">
                     <div>
-                        <h2>Disk</h2>
-                        <p><span id="disk-info">Used Heap Memory: </span></p>
+                        <h2>Disk Memory</h2>
+                        <p><span id="disk-info">Used Heap : </span></p>
                     </div>
                 </div>
-                <span class="progress" data-value="5.64%"></span>
+                <span class="progress" data-type="disk"></span>
                 <span class="label"><span id="disk-info-percentage"></span></span>
             </div>
         </div>
@@ -116,7 +116,7 @@
                     <h3>Traffic</h3>
                 </div>
                 <div class="graphSite">
-                    <canvas id="lineGraph" height="480%"></canvas>
+                    <canvas id="lineGraph" height="430%"></canvas>
                 </div>
             </div>
 

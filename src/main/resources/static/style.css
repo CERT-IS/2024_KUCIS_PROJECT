@@ -353,6 +353,7 @@ main .card .progress::before {
     background: var(--blue);
     width: var(--value);
 }
+
 main .card .label {
     font-size: 14px;
     font-weight: 700;
@@ -452,7 +453,7 @@ main .form-group {
     position: sticky;
     bottom: 0;
     background: var(--light);
-    padding: 10px;
+    padding: 0px;
     border-top: 1px solid var(--gray);
     gap: 10px;
     width: 100%;
