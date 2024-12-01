@@ -196,7 +196,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (chatFormMain) {
         chatFormMain.addEventListener('submit', event => {
             sendMessage(event);
-            console.log("main");
         });
     }
 
@@ -204,7 +203,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (chatForm) {
         chatForm.addEventListener('submit', event => {
             sendMessage(event);
-            console.log("chatform");
         });
     }
 

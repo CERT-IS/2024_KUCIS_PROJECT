@@ -8,6 +8,8 @@ let dataPie = [0, 0, 0, 0];
 let labelsPie = [];
 let chartBar, chartLine, chartPie;
 
+let groupCounts = new Map();
+let eventNameCounts = new Map();
 let timeseries = 60; // 60 sec 단위로 구분. 나중에 커스텀화
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -57,24 +59,7 @@ document.addEventListener('DOMContentLoaded', function() {
         type: 'line',
         data: {
             labels: labelsLine,
-            datasets: [
-                {
-                    label: 'Group A Count',
-                    data: dataLine1,
-                    backgroundColor: 'rgba(0, 123, 255, 0.5)',
-                    borderColor: '#007BFF',
-                    borderWidth: 2,
-                    fill: true
-                },
-                {
-                    label: 'Group B Count',
-                    data: dataLine2,
-                    backgroundColor: 'rgba(252, 59, 86, 0.5)',
-                    borderColor: 'rgba(252, 59, 86, 1)',
-                    borderWidth: 2,
-                    fill: true
-                }
-            ]
+            datasets: []
         },
         options: {
             maintainAspectRatio: false,
@@ -104,7 +89,7 @@ document.addEventListener('DOMContentLoaded', function() {
     chartPie = new Chart(ctxPie, {
         type: 'pie',
         data: {
-            labels: ['SQL Injection', 'XSS', 'CSRF', 'File Inclusion'],
+            labels: [],
             datasets: [{
                 label: 'Vulnerability Types',
                 data: dataPie,
@@ -251,6 +236,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
 export function updateCharts(events) {
     if (events.length > 0) {
+        events.forEach(event => {
+            if (!groupCounts.has(event.eventGroup)) groupCounts.set(event.eventGroup, 0);
+            groupCounts.set(event.eventGroup, groupCounts.get(event.eventGroup) + 1);
+
+            if (!eventNameCounts.has(event.eventType)) eventNameCounts.set(event.eventType, 0);
+            eventNameCounts.set(event.eventType, eventNameCounts.get(event.eventType) + 1);
+        });
+
         // Bar 차트 업데이트 (취약점 종류)
         updateBarChart(events);
         // Line 차트 업데이트 (로그 그룹별 취약점 수)
@@ -293,40 +286,55 @@ function updateLineChart(events){
     const currentTime = new Date();
     const timeLabel = currentTime.toISOString().slice(0, 16);
 
-    const groupAData = events.filter(event => event.group === 'A').length;
-    const groupBData = events.filter(event => event.group === 'B').length;
-
-    labelsLine.push(timeLabel);
-    dataLine1.push(groupAData);
-    dataLine2.push(groupBData);
-
-    if (labelsLine.length > timeseries) {
-        labelsLine.shift();
-        dataLine1.shift();
-        dataLine2.shift();
-    }
-
-    chartLine.data.labels = labelsLine;
-    chartLine.data.datasets[0].data = dataLine1;
-    chartLine.data.datasets[1].data = dataLine2;
-    chartLine.options.scales.y.max = Math.max(...dataLine1.concat(dataLine2), 1);
-    chartLine.update();
-}
-function updatePieChart(events){
-    const eventCounts = {};
-
-    events.forEach(event => {
-        if (eventCounts.hasOwnProperty(event.eventType)) {
-            eventCounts[event.eventType] += 1;
-        } else {
-            eventCounts[event.eventType] = 1;
+    eventNameCounts.forEach((count, eventName) => {
+        if (!chartLine.data.datasets.some(dataset => dataset.label === `${eventName}`)) {
+            chartLine.data.datasets.push({
+                label: `${eventName}`,
+                data: [],
+                backgroundColor: generateRandomColor(),
+                borderColor: generateRandomColor(),
+                borderWidth: 2,
+                fill: false
+            });
         }
     });
 
-    labelsPie = Object.keys(eventCounts);
-    dataPie = Object.values(eventCounts);
+    chartLine.data.datasets.forEach(dataset => {
+        const eventName = dataset.label;
+        if (eventNameCounts.has(eventName)) {
+            const eventDataCount = eventNameCounts.get(eventName);
+            dataset.data.push(eventDataCount);
+
+            if (dataset.data.length > timeseries) dataset.data.shift();
+        }
+    });
+
+    labelsLine.push(timeLabel);
+    if (labelsLine.length > timeseries) {
+        labelsLine.shift();
+    }
+
+    chartLine.data.labels = labelsLine;
+    chartLine.update();
+}
+
+function updatePieChart(events){
+    const groupLabels = Array.from(groupCounts.keys());
+    const groupData = Array.from(groupCounts.values());
+
+    labelsPie = groupLabels;
+    dataPie = groupData;
 
     chartPie.data.labels = labelsPie;
     chartPie.data.datasets[0].data = dataPie;
     chartPie.update();
+}
+
+function generateRandomColor() {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
 }

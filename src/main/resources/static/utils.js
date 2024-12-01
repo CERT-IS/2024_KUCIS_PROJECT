@@ -48,7 +48,6 @@ export function toggleMenu(selector, toggleClass = 'show') {
 
 export function setProgressBar(element, value) {
     element.style.setProperty('--value', `${value}%`);
-    console.log("success Progressbar " + value);
 }
 
 export function formatChatDate(date) {
