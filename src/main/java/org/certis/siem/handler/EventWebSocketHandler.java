@@ -131,19 +131,21 @@ public class EventWebSocketHandler implements WebSocketHandler {
             return session.send(Mono.just(session.textMessage("{\"error\":\"blank message\"}")));
         }
 
+        System.out.println("handleChatMessage sendToModel : " + message);
         return sendToModel(message)
                 .flatMap(response -> session.send(Mono.just(session.textMessage(response))))
                 .then();
     }
 
     private Mono<String> sendToModel(String message){
-        return Mono.just("test chat message")
-                /*webClient.post()
+        return // Mono.just("test chat message")
+                webClient.post()
                 .uri("/ask")
                 .bodyValue(Map.of("message", message))
                 .retrieve()
-                .bodyToMono(String.class)*/
+                .bodyToMono(String.class)
                 .map(response -> {
+                    System.out.println("askResponse : " + response);
                     try {
                         Map<String, String> responseJson = Map.of(
                                 "action", "askResponse",

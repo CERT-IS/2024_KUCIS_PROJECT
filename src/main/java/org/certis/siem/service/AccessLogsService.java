@@ -1,13 +1,23 @@
 package org.certis.siem.service;
 
+import static org.certis.siem.mapper.EventMapper.mapLogsToEvent;
+
 import com.fasterxml.jackson.databind.JsonNode;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.certis.siem.entity.log.AccessLog;
 import org.certis.siem.entity.EventStream;
-import org.certis.siem.repository.EventRepository;
+import org.certis.siem.entity.log.AccessLog;
 import org.certis.siem.mapper.AccessLogsMapper;
+import org.certis.siem.repository.EventRepository;
 import org.opensearch.client.json.JsonData;
-import org.opensearch.client.opensearch.OpenSearchClient;
 import org.opensearch.client.opensearch._types.FieldValue;
 import org.opensearch.client.opensearch._types.SortOrder;
 import org.opensearch.client.opensearch._types.query_dsl.Query;
@@ -18,24 +28,11 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Comparator;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-
-import static org.certis.siem.mapper.EventMapper.mapLogsToEvent;
-import static org.certis.siem.service.OpenSearchService.executeSearch;
-
 @Service
 @RequiredArgsConstructor
 public class AccessLogsService {
 
-    private final OpenSearchClient openSearchClient;
+    private final OpenSearchService openSearchService;
     private final EventRepository eventRepository;
 
     private final String indexName = "cwl-*";
@@ -119,7 +116,7 @@ public class AccessLogsService {
     }
     public Mono<LocalDateTime> process(LocalDateTime lastProcessedTimestamp) {
         SearchRequest searchRequest = searchRequest(lastProcessedTimestamp);
-        return executeSearch(searchRequest)
+        return openSearchService.executeSearch(searchRequest)
                 .collectList()
                 .flatMap(jsonNodes -> {
                     Flux<EventStream> eventStreamFlux = mapJsonToEventStream(jsonNodes);

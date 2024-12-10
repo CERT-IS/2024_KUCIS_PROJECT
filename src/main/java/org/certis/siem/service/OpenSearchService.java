@@ -19,12 +19,12 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class OpenSearchService {
 
-    private static OpenSearchClient openSearchClient;
+    private final OpenSearchClient openSearchClient;
     private final String indexName = "cwl-*";
 
 
     // ---------------------------------------OpenSearch System------------------------------------------//
-    public static Flux<JsonNode> executeSearch(SearchRequest searchRequest) {
+    public Flux<JsonNode> executeSearch(SearchRequest searchRequest) {
         return Mono.fromCallable(() -> openSearchClient.search(searchRequest, JsonNode.class))
                 .flatMapMany(searchResponse -> {
                     if (searchResponse.hits() == null || searchResponse.hits().hits().isEmpty()) {

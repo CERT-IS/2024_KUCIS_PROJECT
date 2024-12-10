@@ -1,7 +1,6 @@
 package org.certis.siem.service;
 
 import static org.certis.siem.mapper.EventMapper.mapLogsToEvent;
-import static org.certis.siem.service.OpenSearchService.executeSearch;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import java.net.URLDecoder;
@@ -33,6 +32,8 @@ import reactor.core.publisher.Mono;
 @Service
 @RequiredArgsConstructor
 public class WAFService {
+
+    private final OpenSearchService openSearchService;
     private final EventRepository eventRepository;
     private final String indexName = "cwl-*";
     private final String logGroup = "aws-waf-logs-groups";
@@ -84,7 +85,7 @@ public class WAFService {
 
     public Mono<LocalDateTime> process(LocalDateTime lastProcessedTimestamp) {
         SearchRequest searchRequest = searchRequest(lastProcessedTimestamp);
-        return executeSearch(searchRequest)
+        return openSearchService.executeSearch(searchRequest)
                 .collectList()
                 .flatMap(jsonNodes -> {
                     Flux<EventStream> eventStreamFlux = mapJsonToEventStream(jsonNodes);

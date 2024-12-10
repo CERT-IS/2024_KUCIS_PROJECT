@@ -32,7 +32,7 @@ public class EventDetectService {
                 counter = 0L;
             }
 
-            log.info("현재 counter: "+counter);
+            log.info("Current counter: "+counter);
         }
     }
 

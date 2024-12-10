@@ -1,7 +1,6 @@
 package org.certis.siem.service;
 
 import static org.certis.siem.mapper.EventMapper.mapLogsToEvent;
-import static org.certis.siem.service.OpenSearchService.executeSearch;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import java.net.URLDecoder;
@@ -19,7 +18,6 @@ import org.certis.siem.entity.log.HttpLog;
 import org.certis.siem.mapper.HttpMapper;
 import org.certis.siem.repository.EventRepository;
 import org.opensearch.client.json.JsonData;
-import org.opensearch.client.opensearch.OpenSearchClient;
 import org.opensearch.client.opensearch._types.FieldValue;
 import org.opensearch.client.opensearch._types.SortOrder;
 import org.opensearch.client.opensearch._types.query_dsl.Query;
@@ -34,7 +32,7 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class HttpLogsService {
 
-    private final OpenSearchClient openSearchClient;
+    private final OpenSearchService openSearchService;
     private final EventRepository eventRepository;
 
     private final String indexName = "cwl-*";
@@ -120,7 +118,7 @@ public class HttpLogsService {
     }
     public Mono<LocalDateTime> process(LocalDateTime lastProcessedTimestamp) {
         SearchRequest searchRequest = searchRequest(lastProcessedTimestamp);
-        return executeSearch(searchRequest)
+        return openSearchService.executeSearch(searchRequest)
                 .collectList()
                 .flatMap(jsonNodes -> {
                     Flux<EventStream> eventStreamFlux = mapJsonToEventStream(jsonNodes);

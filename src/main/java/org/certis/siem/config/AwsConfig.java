@@ -15,7 +15,7 @@ public class AwsConfig {
     @Value("${CLOUD_AWS_CREDENTIALS_ACCESSKEY}")
     private String accessKey;
 
-    @Value("${CLOUD_AWS.CREDENTIALS_SECRETKEY}")
+    @Value("${CLOUD_AWS_CREDENTIALS_SECRETKEY}")
     private String secretKey;
 
     @Value("${cloud.aws.region:ap-northeast-2}")

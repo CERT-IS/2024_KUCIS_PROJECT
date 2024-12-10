@@ -76,5 +76,7 @@ docker {
 	name project.name+":"+version
 	dockerfile file('./Dockerfile')
 	files tasks.bootJar.outputs.files
+	files file('./schema.sql')
+	files file('./docker-endpoint.sh')
 	buildArgs(['JAR_FILE':tasks.bootJar.outputs.files.singleFile.name])
 }
