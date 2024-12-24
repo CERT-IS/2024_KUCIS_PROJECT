@@ -1,5 +1,6 @@
 package org.certis.siem.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.certis.siem.entity.dto.ReportRequest;
 import org.certis.siem.service.PdfService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +20,15 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
+@Slf4j
 @RestController
 @RequestMapping("/pdf")
 public class PdfController {
 
+    private static final String TEMPLATE_DIR = "classpath:templates/pdf";
+
     @Autowired
     private PdfService pdfService;
-    private static final String TEMPLATE_DIR = "classpath:templates/pdf";
 
 
     @PostMapping("/report")
@@ -38,37 +41,12 @@ public class PdfController {
         Context context = new Context();
         setContextVariables(context, reportRequest);
 
-        System.out.println(reportRequest);
-
         return pdfService.generatePdf("pdf/" + templateName + ".html", context)
-                .map(bytes -> {
-                    return ResponseEntity.ok()
+                .map(bytes -> ResponseEntity.ok()
                             .header("Content-Disposition", "attachment; filename=\"" + "file.pdf\"")
                             .contentType(MediaType.APPLICATION_PDF)
-                            .body(bytes);
-                });
+                            .body(bytes));
     }
-
-    @PostMapping("/previewPdf")
-    public Mono<ResponseEntity<ByteArrayResource>> previewPdf(@RequestBody ReportRequest reportRequest) {
-        String templateName = reportRequest.getTemplate();
-
-        if (templateName == null || templateName.isEmpty())
-            templateName = "template";
-
-        Context context = new Context();
-        setContextVariables(context, reportRequest);
-
-        return pdfService.generatePdf("pdf/" + templateName + ".html", context)
-                .flatMap(pdfBytes -> pdfService.convertPdfToImage(pdfBytes))
-                .map(imageBytes -> {
-                    ByteArrayResource resource = new ByteArrayResource(imageBytes);
-                    return ResponseEntity.ok()
-                            .contentType(MediaType.IMAGE_PNG)
-                            .body(resource);
-                });
-    }
-
 
     @PostMapping("/upload")
     public Mono<String> uploadTemplate(@RequestParam("file") MultipartFile file) throws IOException {
@@ -79,7 +57,7 @@ public class PdfController {
             Files.createDirectories(path.getParent());
             Files.write(path, bytes);
 
-            System.out.println("[register] " + path + " template이 등록 되었습니다.");
+            log.info("[register] " + path + " template이 등록 되었습니다.");
         }
         return Mono.just("redirect:/");
     }
@@ -92,12 +70,12 @@ public class PdfController {
         if (filesToDelete != null && filesToDelete.length > 0) {
             for (File file : filesToDelete) {
                 if (file.delete())
-                    System.out.println("[delete] " + file.getPath() + " template이 삭제 되었습니다.");
+                    log.info("[delete] " + file.getPath() + " template이 삭제 되었습니다.");
                 else
-                    System.out.println("[delete] " + file.getPath() + " template 삭제에 실패했습니다.");
+                    log.info("[delete] " + file.getPath() + " template 삭제에 실패했습니다.");
             }
         } else
-            System.out.println("[delete] " + filename + " template이 존재하지 않습니다.");
+            log.info("[delete] " + filename + " template이 존재하지 않습니다.");
 
         return Mono.just("redirect:/");
     }

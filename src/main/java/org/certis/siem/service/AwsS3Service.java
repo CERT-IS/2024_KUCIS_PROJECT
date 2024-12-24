@@ -57,9 +57,7 @@ public class AwsS3Service {
         return amazonS3.getUrl(bucket, fileName).toString();
     }
 
-
-    // cloudtrail bucket
-    public Mono<String> downloadFile(String key) {
+    public Mono<String> downloadFile(String key) {  // cloudtrail bucket
         return Mono.fromCallable(() -> {
             S3Object s3object = amazonS3.getObject(cloudTrailBucket, key);
             S3ObjectInputStream objectInputStream = s3object.getObjectContent();
@@ -145,10 +143,9 @@ public class AwsS3Service {
     }
 
     private String extractEventStreamId(String key) {
-        // events:client-name:streamId-2024-07-01
         int startIndex = key.indexOf(":") + 1;
         int endIndex = key.lastIndexOf("-");
-        return key.substring(startIndex, endIndex);
+        return key.substring(startIndex, endIndex);  // events:client-name:streamId-2024-07-01
     }
 
 }

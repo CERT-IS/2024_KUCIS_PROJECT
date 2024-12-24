@@ -7,15 +7,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.Instant;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.certis.siem.service.EventDetectService;
 import org.certis.siem.service.SystemInfoService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.socket.WebSocketHandler;
-import org.springframework.web.reactive.socket.WebSocketMessage;
 import org.springframework.web.reactive.socket.WebSocketSession;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class EventWebSocketHandler implements WebSocketHandler {
@@ -34,7 +35,7 @@ public class EventWebSocketHandler implements WebSocketHandler {
                         Map<String, Object> json = objectMapper.readValue(e, Map.class);
                         String action = (String) json.get("action");
 
-                        System.out.println("handle message : " + json);
+                        log.info("handle message : " + json); // TEST
 
                         switch (action) {
                             case "getWAFEvents":
@@ -55,7 +56,6 @@ public class EventWebSocketHandler implements WebSocketHandler {
                 });
 
         output.subscribe(s -> sink.emitNext((String) s, Sinks.EmitFailureHandler.FAIL_FAST));
-
         return session.send(sink.asFlux().map(session::textMessage));
     }
 
@@ -145,7 +145,7 @@ public class EventWebSocketHandler implements WebSocketHandler {
                 .retrieve()
                 .bodyToMono(String.class)
                 .map(response -> {
-                    System.out.println("askResponse : " + response);
+                    log.info("askResponse : " + response); // TEST
                     try {
                         Map<String, String> responseJson = Map.of(
                                 "action", "askResponse",

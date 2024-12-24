@@ -1,6 +1,9 @@
 package org.certis.siem.service;
 
 import static org.certis.siem.mapper.EventMapper.mapLogsToEvent;
+import static org.certis.siem.service.OpenSearchService.getSearchQuery;
+import static org.certis.siem.service.OpenSearchService.getSearchSort;
+import static org.certis.siem.service.OpenSearchService.searchRequestSize;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import java.time.Duration;
@@ -22,11 +25,14 @@ import org.certis.siem.mapper.CloudTrailMapper;
 import org.certis.siem.repository.EventRepository;
 import org.opensearch.client.json.JsonData;
 import org.opensearch.client.opensearch._types.FieldValue;
+import org.opensearch.client.opensearch._types.SortOptions;
+import org.opensearch.client.opensearch._types.SortOptions.Builder;
 import org.opensearch.client.opensearch._types.SortOrder;
 import org.opensearch.client.opensearch._types.query_dsl.Query;
 import org.opensearch.client.opensearch.core.SearchRequest;
 import org.opensearch.client.opensearch.core.search.SourceConfig;
 import org.opensearch.client.opensearch.core.search.SourceFilter;
+import org.opensearch.client.util.ObjectBuilder;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -35,70 +41,73 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class CloudTrailService {
 
-    private final OpenSearchService openSearchService;
+    private final String CLOUDTRAIL_PROCESS_ERROR_MESSAGE = "Error processing CloudTrail Logs: ";
+
     private final String indexName = "cwl-*";
     private final String logGroup = "aws-cloudtrail-logs-058264524253-eba56a76";
+
+
     private final List<String> awsRegions = Arrays.asList(
             "us-east-1", "us-east-2", "us-west-1", "us-west-2",
             "ap-east-1", "ap-south-1", "ap-northeast-1", "ap-northeast-2",
             "ap-northeast-3", "ap-southeast-1", "ap-southeast-2",
             "ca-central-1", "eu-central-1", "eu-west-1", "eu-west-2",
             "eu-west-3", "eu-north-1", "sa-east-1", "me-south-1",
-            "af-south-1", "eu-south-1", "eu-south-2"
-    );
+            "af-south-1", "eu-south-1", "eu-south-2");
+    private final List<String> excludeRegions = new ArrayList<>(List.of("ap-northeast-2"));
+
+    private final OpenSearchService openSearchService;
     private final EventRepository eventRepository;
 
-    private final List<String> excludeRegions = new ArrayList<>(List.of("ap-northeast-2"));
+
     private Set<String> whitelistAddresss = new HashSet<>(Arrays.asList());
+
 
     private boolean isSuspiciousAddress(String ip) {
         return !whitelistAddresss.contains(ip);
     }
-
     public Mono<List<String>> getExcludeRegions() {
         return Mono.just(excludeRegions);
     }
 
-    public void addExcludeRegions(List<String> adds) {
-        List<String> validRegions = adds.stream()
-                .filter(awsRegions::contains)
-                .filter(region -> !excludeRegions.contains(region))
-                .collect(Collectors.toList());
+    public Mono<Void> addExcludeRegions(List<String> adds) {
+        return Mono.fromRunnable(() -> {
+            List<String> validRegions = adds.stream()
+                    .filter(awsRegions::contains)
+                    .filter(region -> !excludeRegions.contains(region))
+                    .collect(Collectors.toList());
 
-        excludeRegions.addAll(validRegions);
+            excludeRegions.addAll(validRegions);
+        });
     }
 
-    public void deleteExcludeRegions(List<String> deletes) {
-        List<String> validRegions = deletes.stream()
-                .filter(awsRegions::contains)
-                .collect(Collectors.toList());
+    public Mono<Void> deleteExcludeRegions(List<String> deletes) {
+        return Mono.fromRunnable(() -> {
+            List<String> validRegions = deletes.stream()
+                    .filter(awsRegions::contains)
+                    .collect(Collectors.toList());
 
-        excludeRegions.removeAll(validRegions);
+            excludeRegions.removeAll(validRegions);
+        });
     }
 
     public Mono<LocalDateTime> process(LocalDateTime lastProcessedTimestamp) {
-        SearchRequest searchRequest = searchRequest(lastProcessedTimestamp);
-
-        return openSearchService.executeSearch(searchRequest)
+        return openSearchService.executeSearch(searchRequest(lastProcessedTimestamp))
                 .collectList()
-                .flatMap(jsonNodes -> {
-                    Flux<EventStream> eventStreamFlux = mapJsonNodeToCloudTrailLog(jsonNodes);
+                .flatMap(jsonNodes -> mapJsonToEventStream(jsonNodes).collectList()
+                        .flatMap(eventStreams -> updateEvent(eventStreams, jsonNodes, lastProcessedTimestamp)));
+    }
 
-                    List<CloudTrailLog> cloudtrailList = jsonNodes.stream()
-                            .map(CloudTrailMapper::mapJsonNodeToCloudTrailLog)
-                            .collect(Collectors.toList());
+    private Mono<LocalDateTime> updateEvent(List<EventStream> eventStreams, List<JsonNode> jsonNodes, LocalDateTime lastProcessedTimestamp){
+        return eventRepository.saveAll(eventStreams)
+                .then(Mono.just(getLatestTimestamp(getCloudTrailLogs(jsonNodes), lastProcessedTimestamp)))
+                .onErrorMap(e -> new RuntimeException(CLOUDTRAIL_PROCESS_ERROR_MESSAGE + e.getMessage(), e));
+    }
 
-
-                    LocalDateTime latestTimestamp = getLatestTimestamp(cloudtrailList, lastProcessedTimestamp);
-
-
-                    return eventStreamFlux
-                            .collectList()
-                            .flatMap(eventStreams -> eventRepository.saveAll(eventStreams)
-                                    .then(Mono.just(latestTimestamp))
-                                    .onErrorMap(e -> new RuntimeException("Error processing Accesslogs: " + e.getMessage(), e))
-                            );
-                });
+    private List<CloudTrailLog> getCloudTrailLogs(List<JsonNode> jsonNodes){
+        return jsonNodes.stream()
+                .map(CloudTrailMapper::mapJsonNodeToCloudTrailLog)
+                .collect(Collectors.toList());
     }
 
     public LocalDateTime getLatestTimestamp(List<CloudTrailLog> cloudTrailLogs, LocalDateTime lastProcessedTimestamp) {
@@ -108,7 +117,7 @@ public class CloudTrailService {
                 .orElse(lastProcessedTimestamp);
     }
 
-    public Flux<EventStream> mapJsonNodeToCloudTrailLog(List<JsonNode> jsonNodes) {
+    public Flux<EventStream> mapJsonToEventStream(List<JsonNode> jsonNodes) {
         List<CloudTrailLog> cloudTrailList = jsonNodes.stream()
                 .map(CloudTrailMapper::mapJsonNodeToCloudTrailLog)
                 .collect(Collectors.toList());
@@ -192,13 +201,14 @@ public class CloudTrailService {
 
 
     private SearchRequest searchRequest(LocalDateTime timestamp) {
-        String timestampString = timestamp.format(DateTimeFormatter.ISO_DATE_TIME);
+        return SearchRequest.of(s -> s.index(indexName)
+                .source(getSearchFilterConfig())
+                .query(getSearchQuery(logGroup, timestamp))
+                .sort(sort -> getSearchSort(sort))
+                .size(searchRequestSize));
+    }
 
-        Query query = Query.of(q -> q.bool(b -> b
-                .must(m -> m.match(t -> t.field("@log_group.keyword").query(FieldValue.of(logGroup))))
-                .filter(f -> f.range(r -> r.field("@timestamp").gt(JsonData.of(timestampString))))
-        ));
-
+    private SourceConfig getSearchFilterConfig(){
         SourceFilter sourceFilter = SourceFilter.of(s -> s
                 .includes(
                         "@id", "@log_group", "@timestamp",
@@ -219,12 +229,6 @@ public class CloudTrailService {
                 )
         );
 
-        SourceConfig sourceConfig = SourceConfig.of(src -> src.filter(sourceFilter));
-
-        return SearchRequest.of(s -> s.index(indexName)
-                .source(sourceConfig)
-                .query(query)
-                .sort(sort -> sort.field(f -> f.field("@timestamp").order(SortOrder.Asc)))
-                .size(100));
+         return SourceConfig.of(src -> src.filter(sourceFilter));
     }
 }

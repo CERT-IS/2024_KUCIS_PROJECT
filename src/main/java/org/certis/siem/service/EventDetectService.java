@@ -47,6 +47,4 @@ public class EventDetectService {
     public Flux<EventStream> findAll(){
         return eventRepository.findAll();
     }
-
-
 }
