@@ -3,11 +3,12 @@ package org.certis.siem.entity.dto;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
 public class ReportRequest {
 
     @NotBlank(message = "Name is required")
