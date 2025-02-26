@@ -46,7 +46,7 @@ public class AccessLogsService {
     private final String logGroup = "aws-access-logs-groups"; //"/aws/lambda/http-gateway";
 
     private static final Pattern URL_PATTERN = Pattern.compile("\"(GET|POST|PUT|DELETE|HEAD|OPTIONS|PATCH)\\s+(http[^\"]+)\\s+HTTP/1\\.1\"");
-    private final String[] SQL_INJECTION_PATTERNS = {
+    public static String[] SQL_INJECTION_PATTERNS = {
             "(?i)\\b(SELECT|UPDATE|DELETE|INSERT|UNION|DROP|ALTER)\\b",
             "(?i)\\bOR\\b\\s+\\d+=\\d+",
             "(?i)\\bOR\\b\\s+[\\w'\"=]+",
@@ -56,14 +56,14 @@ public class AccessLogsService {
             "(?i)\"\\s*--",
             "(?i)\\bEXEC\\b\\s+\\bXP_",
     };
-    private final String[] XSS_PATTERNS = {
+    public static String[] XSS_PATTERNS = {
             "<script.*?>.*?</script>",
             "javascript:",
             "on\\w+=['\"].*?['\"]",
             "<.*?javascript:.*?>",
             "<.*?on\\w+=.*?>"
     };
-    private final String[] ADMIN_PAGE_PATTERNS = {
+    public static String[] ADMIN_PAGE_PATTERNS = {
             "(?i)^/admin(?:[0-9]+|istrator)?/?$",
             "(?i)^/(admin(?:[0-9]+|istrator)?)/(.*\\.(html|asp))$",
             "(?i)^/(webadmin|manager|master|system)?/?$",

@@ -151,12 +151,12 @@ public class CloudTrailService {
         return logs.filter(log -> containsWildcard(log));
     }
 
-    private boolean isRegionExcluded(List<String> excludedRegions, CloudTrailLog log) {
+    public boolean isRegionExcluded(List<String> excludedRegions, CloudTrailLog log) {
         String awsRegion = log.getAwsRegion();
         return !excludedRegions.contains(awsRegion);
     }
 
-    private boolean isFailedLogin(CloudTrailLog log) {
+    public boolean isFailedLogin(CloudTrailLog log) {
         Map<String, Object> responseElements = log.getResponseElements();
         if (responseElements != null) {
             Object consoleLogin = responseElements.get("ConsoleLogin");
@@ -184,7 +184,7 @@ public class CloudTrailService {
         return false;
     }
 
-    private boolean containsWildcard(CloudTrailLog log){
+    public boolean containsWildcard(CloudTrailLog log){
         Map<String, Object> requestParameters = log.getRequestParameters();
 
         if(requestParameters == null)

@@ -63,12 +63,12 @@ public class HttpLogsService {
             "(?i)^/(webadmin|manager|master|system)/(.*\\.(html|asp))$"
     };
 
-    private String extractUrl(String logEntry) {
+    public String extractUrl(String logEntry) {
         Matcher matcher = URL_PATTERN.matcher(logEntry);
         return matcher.find() ? matcher.group(2) : null;
     }
 
-    private String decodeUrl(String url) {
+    public String decodeUrl(String url) {
         try {
             return URLDecoder.decode(url, StandardCharsets.UTF_8.name());
         } catch (Exception e) {

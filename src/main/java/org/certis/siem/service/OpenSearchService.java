@@ -37,12 +37,12 @@ public class OpenSearchService {
         return Mono.fromCallable(() -> openSearchClient.search(searchRequest, JsonNode.class))
                 .flatMapMany(searchResponse -> {
                     if (searchResponse.hits() == null || searchResponse.hits().hits().isEmpty()) {
-                        return Flux.error(new RuntimeException("No hits found in OpenSearch response"));
+                        return Flux.error(new RuntimeException("OpenSearch에서 해당하는 hits가 없음"));
                     }
                     return Flux.fromIterable(searchResponse.hits().hits())
                             .map(hit -> hit.source());
                 })
-                .onErrorMap(e -> new RuntimeException("Error executing search in OpenSearch", e));
+                .onErrorMap(e -> new RuntimeException("executeSearch error", e));
     }
     public Mono<List<JsonNode>> checkFieldExistence(String fieldName) {
         Query query = Query.of(q -> q
@@ -58,7 +58,7 @@ public class OpenSearchService {
                 .map(searchResponse -> searchResponse.hits().hits().stream()
                         .map(hit -> hit.source())
                         .collect(Collectors.toList()))
-                .onErrorMap(e -> new RuntimeException("Error checking field existence in OpenSearch: " + e.getMessage(), e));
+                .onErrorMap(e -> new RuntimeException("checkFieldExistence error: " + e.getMessage(), e));
     }
 
     public Flux<JsonNode> executeQueryStringSearch(String queryString) {
@@ -76,7 +76,7 @@ public class OpenSearchService {
         return Mono.fromCallable(() -> openSearchClient.search(searchRequest, JsonNode.class))
                 .flatMapMany(searchResponse -> Flux.fromIterable(searchResponse.hits().hits())
                         .map(hit -> hit.source()))
-                .onErrorMap(e -> new RuntimeException("Error executing query string search in OpenSearch: " + e.getMessage(), e));
+                .onErrorMap(e -> new RuntimeException("executeQueryStringSearch error: " + e.getMessage(), e));
     }
 
     public Flux<JsonNode> executeConditionalSearch(org.certis.siem.entity.dto.SearchRequest request, int size) {
@@ -121,7 +121,7 @@ public class OpenSearchService {
                 .flatMapMany(searchResponse -> Flux.fromIterable(searchResponse.hits().hits())
                         .map(hit -> hit.source())
                 )
-                .onErrorMap(e -> new RuntimeException("OpenSearch에서 문서를 검색하는 중 오류 발생: " + e.getMessage(), e));
+                .onErrorMap(e -> new RuntimeException("executeConditionalSearch error: " + e.getMessage(), e));
     }
 
     public static Query getSearchQuery(String logGroup, LocalDateTime timestamp){
